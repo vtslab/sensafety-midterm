@@ -3,6 +3,6 @@ sensafety-midterm
 
 Integration of modules for the midterm event
 
-SenSafety members can ask to become collabotors
+SenSafety members can ask to become collaborators and are asked to push to the development branch
 
-Other will have to issue pull requests
+Vtslab will merge the develop branch with the master branch when a stable release is required
