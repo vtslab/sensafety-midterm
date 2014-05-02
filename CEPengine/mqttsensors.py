@@ -6,57 +6,52 @@
 # registered type
 
 # Marc de Lignie, Politie IV-organisatie
-# April 7, 2014
+# May 2, 2014
 
+import java.lang
 import paho
 
-eventtypes = {
-    'Tilt': { 
-        'name': java.lang.String,
-        'cam': java.lang.String,
-        'ddate': java.lang.String,
-        'ttime': java.lang.String,
-        'millisec': java.lang.Long,
-        'foto': java.lang.String
-        },
+
+eventspecs = {
+    'Tilt': {
+        'fields': {
+            'timestamp': java.lang.String, # ISO 8601:
+                                           # 2014-04-10T11:22:33.44+02:00
+            'previous_timestamp': java.lang.String,
+            'event': java.lang.String,
+            'state': java.lang.String },
+        'topicfilter': '#',
+        'callback': 'tiltCallback'},
     'Breach': { 
-        'name': java.lang.String,
-        'cam': java.lang.String,
-        'ddate': java.lang.String,
-        'ttime': java.lang.String,
-        'millisec': java.lang.Long,
-        'foto': java.lang.String
-        },
+        'fields': {
+            'timestamp': java.lang.String, # ISO 8601:
+                                           # 2014-04-10T11:22:33.44+02:00
+            'source': java.lang.String,
+            'switch_state': java.lang.Boolean },
+        'topicfilter': '#',
+        'callback': 'breachCallback'}
     }
 
 
 class MqttSensors(object):
 
-    def __init__(self, cep, eventtypes, broker):
+    def __init__(self, cep, pahoclient):
         self._cep = cep
-        self._registerMqttEvents(eventtypes)
-        self._mqttAdapter = self._constructMqttAdapter(engineURI, port)
-        self._mqttAdapter.start();
+        self._pahoclient = pahoclient
+        self._registerMqttEvents()
         
-    def _registerMqttEvents(self, eventtypes):
-        for eventtype in eventtypes.keys():
-            self._cep.define_event(eventtype, eventtypes[eventtype])
+    def _registerMqttEvents(self):
+        for eventtype in eventspecs.keys():
+            self._cep.define_event(eventtype, eventspecs[eventtype]['fields'])
+            topicfilter = eventspecs[eventtype]['topicfilter']
+            callback = eventspecs[eventtype]['callback']
+            self._pahoclient.subscribe(topicfilter, 1, eval('self.'+callback))
         
-    def _constructMqttAdapter(self):
-        return paho.MqttClient(adapterConfig, engineURI)
-
-
+    def tiltCallback(self, message):
+        print 'Tilt: ' + message
     
-
-    String url = protocol + broker + ":" + port
-
-
-    sampleClient = Sample(url, clientId, cleanSession, quietMode,userName,password)
-    # if (action.equals("publish")) 
-        sampleClient.publish(topic,qos,message.getBytes())
-    # else if (action.equals("subscribe")) 
-        sampleClient.subscribe(topic,qos)
-    
+    def breachCallback(self, message):
+        print 'Breach: ' + message
 
 """
 public static Document loadXMLFromString(String xml) throws Exception

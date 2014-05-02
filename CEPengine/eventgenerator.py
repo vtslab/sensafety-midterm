@@ -5,7 +5,7 @@
 # The module eventgenerator provides a few types of random events for testing
 
 # Marc de Lignie, Politie IV-organisatie, COMMIT/
-# April 10, 2014
+# May 2, 2014
 
 import threading, random, time, urllib, urllib2
 from main import ANOMALOUS_SOUND
@@ -38,9 +38,8 @@ class AnomalousSound(threading.Thread):
      
 class Tilt(threading.Thread):
 
-    def __init__(self, mqttbroker, port, interval):
-        self._broker = mqttbroker
-        self._port = port
+    def __init__(self, pahoclient, interval):
+        self._pahoclient = pahoclient
         self._interval = interval
     
     def start(self):
@@ -49,5 +48,14 @@ class Tilt(threading.Thread):
             time.sleep(2. * self._interval * random.random())
 
     def postEvent(self):
-        pass
+        self._pahoclient.publish(
+            "owner/net_id/class/sub_class/function/type/device_id", 1, '\
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>\
+            <Payload driver_version="1" request_id="220">\
+            <Parameter name="timestamp">2014-03-28T07:11:33+00:00</Parameter>\
+            <Parameter name="previous_timestamp">2014-03-28T07:11:32+00:00</Parameter>\
+            <Parameter name="event">MOTIONSTART</Parameter>\
+            <Parameter name="state">MOTION</Parameter>\
+            </Payload>')
+
 

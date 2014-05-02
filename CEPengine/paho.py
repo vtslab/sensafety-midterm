@@ -4,78 +4,47 @@
 # Adapted from org.eclipse.paho.sample.mqttv3app
 
 # Marc de Lignie, Politie IV-organisatie
-# April 7, 2014
+# May 2, 2014
 
-import sys, threading
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken as IMqttDeliveryToken 
+import sys, time
 import org.eclipse.paho.client.mqttv3.MqttCallback as MqttCallback 
 import org.eclipse.paho.client.mqttv3.MqttClient as MqttClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions as MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttException as MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage as MqttMessage
-import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence \
-                                              as MqttDefaultFilePersistence
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence \
+                                              as MemoryPersistence
 
-class MqttClient(MqttCallback, threading.Threading): 
+class PahoClient(MqttCallback): 
 
-    def __init__(self, brokerUrl, clientId, cleanSession, userName, password)
-    """*
-     * Constructs an instance of the sample client wrapper
-     * @param brokerUrl the url of the server to connect to
-     * @param clientId the client id to connect with
-     * @param cleanSession clear state at end of connection or not 
-     * (durable or non-durable subscriptions)
-     * @param userName the username to connect with
-     * @param password the password for the user
-     * @throws MqttException
-     """
-        self.brokerUrl = brokerUrl
-        self.clean     = cleanSession
-        self.password  = password
-        self.userName  = userName
-        # This client stores messages in a temporary directory
-        dataStore = MqttDefaultFilePersistence('/tmp')
+    def __init__(self, brokerUrl):
         try: 
-            # Construct the connection options object that contains connection parameters
-            # such as cleanSession and LWT
-            conOpt = MqttConnectOptions()
-            conOpt.setCleanSession(clean)
-            if(password != null ) 
-              conOpt.setPassword(self.password.toCharArray())
-            
-            if(userName != null) 
-              conOpt.setUserName(self.userName)
-            
-
-            # Construct an MQTT blocking mode client
-            client = MqttClient(self.brokerUrl,clientId, dataStore)
-
-            # Set this wrapper as the callback handler
-            client.setCallback(this)
-
-         except MqttException, e:
+            self._client = MqttClient(brokerUrl, "SenSafety-CEPengine",
+                                                 MemoryPersistence())
+            # Set this instance as the callback handler
+            self._client.setCallback(self)
+            # Leave client connected
+            self._client.connect(MqttConnectOptions())
+        except MqttException, e:
             print str(e)
             sys.exit(1)
+        self._destinations = {}
+
+    def close(self):
+        # Required to have jython exit
+        self._client.disconnect()
             
-    def subscribe(self, topicName, qos):
+    def subscribe(self, topicName, qos, callback = None):
         """
          * Subscribe to a topic on an MQTT server
-         * Once subscribed this method waits for the messages to arrive from the server
-         * that match the subscription. It continues listening for messages.
+         * Once subscribed this method waits for the messages to arrive from 
+         * the server that match the subscription. 
          * @param topicName to subscribe to (can be wild carded)
-         * @param qos the maximum quality of service to receive messages at for this subscription
+         * @param qos the maximum quality of service to receive messages at for 
+           this subscription
         """
-        # Connect to the MQTT server
-        self._client.connect(conOpt)
-        # Subscribe to the requested topic
-        # The QoS specified is the maximum level that messages will be sent to the client at.
-        # For instance if QoS 1 is specified, any messages originally published at QoS 2 will
-        # be downgraded to 1 when delivering to the client but messages published at 1 and 0
-        # will be received at the same level they were published at.
         self._client.subscribe(topicName, qos)
-        # Continue waiting for messages
-        sys.stdin.readline()
- 		self._client.disconnect();
+        self._destinations[topicName] = callback
        
     def publish(self, topicName, qos, payload):
         """
@@ -84,35 +53,43 @@ class MqttClient(MqttCallback, threading.Threading):
          * @param qos the quality of service to delivery the message at (0,1,2)
          * @param payload the set of bytes to send to the MQTT server
         """
-    	# Connect to the MQTT server
-    	self._client.connect(conOpt);
     	# Create and configure a message
-   		message = MqttMessage(payload);
-    	message.setQos(qos);
-    	# Send the message to the server, control is not returned until
-    	# it has been delivered to the server meeting the specified
-    	# quality of service.
-    	self._client.publish(topicName, message);
-    	# Disconnect the client
-    	self._client.disconnect();
+        message = MqttMessage(payload)
+        message.setQos(qos)
+        # Send the message to the server, control is not returned until
+        # it has been delivered to the server meeting the specified
+        # quality of service.
+        self._client.publish(topicName, message)
+    	
+    """**************************************************************"""
+    """ Default methods to implement the MqttCallback interface      """
+    """**************************************************************"""
 
-    """**************************************************************"""
-    """ Methods to implement the MqttCallback interface              """
-    """**************************************************************"""
-    def connectionLost(self, cause) :
-        print "Connection to " + self.brokerUrl + " lost!" + cause
-        raise NotImplementedError(cause) # Abstract method
+    def connectionLost(self, cause):
+        print "Connection lost!" + str(cause)
     
     def deliveryComplete(self, token):
-        raise NotImplementedError  # Abstract method
+        print "Delivery complete: " + str(token)
     
     def messageArrived(self, topic, message):
         # Called when a message arrives from the server that matches any
         # subscription made by the client
-        print ("Time:\t" +time +
-               "  Topic:\t" + topic +
-               "  Message:\t" + str(message.getPayload()) +
-               "  QoS:\t" + message.getQos())
-        raise NotImplementedError  # Abstract method
+        destination = self._destinations.get(topic)
+        if destination:
+            destination(message)
+        else:
+            print ("Time: " + str(time.time()) +
+                   "  Topic: " + topic +
+                   "  Message: " + str(message.toString()) +
+                   "  QoS: " + str(message.getQos()))
     
 
+# Only for testing; run with ./paho.sh    
+if __name__ == "__main__": 
+    paho = PahoClient("tcp://m2m.eclipse.org:1883")
+#    paho = PahoClient("tcp://test.mosquitto.org:1883")  # too many messages?
+#    paho = PahoClient("tcp://localhost:1883") # Assumes local mosquitto broker
+    paho.subscribe("#", 1)
+    paho.publish("SenSafety/test", 1, "Test")
+    time.sleep(1)  # Increase to also publish with mosquitto_pub in shell
+    paho.close()  # Otherwise python does not exit
