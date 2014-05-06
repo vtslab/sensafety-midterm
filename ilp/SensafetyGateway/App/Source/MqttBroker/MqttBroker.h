@@ -1,12 +1,24 @@
 /*
- * MQTT.h
- *
- *  Created on: May 1, 2014
- *      Author: jeffrey
+================================================================================
+  (c) 2014 Strukton Embedded Solutions
+
+  Project/Module: Sensafety Gateway
+
+  Description: Situation Awareness Portal driver
+
+  Reference:
+
+  Version Control
+  	  $workfile: SapDriver.h
+  	  $Revision:
+  	  $Date: 02-05-2014
+  	  Modtime:
+
+================================================================================
  */
 
-#ifndef MQTT_H_
-#define MQTT_H_
+#ifndef MQTTBROKER_H_
+#define MQTTBROKER_H_
 
 /**	Standard header files	**/
 #include <pthread.h> /* POSIX Thread definitions */
@@ -40,8 +52,9 @@ typedef double FP64;
 MQTTClient client;
 MQTTClient_deliveryToken token;
 
-INT8U initSapComm();
-INT8U sendMsgToSap(char* str, char* topic);
+INT8U initMqttBrokerComm();
+
+INT8U sendMsgToMqttBroker(char* str, char* topic);
 
 
-#endif /* MQTT_H_ */
+#endif /* MQTTBROKER_H_ */

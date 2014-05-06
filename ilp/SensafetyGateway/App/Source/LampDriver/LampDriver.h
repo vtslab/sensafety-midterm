@@ -37,14 +37,17 @@ typedef unsigned char INT8U;
 
 /** Constants	**/
 #define _POSIX_SOURCE 1 /* POSIX compliant source */
+#define SUCCESS 0
+#define TRUE 1
+#define FALSE 0
 
 /** Global variables	**/
 int uart0_fd; // File descriptor for UART0
 
 /** Function prototypes	**/
-INT8U initLampDriverComm(const char *, const char);
+INT8U initLampDriverComm();
 void CloseUart();
-void sendStringOverUart(char *);
+INT8U sendStringOverUart(char *);
 void clearScreen();
 void blinkScreen();
 void clearLine();

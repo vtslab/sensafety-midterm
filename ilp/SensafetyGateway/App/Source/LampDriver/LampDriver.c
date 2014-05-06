@@ -18,7 +18,7 @@
  */
 
 #include "App/Source/LampDriver/LampDriver.h"
-#include "App/Source/SapDriver/SapDriver.h"
+#include "App/Source/MqttBroker/MqttBroker.h"
 
 
 /*******************************************************************************
@@ -33,16 +33,16 @@
  * Error handling:	--
  *
  *******************************************************************************/
-INT8U initLampDriverComm(const char *filename, const char P_baudrate)
+INT8U initLampDriverComm()
 {
 	/*
           Open modem device for reading and writing
 	 */
 
-	uart0_fd = open(filename, O_RDWR | O_NOCTTY | O_NDELAY);
+	uart0_fd = open(SERIALDEVICE, O_RDWR | O_NOCTTY | O_NDELAY);
 	if (uart0_fd == -1)
 	{
-		fprintf(stderr, "Error - Unable to open UART.\n");
+		return (uart0_fd);
 	}
 
 	/* Struct for port settings */
@@ -67,7 +67,7 @@ INT8U initLampDriverComm(const char *filename, const char P_baudrate)
 		CLOCAL 	: 	local connection, no modem contol
 		CREAD 	: 	enable receiving characters
 	 */
-	options.c_cflag = P_baudrate | CS8 | CLOCAL | CREAD;
+	options.c_cflag = SERIALBAUDRATE | CS8 | CLOCAL | CREAD;
 
 	/* local mode flags
 	    ICANON : 	enable canonical input
@@ -80,8 +80,7 @@ INT8U initLampDriverComm(const char *filename, const char P_baudrate)
 	/* Set port settings */
 	tcsetattr(uart0_fd, TCSANOW, &options);
 
-	clearScreen();
-	return(0);
+	return(SUCCESS);
 }
 
 void CloseUart()
@@ -101,16 +100,17 @@ void CloseUart()
  * Error handling:	--
  *
  *******************************************************************************/
-void sendStringOverUart(char *P_cString)
+INT8U sendStringOverUart(char *P_cString)
 {
 	if (uart0_fd != -1)
 	{
 		int count = write(uart0_fd, &P_cString[0], strlen(P_cString));		//File descriptor, bytes to write, number of bytes to write
-		if (count < 0)
+		if (count < 0) // if nothing is written
 		{
-			fprintf(stderr, "UART TX error\n");
+			return (count);
 		}
 	}
+	return (SUCCESS);
 }
 
 void clearScreen()

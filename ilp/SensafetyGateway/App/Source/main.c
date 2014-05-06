@@ -30,7 +30,7 @@
 #include <termios.h> /* POSIX terminal control definitions */
 
 /** Special header files	**/
-#include "App/Source/SapDriver/SapDriver.h"
+#include "App/Source/MqttBroker/MqttBroker.h"
 #include "App/Source/LampDriver/LampDriver.h"
 
 /** Type definitions **/
@@ -49,8 +49,8 @@ typedef double FP64;
 #define TRUE 1
 #define FALSE 0
 
-const char modemDevice[] = "/dev/ttyAMA0";
-const char baudRate = B9600;
+BOOLEAN G_fmqttBrokerComm = FALSE;
+BOOLEAN G_flampDriverComm = FALSE;
 
 /** Function prototypes **/
 
@@ -60,42 +60,58 @@ int main(int argc, char* argv[])
 	INT32U value = 1;
 
 	/* Set up connection with Situation Awareness Portal */
-	if ((rc = initSapComm()) != SUCCESS) // if failed then..
+	rc = initMqttBrokerComm();
+	if (rc != SUCCESS) // if failed then..
 	{
-		printf("Failed to connect to Situation Awareness Portal, return code [%d]\n", rc);
+		printf("Failed to connect to MQTT Broker@%s, return code [%d]\n", ADDRESS , rc);
+		G_fmqttBrokerComm = FALSE;
 	} else // else success
 	{
-		printf("Connection with Situation Awareness Portal\n");
+		printf("Connection with MQTT Broker@%s\n",ADDRESS );
+		G_fmqttBrokerComm = TRUE;
 	}
 
 	/* Set up connection with Lamp Driver */
-
-	initLampDriverComm(modemDevice, baudRate);
-
+	rc = initLampDriverComm(SERIALDEVICE, SERIALBAUDRATE);
+	if (rc != SUCCESS) // if failed then..
+	{
+		printf("Failed to connect to Lamp Driver@%s, return code [%d]\n", SERIALDEVICE , rc);
+		G_flampDriverComm = FALSE;
+	} else // else success
+	{
+		printf("Connection with Lamp Driver@%s\n",SERIALDEVICE );
+		G_flampDriverComm = TRUE;
+	}
 
 	while(TRUE)
 	{
 		/* Convert value to char */
+		/* Send msg to MQTT Broker */
 		int size;
 		size = sizeof(value);
 		char str[size];
 		sprintf(str, "%lu", value);
 
-		/* Send msg to SAP */
-		if ((rc = sendMsgToSap(&str[0], "sg1")) != SUCCESS)
+		rc = sendMsgToMqttBroker(&str[0], "sg1");
+		if (rc != SUCCESS)
 		{
-			printf("Failed to send value, MQTT return code [%d]\n", rc);
+			printf("Failed to send value to MQTT Broker, MQTT return code [%d]\n", rc);
 		}
 
 		/* Send msg to Lamp Driver */
-		sendStringOverUart("Msg from SG\n\r");
-
+		char buf[256];
+		sprintf (buf, "Msg ID[%lu]from SG\n\r", value);
+		rc = sendStringOverUart(buf);
+		if (rc != SUCCESS)
+		{
+			printf("Failed to send value to Lamp Driver, Lamp driver return code [%d]\n", rc);
+		}
 		/* Debug info*/
-		printf("Message [%d] send to Lamp Driver to SAP\n", value);
+		printf("Message [%lu] send to Lamp Driver to MQTT Broker\n", value);
 
 		/* Increment value and sleep for a while.. */
 		value++;
-		usleep(250 * 1000);
+		usleep(500 * 1000);
 	}
 
 }
