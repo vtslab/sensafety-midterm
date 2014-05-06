@@ -49,39 +49,35 @@ typedef double FP64;
 #define TRUE 1
 #define FALSE 0
 
-BOOLEAN G_fmqttBrokerComm = FALSE;
-BOOLEAN G_flampDriverComm = FALSE;
+BOOLEAN G_fMqttBrokerComm = FALSE;
+BOOLEAN G_fLampDriverComm = FALSE;
 
 /** Function prototypes **/
+static void threadLampDriverComm(void *);
 
 int main(int argc, char* argv[])
 {
 	INT8U rc;
 	INT32U value = 1;
 
+
+	/* Creating Threads */
+	int long t1 = 1;
+	pthread_t thread1, thread2;
+	pthread_create(&thread1, NULL, (void*) threadLampDriverComm, (void *) t1);
+
 	/* Set up connection with Situation Awareness Portal */
 	rc = initMqttBrokerComm();
 	if (rc != SUCCESS) // if failed then..
 	{
 		printf("Failed to connect to MQTT Broker@%s, return code [%d]\n", ADDRESS , rc);
-		G_fmqttBrokerComm = FALSE;
+		G_fMqttBrokerComm = FALSE;
 	} else // else success
 	{
 		printf("Connection with MQTT Broker@%s\n",ADDRESS );
-		G_fmqttBrokerComm = TRUE;
+		G_fMqttBrokerComm = TRUE;
 	}
 
-	/* Set up connection with Lamp Driver */
-	rc = initLampDriverComm(SERIALDEVICE, SERIALBAUDRATE);
-	if (rc != SUCCESS) // if failed then..
-	{
-		printf("Failed to connect to Lamp Driver@%s, return code [%d]\n", SERIALDEVICE , rc);
-		G_flampDriverComm = FALSE;
-	} else // else success
-	{
-		printf("Connection with Lamp Driver@%s\n",SERIALDEVICE );
-		G_flampDriverComm = TRUE;
-	}
 
 	while(TRUE)
 	{
@@ -98,20 +94,52 @@ int main(int argc, char* argv[])
 			printf("Failed to send value to MQTT Broker, MQTT return code [%d]\n", rc);
 		}
 
-		/* Send msg to Lamp Driver */
-		char buf[256];
-		sprintf (buf, "Msg ID[%lu]from SG\n\r", value);
-		rc = sendStringOverUart(buf);
-		if (rc != SUCCESS)
-		{
-			printf("Failed to send value to Lamp Driver, Lamp driver return code [%d]\n", rc);
-		}
+
 		/* Debug info*/
 		printf("Message [%lu] send to Lamp Driver to MQTT Broker\n", value);
 
 		/* Increment value and sleep for a while.. */
 		value++;
 		usleep(500 * 1000);
+	}
+
+}
+
+static void threadLampDriverComm(void * threadID)
+{
+	int rc;
+	char buf[256];
+	while(!G_fLampDriverComm)
+	{
+		/* Set up connection with Lamp Driver */
+		rc = initLampDriverComm(SERIALDEVICE, SERIALBAUDRATE);
+		if (rc != SUCCESS) // if failed then..
+		{
+			printf("Failed to connect to Lamp Driver@%s, return code [%d]\n", SERIALDEVICE , rc);
+			G_fLampDriverComm = FALSE;
+		} else // else success
+		{
+			printf("Connection with Lamp Driver@%s\n",SERIALDEVICE );
+			G_fLampDriverComm = TRUE;
+		}
+		while(G_fLampDriverComm)
+		{
+			printf("Thread[%p] While loop in threadLampDriverComm\n\r", threadID );
+
+			/* Send msg to Lamp Driver */
+			rc = sendMsgtoLampDriver('H');
+			if (rc != SUCCESS)
+			{
+				printf("Connection lost with Lamp Driver, Lamp Driver return code [%d]\n", rc);
+				G_fLampDriverComm = FALSE;
+			}
+			rc = receiveMsgFromLampDriver(buf);
+			if (rc != SUCCESS)
+			{
+				printf("Failed to receive message from Lamp Driver, Lamp Driver return code [%d]\n", rc);
+				G_fLampDriverComm = FALSE;
+			}
+		}
 	}
 
 }

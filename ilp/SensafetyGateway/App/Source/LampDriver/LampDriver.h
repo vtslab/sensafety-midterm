@@ -47,7 +47,7 @@ int uart0_fd; // File descriptor for UART0
 /** Function prototypes	**/
 INT8U initLampDriverComm();
 void CloseUart();
-INT8U sendStringOverUart(char *);
+INT8U sendMsgtoLampDriver(char *);
 void clearScreen();
 void blinkScreen();
 void clearLine();

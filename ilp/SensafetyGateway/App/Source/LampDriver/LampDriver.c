@@ -89,7 +89,7 @@ void CloseUart()
 }
 
 /*******************************************************************************
- * Function:		sendStringOverUart
+ * Function:		sendMsgtoLampDriver
  * Parameters(s):
  * Returns:			Returns '-1' on failure or '0' when OK
  * Description:		Thread function to Toggle an led
@@ -100,7 +100,7 @@ void CloseUart()
  * Error handling:	--
  *
  *******************************************************************************/
-INT8U sendStringOverUart(char *P_cString)
+INT8U sendMsgtoLampDriver(char *P_cString)
 {
 	if (uart0_fd != -1)
 	{
