@@ -6,59 +6,74 @@
 # registered type
 
 # Marc de Lignie, Politie IV-organisatie
-# May 2, 2014
+# May 8, 2014
 
 import java.lang
-import paho
+from java.io import StringReader
+from javax.xml.parsers import DocumentBuilderFactory, DocumentBuilder
+from org.xml.sax import InputSource
+from org.w3c.dom import Node
+
+MQTTQOS = 1
+TILTTOPIC = 'tilt'  #'owner/net_id/class/sub_class/function/type/device_id'
+BREACHTOPIC = 'breach'  #'owner/net_id/class/sub_class/function/type/device_id'
 
 
-eventspecs = {
-    'Tilt': {
+class MqttTiltSensor(object):
+
+    eventspecs = {
+        'type': 'Tilt',
         'fields': {
             'timestamp': java.lang.String, # ISO 8601:
                                            # 2014-04-10T11:22:33.44+02:00
             'previous_timestamp': java.lang.String,
             'event': java.lang.String,
-            'state': java.lang.String },
-        'topicfilter': '#',
-        'callback': 'tiltCallback'},
-    'Breach': { 
+            'state': java.lang.String }
+        }
+
+    def __init__(self, cep, pahoclient):
+        self._cep = cep
+        self._cep.define_event(self.eventspecs['type'], 
+                               self.eventspecs['fields'])
+        pahoclient.subscribe(TILTTOPIC, MQTTQOS, self.tiltCallback)
+        
+    def tiltCallback(self, message):      
+        try:
+            tiltEvent = {}
+            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+            topnode = builder.parse(InputSource(StringReader((
+                                   message.toString())))).getFirstChild()
+            assert topnode.getNodeName() == 'Payload'
+            nodes1lev = topnode.getChildNodes()
+            for i in xrange(nodes1lev.getLength()):
+                node1 = nodes1lev.item(i)
+                assert node1.getNodeName() == 'Parameter'
+                atts = node1.getAttributes()
+                tiltEvent[atts.item(0).getNodeValue()] = node1.getTextContent()
+        except Exception, e:
+            print "Error in SenSafety/mqtt xml format, " + str(e)
+        self._cep.send_event(tiltEvent, "Tilt")
+    
+
+class MqttBreachSensor(object):
+
+    eventspecs = {
+        'type': 'Breach',
         'fields': {
             'timestamp': java.lang.String, # ISO 8601:
                                            # 2014-04-10T11:22:33.44+02:00
             'source': java.lang.String,
-            'switch_state': java.lang.Boolean },
-        'topicfilter': '#',
-        'callback': 'breachCallback'}
-    }
-
-
-class MqttSensors(object):
+            'switch_state': java.lang.Boolean }
+        }
 
     def __init__(self, cep, pahoclient):
         self._cep = cep
-        self._pahoclient = pahoclient
-        self._registerMqttEvents()
+        self._cep.define_event(self.eventspecs['type'], 
+                               self.eventspecs['fields'])
+        pahoclient.subscribe(BREACHTOPIC, MQTTQOS, self.breachCallback)
         
-    def _registerMqttEvents(self):
-        for eventtype in eventspecs.keys():
-            self._cep.define_event(eventtype, eventspecs[eventtype]['fields'])
-            topicfilter = eventspecs[eventtype]['topicfilter']
-            callback = eventspecs[eventtype]['callback']
-            self._pahoclient.subscribe(topicfilter, 1, eval('self.'+callback))
-        
-    def tiltCallback(self, message):
-        print 'Tilt: ' + message
-    
     def breachCallback(self, message):
-        print 'Breach: ' + message
+        print 'Breach: ' + message.toString()
 
-"""
-public static Document loadXMLFromString(String xml) throws Exception
-{
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder builder = factory.newDocumentBuilder();
-    InputSource is = new InputSource(new StringReader(xml));
-    return builder.parse(is);
-}
-"""
+
+

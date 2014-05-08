@@ -28,11 +28,11 @@ particular way and in a particular format. The following events are foreseen:
 CEPengine and the mqtt broker make themselves known using mDNS/DNS-SD.
 
 Marc de Lignie, Politie IV-organisatie, COMMIT/
-May 2, 2014
+May 8, 2014
 """
 
 import java.lang
-import time, sys
+import time, sys, threading
 import avahi, paho, jycep, httpsensors, mqttsensors, eventgenerator
 
 ENGINEURI = "CEPengine"
@@ -54,9 +54,11 @@ class CEPengine(object):
         self.pahoclient = paho.PahoClient(MQTT_BROKER_URL)
         httpsensors.HttpSensors(self._cep, ENGINEURI, ANOMALOUS_SOUND_URL, 
                                 ANOMALOUS_SOUND_PORT)
-        mqttsensors.MqttSensors(self._cep, self.pahoclient)
+        mqttsensors.MqttTiltSensor(self._cep, self.pahoclient)
+        mqttsensors.MqttBreachSensor(self._cep, self.pahoclient)
         qman = QueryManager(self._cep)
         qman.addQuery(QueryAnomalousSound())  
+        qman.addQuery(QueryTilt())  
        
     def _avahiBrowse(self):
         # Get zeroconf info for connection with Mqtt broker
@@ -65,6 +67,7 @@ class CEPengine(object):
         self._mqttservices = b1.getServices()
         if len(self._mqttservices) == 0:
             print "No mqtt broker advertized with mDNS/DNS-SD"
+            print "    Assuming mosquitto service on " + MQTT_BROKER_URL
         else:
             print "mqtt service(s):\n", self._mqttservices
         # Get zeroconf info for connection with Cocoon gateways
@@ -100,7 +103,8 @@ class QueryAnomalousSound(object):
         if not isinstance(data_new, list):
             data_new = [data_new]
         for item in data_new:
-            print 'Anomalous sound: ', str(item)[:160]
+            print 'Anomalous sound event passed through CEPengine'
+            #print 'Anomalous sound: ', str(item)[:160]
 
 
 class QueryTilt(object):
@@ -113,15 +117,23 @@ class QueryTilt(object):
         if not isinstance(data_new, list):
             data_new = [data_new]
         for item in data_new:
-            print 'Tilt: ', str(item)[:160]
+            print 'Tilt event passed through CEPengine'
+#            print 'Tilt: ', str(item)[:160]
 
 
 if __name__ == "__main__":
     cep = CEPengine()
     # Random events for initial testing
-    eventgenerator.AnomalousSound(ANOMALOUS_SOUND_URL, 3).start()
-    eventgenerator.Tilt(cep.pahoclient, 3).start()
+    soundevents = eventgenerator.AnomalousSound(ANOMALOUS_SOUND_URL, 3)
+    soundevents.start()
+    tiltevents = eventgenerator.Tilt(cep.pahoclient, 3)
+    tiltevents.start()
+    ilpevents = eventgenerator.ILP_control(cep.pahoclient, 3)
+    ilpevents.start()
     time.sleep(10)
+    soundevents.stop()
+    tiltevents.stop()
+    ilpevents.stop()
     cep.pahoclient.close()  # Required for jython to exit
    
 

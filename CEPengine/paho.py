@@ -6,6 +6,7 @@
 # Marc de Lignie, Politie IV-organisatie
 # May 2, 2014
 
+import java.lang
 import sys, time
 import org.eclipse.paho.client.mqttv3.MqttCallback as MqttCallback 
 import org.eclipse.paho.client.mqttv3.MqttClient as MqttClient
@@ -32,7 +33,8 @@ class PahoClient(MqttCallback):
 
     def close(self):
         # Required to have jython exit
-        self._client.disconnect()
+        if self._client.isConnected():
+            self._client.disconnect()
             
     def subscribe(self, topicName, qos, callback = None):
         """
@@ -54,12 +56,15 @@ class PahoClient(MqttCallback):
          * @param payload the set of bytes to send to the MQTT server
         """
     	# Create and configure a message
-        message = MqttMessage(payload)
+        message = MqttMessage(java.lang.String(payload).getBytes())
         message.setQos(qos)
         # Send the message to the server, control is not returned until
         # it has been delivered to the server meeting the specified
         # quality of service.
-        self._client.publish(topicName, message)
+        try:
+            self._client.publish(topicName, message)
+        except:
+            print "Trying mqtt publish after client disconnect
     	
     """**************************************************************"""
     """ Default methods to implement the MqttCallback interface      """
@@ -69,7 +74,8 @@ class PahoClient(MqttCallback):
         print "Connection lost!" + str(cause)
     
     def deliveryComplete(self, token):
-        print "Delivery complete: " + str(token)
+        pass
+        #print "Delivery complete: " + str(token)
     
     def messageArrived(self, topic, message):
         # Called when a message arrives from the server that matches any
