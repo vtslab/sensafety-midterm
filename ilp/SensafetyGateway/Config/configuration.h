@@ -21,10 +21,11 @@
 #define CONFIGURATION_H_
 
 /* Constants */
-#define ADDRESS "tcp://192.168.1.2:1883"
-#define CLIENTID "sg1"
-#define SERIALDEVICE "/dev/ttyAMA0"
-#define SERIALBAUDRATE B9600
-
+#define ADDRESS "tcp://192.168.1.2:1883" // Address of MQTT broker
+#define CLIENTID "sg1"	// Client ID of this client
+#define COMPORT 22 // 22 for "/dev/ttyAMA0"	 see rs232.c
+#define BAUDRATE 9600 // // Baud rate
+#define ERRORTIMEOUT 1 // Timeout time in seconds
+#define RETRYCOUNT 5 // Number of retry in case of fail transfer
 
 #endif /* CONFIGURATION_H_ */

@@ -4,7 +4,7 @@
 <listAttribute key="org.eclipse.cdt.dsf.gdb.AUTO_SOLIB_LIST"/>
 <stringAttribute key="org.eclipse.cdt.dsf.gdb.DEBUG_NAME" value="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/arm-linux-gnueabihf-gdb"/>
 <booleanAttribute key="org.eclipse.cdt.dsf.gdb.DEBUG_ON_FORK" value="false"/>
-<stringAttribute key="org.eclipse.cdt.dsf.gdb.GDB_INIT" value=".gdbinit"/>
+<stringAttribute key="org.eclipse.cdt.dsf.gdb.GDB_INIT" value=""/>
 <stringAttribute key="org.eclipse.cdt.dsf.gdb.HOST" value="192.168.1.1"/>
 <booleanAttribute key="org.eclipse.cdt.dsf.gdb.NON_STOP" value="false"/>
 <stringAttribute key="org.eclipse.cdt.dsf.gdb.PORT" value="2345"/>
@@ -26,7 +26,7 @@
 <booleanAttribute key="org.eclipse.cdt.launch.remote.RemoteCDSFDebuggerTab.DEFAULTS_SET" value="true"/>
 <stringAttribute key="org.eclipse.debug.core.ATTR_GDBSERVER_COMMAND" value="gdbserver"/>
 <stringAttribute key="org.eclipse.debug.core.ATTR_GDBSERVER_PORT" value="2345"/>
-<stringAttribute key="org.eclipse.debug.core.ATTR_PRERUN_CMDS" value="chmod +x /home/pi/software/helloworld"/>
+<stringAttribute key="org.eclipse.debug.core.ATTR_PRERUN_CMDS" value="chmod +x /home/pi/software/sensafetyGateway"/>
 <booleanAttribute key="org.eclipse.debug.core.ATTR_SKIP_DOWNLOAD_TO_TARGET" value="false"/>
 <stringAttribute key="org.eclipse.debug.core.ATTR_TARGET_PATH" value="/home/pi/software/sensafetyGateway"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">

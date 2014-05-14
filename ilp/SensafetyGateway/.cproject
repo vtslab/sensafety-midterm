@@ -31,9 +31,11 @@
 								<option id="gnu.c.compiler.option.debugging.level.1352916945" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1766993721" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/jeffrey/software/mqtt-lib/include"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway"/>
 								</option>
-								<option id="gnu.c.compiler.option.misc.other.1793522572" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -pthread" valueType="string"/>
+								<option id="gnu.c.compiler.option.misc.other.1793522572" name="Other flags" superClass="gnu.c.compiler.option.misc.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -pthread" valueType="string"/>
+								<option id="gnu.c.compiler.option.dialect.std.1304833787" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
+								<option id="gnu.c.compiler.option.debugging.other.1326923093" name="Other debugging flags" superClass="gnu.c.compiler.option.debugging.other" useByScannerDiscovery="false" value="" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.121097862" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.826990931" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
@@ -58,7 +60,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.cross.assembler.367159660" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler">
 								<option id="gnu.both.asm.option.include.paths.897293342" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/jeffrey/software/mqtt-lib/include"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/sensafetyGateway/sensafetyGateway}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1180897703" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -67,6 +69,7 @@
 					<sourceEntries>
 						<entry excluding="MqttBroker|Source/MQTT_Client" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="App"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Config"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Extern"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -117,6 +120,7 @@
 					<sourceEntries>
 						<entry excluding="MqttBroker|Source/MQTT_Client" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="App"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Config"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Extern"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
