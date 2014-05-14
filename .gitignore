@@ -1,5 +1,5 @@
 # ignore all files ending with ~ (editor backup files)
-*~ 
+*~
 
 # ignore all files ending with class (java/jython compiler)
 *class

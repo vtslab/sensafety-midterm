@@ -6,64 +6,74 @@
 # registered type
 
 # Marc de Lignie, Politie IV-organisatie
-# April 7, 2014
+# May 8, 2014
 
-import paho
+import java.lang
+from java.io import StringReader
+from javax.xml.parsers import DocumentBuilderFactory, DocumentBuilder
+from org.xml.sax import InputSource
+from org.w3c.dom import Node
 
-eventtypes = {
-    'Tilt': { 
-        'name': java.lang.String,
-        'cam': java.lang.String,
-        'ddate': java.lang.String,
-        'ttime': java.lang.String,
-        'millisec': java.lang.Long,
-        'foto': java.lang.String
-        },
-    'Breach': { 
-        'name': java.lang.String,
-        'cam': java.lang.String,
-        'ddate': java.lang.String,
-        'ttime': java.lang.String,
-        'millisec': java.lang.Long,
-        'foto': java.lang.String
-        },
-    }
+MQTTQOS = 1
+TILTTOPIC = 'tilt'  #'owner/net_id/class/sub_class/function/type/device_id'
+BREACHTOPIC = 'breach'  #'owner/net_id/class/sub_class/function/type/device_id'
 
 
-class MqttSensors(object):
+class MqttTiltSensor(object):
 
-    def __init__(self, cep, eventtypes, broker):
+    eventspecs = {
+        'type': 'Tilt',
+        'fields': {
+            'timestamp': java.lang.String, # ISO 8601:
+                                           # 2014-04-10T11:22:33.44+02:00
+            'previous_timestamp': java.lang.String,
+            'event': java.lang.String,
+            'state': java.lang.String }
+        }
+
+    def __init__(self, cep, pahoclient):
         self._cep = cep
-        self._registerMqttEvents(eventtypes)
-        self._mqttAdapter = self._constructMqttAdapter(engineURI, port)
-        self._mqttAdapter.start();
+        self._cep.define_event(self.eventspecs['type'], 
+                               self.eventspecs['fields'])
+        pahoclient.subscribe(TILTTOPIC, MQTTQOS, self.tiltCallback)
         
-    def _registerMqttEvents(self, eventtypes):
-        for eventtype in eventtypes.keys():
-            self._cep.define_event(eventtype, eventtypes[eventtype])
-        
-    def _constructMqttAdapter(self):
-        return paho.MqttClient(adapterConfig, engineURI)
-
-
+    def tiltCallback(self, message):      
+        try:
+            tiltEvent = {}
+            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+            topnode = builder.parse(InputSource(StringReader((
+                                   message.toString())))).getFirstChild()
+            assert topnode.getNodeName() == 'Payload'
+            nodes1lev = topnode.getChildNodes()
+            for i in xrange(nodes1lev.getLength()):
+                node1 = nodes1lev.item(i)
+                assert node1.getNodeName() == 'Parameter'
+                atts = node1.getAttributes()
+                tiltEvent[atts.item(0).getNodeValue()] = node1.getTextContent()
+        except Exception, e:
+            print "Error in SenSafety/mqtt xml format, " + str(e)
+        self._cep.send_event(tiltEvent, "Tilt")
     
 
-    String url = protocol + broker + ":" + port
+class MqttBreachSensor(object):
+
+    eventspecs = {
+        'type': 'Breach',
+        'fields': {
+            'timestamp': java.lang.String, # ISO 8601:
+                                           # 2014-04-10T11:22:33.44+02:00
+            'source': java.lang.String,
+            'switch_state': java.lang.Boolean }
+        }
+
+    def __init__(self, cep, pahoclient):
+        self._cep = cep
+        self._cep.define_event(self.eventspecs['type'], 
+                               self.eventspecs['fields'])
+        pahoclient.subscribe(BREACHTOPIC, MQTTQOS, self.breachCallback)
+        
+    def breachCallback(self, message):
+        print 'Breach: ' + message.toString()
 
 
-    sampleClient = Sample(url, clientId, cleanSession, quietMode,userName,password)
-    # if (action.equals("publish")) 
-        sampleClient.publish(topic,qos,message.getBytes())
-    # else if (action.equals("subscribe")) 
-        sampleClient.subscribe(topic,qos)
-    
 
-"""
-public static Document loadXMLFromString(String xml) throws Exception
-{
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder builder = factory.newDocumentBuilder();
-    InputSource is = new InputSource(new StringReader(xml));
-    return builder.parse(is);
-}
-"""

@@ -16,41 +16,33 @@ from com.espertech.esperio.http.config import Service
 from com.espertech.esperio.http.config import GetHandler
 
 
-""" For initial testing main.py defines a variant stream that accepts anything
-eventtypes = {
-    'AnomalousSound': { 
-        'name': java.lang.String,
-        'cam': java.lang.String,
-        'ddate': java.lang.String,
-        'ttime': java.lang.String,
-        'millisec': java.lang.Long,
-        'foto': java.lang.String
-        },
-    'FaceCount': { 
-        'name': java.lang.String,
-        'cam': java.lang.String,
-        'ddate': java.lang.String,
-        'ttime': java.lang.String,
-        'millisec': java.lang.Long,
-        'foto': java.lang.String
-        }
-    }"""
-
-
 class HttpSensors(object):
 
-    def __init__(self, engineURI, url, port, eventtype):
-#        self._cep = cep
-#        self._registerHttpEvents(eventtypes)
-        self._httpAdapter = self._constructHttpAdapter(
-                                engineURI, url, port, eventtype)
-        self._httpAdapter.start();
+    eventtypes = {
+        'AnomalousSound':    { 
+            'timestamp': java.lang.String, # ISO 8601:
+                                           # 2014-04-10T11:22:33.44+02:00
+            'geoNB': java.lang.Float,      # ISO 6709: 52.12345
+            'geoEL': java.lang.Float,      # ISO 6709:  5.12345
+            'MAC': java.lang.String,
+            'probability': java.lang.Float },
+        'FaceCount': { 
+            'timestamp': java.lang.String # ISO 8601:
+                                           # 2014-04-10T11:22:33.44+02:00
+            }
+        }
+
+    def __init__(self, cep, engineURI, url, port):
+        self._cep = cep
+        self._registerHttpEvents(self.eventtypes)
+        self._httpAdapter = self._constructHttpAdapter(engineURI, port)
+        self._httpAdapter.start()
         
-#    def _registerHttpEvents(self, eventtypes):
-#        for eventtype in eventtypes.keys():
-#            self._cep.define_event(eventtype, eventtypes[eventtype])
+    def _registerHttpEvents(self, eventtypes):
+        for eventtype in self.eventtypes.keys():
+            self._cep.define_event(eventtype, self.eventtypes[eventtype])
         
-    def _constructHttpAdapter(self, engineURI, url, port, eventtype):
+    def _constructHttpAdapter(self, engineURI, port):
         service = Service()
         service.setPort(port)
         service.setNio(False)
