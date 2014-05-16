@@ -26,6 +26,7 @@
 #define COMPORT 22 // 22 for "/dev/ttyAMA0"	 see rs232.c
 #define BAUDRATE 9600 // // Baud rate
 #define ERRORTIMEOUT 1 // Timeout time in seconds
-#define RETRYCOUNT 5 // Number of retry in case of fail transfer
+#define RETRYCOUNT 3 // Number of retry in case of fail transfer
+#define LEDDRIVERS 6 // Number of LED drivers available
 
 #endif /* CONFIGURATION_H_ */

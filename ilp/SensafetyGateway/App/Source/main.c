@@ -31,7 +31,6 @@
 
 /** Special header files	**/
 #include "App/Source/MqttBroker/MqttBroker.h"
-//#include "App/Source/LedDriver/LedDriver.h"
 #include "Extern/Source/RS232/rs232.h"
 
 /** Type definitions **/
@@ -53,29 +52,49 @@ typedef double FP64;
 /* Global variables */
 BOOLEAN G_fMqttBrokerComm = FALSE;
 BOOLEAN G_fLedDriverComm = FALSE;
-pthread_mutex_t signalIO_mutex     = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t signalIO_mutex = PTHREAD_MUTEX_INITIALIZER;
+
+struct
+{
+	INT8U id;
+	BOOLEAN newValue;
+	INT16U value;
+}G_stLedDriver[LEDDRIVERS];
 
 /** Function prototypes **/
-static void threadLedDriver(int *P_threadID);
-static BOOLEAN equalArrays (const INT8U *P_p1, const INT8U *P_p2, size_t P_size2);
+static void ledDriver_thread(INT8U *P_threadID);
+static void ledDriver_init();
+static BOOLEAN equalArrays (const INT8U *P_p1, const INT8U *P_p2,const size_t *P_size2);
+static void convertInt16uToMsg(const INT16U *P_char, INT8U *P_st);
+static INT8U ledDriver_newValue();
+static INT8U ledDriver_msgSentAndConfirmed(	const INT8U *P_threadID,
+		const INT8U *P_sendMsg,
+		const INT8U *P_confMsg,
+		const size_t *P_sizeSendMsg,
+		const size_t *P_sizeConfMsg);
+static BOOLEAN ledDriver_SerialPortIsOpen(const INT8U *P_threadID);
+static BOOLEAN equalArrays (const INT8U *P_p1, const INT8U *P_p2, const size_t *P_size2);
+static void ledDriver_convertValueToMsg( const INT16U *P_value, INT8U *P_msg);
+static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value);
 
 int main(int argc, char* argv[])
 {
-//		INT8U rc;
-//		INT32U value = 1;
+	//		INT8U rc;
+	//		INT32U value = 1;
+	ledDriver_init();
 
 	/* Creating Threads */
-		int t2 = 2; // Thread ID
-		pthread_t thread2; // Thread identities
-		pthread_create(&thread2, NULL, (void*) threadLedDriver, &t2);
-while(TRUE)
-{
-	printf("Thread[1]: Main loop\n");
-	usleep(1000 * 1000);
-}
-//	int threadID = 2;
-//	int *P_threadID;
-//	P_threadID = &threadID;
+	INT8U t2 = 2; // Thread ID
+	pthread_t thread2; // Thread identities
+	pthread_create(&thread2, NULL, (void*) ledDriver_thread, &t2);
+
+	while(TRUE)
+	{
+		usleep(1000 * 1000);
+	}
+	//	int threadID = 2;
+	//	int *P_threadID;
+	//	P_threadID = &threadID;
 
 
 }
@@ -106,22 +125,6 @@ while(TRUE)
 
 //}
 
-static BOOLEAN equalArrays (const INT8U *P_p1, const INT8U *P_p2, size_t P_size2)
-{
-	INT8U i;
-	BOOLEAN rc = TRUE;
-
-	for(i = 0; i < P_size2; i++)
-	{
-		if (P_p1[i] != P_p2[i])
-		{
-			rc = FALSE;
-			break;
-		}
-	}
-
-	return(rc);
-}
 
 /*******************************************************************************
  * Function:		threadLedDriverComm
@@ -136,37 +139,117 @@ static BOOLEAN equalArrays (const INT8U *P_p1, const INT8U *P_p2, size_t P_size2
  * Error handling:	--
  *
  *******************************************************************************/
-static void threadLedDriver(int *P_threadID)
+static void ledDriver_thread(INT8U *P_threadID)
 {
 	printf("Thread[%d]:Led Driver: Begin of thread ..\n\r", *P_threadID );
 
 	INT8S L_rc = 0; // Return code
-	size_t L_size = 0;
-	INT8U L_rgReqMsg[] = {'c','o','m','r','e','q'}; // message for communication request
-	INT8U L_rgConfMsg[] = {'c','o','m','c','o','n','f'}; // message for communication confirmation
-	INT8U L_buf[4096];
-	BOOLEAN G_fSerialPortOpen = FALSE;
-	BOOLEAN L_fCommWithLedDriver = FALSE;
-	BOOLEAN L_cConfReceived = FALSE;
-	struct timeval L_sTimeout;
-	INT8U L_failingCount = 0;
+	size_t L_size1 = 0;
+	size_t L_size2 = 0;
+	INT8U L_rgComReqMsg[] = "comreq"; // message for communication request
+	INT8U L_rgComConfMsg[] = "comconf"; // message for communication confirmation
+	INT8U L_rgValConfMsg[] = "valconf"; // message for value confirmation
+	INT8U L_newValueNr = 0;
+	INT8U L_value[3] = {'0','0','0'}; // 2 bytes for value (max 65536) and one for \0
 
-	int fd = 0;
-	fd_set readset;
 
 	while(TRUE)
 	{
-		printf("Thread[%d]:Led Driver: Making connection ..\n\r", *P_threadID );
-
-		/* Set up connection with Led Driver */
-		L_rc = RS232_OpenComport(COMPORT, BAUDRATE);
-
-		if (L_rc != SUCCESS) // if failed then..
+		/* Interval time for setting up serial port */
+		usleep(1000 * 1000);
+		while(ledDriver_SerialPortIsOpen(P_threadID))
 		{
-			printf("Thread[%d]:Led Driver: Failed to setup serial port, return code [%d]\n\r", *P_threadID , L_rc );
-		} else // else success
+			/* Interval time for sending live signal */
+			usleep(1000 * 1000);
+
+			L_size1 = (sizeof(L_rgComReqMsg) / sizeof(L_rgComReqMsg[0]));
+			L_size2 = (sizeof(L_rgComConfMsg) / sizeof(L_rgComConfMsg[0]));
+			L_rc = ledDriver_msgSentAndConfirmed(P_threadID, L_rgComReqMsg, L_rgComConfMsg, &L_size1, &L_size2);
+
+			if (!L_rc) // Not succes..
+			{
+				printf("Thread[%d]:Led Driver: Not alive\n", *P_threadID );
+				RS232_CloseComport(COMPORT);
+				break;
+			} else
+			{
+				printf("Thread[%d]:Led Driver: Alive\n", *P_threadID );
+				while (0 < ledDriver_newValue())
+				{
+					/* Interval time for sending new value */
+					usleep(1000 * 1000);
+					L_newValueNr = (ledDriver_newValue() - 1); // -1 for right struct array access
+
+					ledDriver_convertValueToMsg( &G_stLedDriver[L_newValueNr].value, L_value);
+
+					L_size1 = (sizeof(L_value) / sizeof(L_value[0]));
+					L_size2 = (sizeof(L_rgValConfMsg) / sizeof(L_rgValConfMsg[0]));
+					L_rc = ledDriver_msgSentAndConfirmed(P_threadID, L_value, L_rgValConfMsg, &L_size1, &L_size2);
+
+					if (!L_rc) // Not succes..
+					{
+						printf("Thread[%d]:Led Driver: Failed to update value\n", *P_threadID );
+						break;
+					} else // if succes..
+					{
+						printf("Thread[%d]:Led Driver: Driver [%d] updated with value [%d]\n", *P_threadID,(G_stLedDriver[L_newValueNr].id + 1), G_stLedDriver[L_newValueNr].value );
+						G_stLedDriver[L_newValueNr].newValue = FALSE;
+					}
+
+				}
+			}
+
+		}
+
+	}
+}
+
+/*******************************************************************************
+ * Function:		ledDriver_msgSentAndConfirmed
+ * Parameters(s):	-- Thread ID,
+ * 					-- Message to send
+ * 					-- Message for confirmation
+ * 					-- Size of message to send in bytes
+ * 					-- Size of message to receive in bytes
+ * Returns:			TRUE or FALSE
+ * Description:		This function send a message over the serial port and
+ * 					expect a confirmation of the serial device
+ * Reference:
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	-- Retry n-times when failing, else error
+ *******************************************************************************/
+static INT8U ledDriver_msgSentAndConfirmed(
+		const INT8U *P_threadID,
+		const INT8U *P_sendMsg,
+		const INT8U *P_confMsg,
+		const size_t *P_sizeSendMsg,
+		const size_t *P_sizeConfMsg)
+{
+	BOOLEAN L_fReceivedConf = FALSE;
+	INT8U L_rc = 0;
+	INT8U L_buf[4096];
+	size_t L_sizeBuf = 0;
+	BOOLEAN L_cConfReceived = FALSE;
+	struct timeval L_sTimeout;
+	INT8U L_failingCount = 0;
+	int fd = 0;
+	fd_set readset;
+
+	while (FALSE == L_fReceivedConf)
+	{
+		/* Send message to Led Driver */
+		L_rc = RS232_SendBuf(COMPORT, P_sendMsg, *P_sizeSendMsg);
+
+		if (L_rc != SUCCESS)
 		{
-			G_fSerialPortOpen = TRUE;
+			printf("Thread[%d]:Led Driver: Connection lost, return code [%d]\n", *P_threadID, L_rc );
+
+		} else // if request message is send..
+		{
+			/* Timeout time */
+			L_sTimeout.tv_sec = ERRORTIMEOUT;
 
 			/* Function Select needs File Descriptor (fd) settings.
 			 * 	Added RS232_GetFileDes function to rs232 library to get the fd
@@ -175,91 +258,248 @@ static void threadLedDriver(int *P_threadID)
 			fd = RS232_GetFileDes(COMPORT);
 			FD_ZERO(&readset);
 			FD_SET(fd, &readset);
-		}
-		while(G_fSerialPortOpen)
-		{
-			/* Timeout time */
-			L_sTimeout.tv_sec = ERRORTIMEOUT;    // seconds
 
-			/* Send live signal to Led Driver to check if its alive */
-			L_size = (sizeof(L_rgReqMsg) / sizeof(L_rgReqMsg[0]));
-			L_rc = RS232_SendBuf(COMPORT, L_rgReqMsg, L_size);
+			/*
+			 * Wait a time until there is information to read from serial line
+			 * When timeout create an error
+			 * */
+			L_rc = select(fd + 1, &readset, NULL, NULL, &L_sTimeout);
 
-			if (L_rc != SUCCESS)
+
+			if ( 0 >= L_rc) // if error or timeout..
 			{
-				printf("Thread[%d]:Led Driver: Connection lost, return code [%d]\n", *P_threadID, L_rc );
+				L_failingCount++;
 
-			} else // if request message is send..
-			{
-				/*
-				 * Wait a time until there is information to read from serial line
-				 * When timeout create an error (readyForReading = 0)
-				 * */
-				L_rc = select(fd + 1, &readset, NULL, NULL, &L_sTimeout);
-
-				if ( 0 >= L_rc) // if error or timeout..
+				if (RETRYCOUNT <= L_failingCount) // if failed to many times..
 				{
-					L_fCommWithLedDriver = FALSE;
-					L_failingCount++;
-
-					if (RETRYCOUNT <= L_failingCount) // if failed to many times..
-					{
-						printf("Thread[%d]:Led Driver: Re-setup serial port\n", *P_threadID);
-						G_fSerialPortOpen = FALSE;
-						L_failingCount = 0;
-						break;
-					}
-
-					printf("Thread[%d]:Led Driver: Not alive, retrying %d/%d..\n", *P_threadID, L_failingCount, RETRYCOUNT);
-
-				} else // if ready for reading file..
-				{
-					/* reset failing count */
+					printf("Thread[%d]:Led Driver: Sending massage failed\n", *P_threadID);
 					L_failingCount = 0;
+					break;
+				}
 
-					/* Read serial line */
-					L_size = (sizeof(L_buf) / sizeof(L_buf[0]));
-					L_rc = RS232_PollComport(COMPORT, L_buf, L_size);
+				printf("Thread[%d]:Led Driver: Timeout receiving confirmation message, retrying %d/%d..\n", *P_threadID, L_failingCount, RETRYCOUNT);
 
-					if (L_rc != SUCCESS)
+			} else // if ready for reading file..
+			{
+				/* reset failing count */
+				L_failingCount = 0;
+
+				/* Read serial line */
+				L_sizeBuf = (sizeof(L_buf) / sizeof(L_buf[0]));
+				L_rc = RS232_PollComport(COMPORT, L_buf, L_sizeBuf);
+
+				if (L_rc != SUCCESS)
+				{
+					printf("Thread[%d]:Led Driver: Failed to receive message, return code [%d]\n", *P_threadID, L_rc );
+					break;
+
+				} else // if received characters..
+				{
+					/* Check if received message is as expected */
+					L_cConfReceived = equalArrays(L_buf, P_confMsg, P_sizeConfMsg);
+
+					if (!L_cConfReceived) // not right or no confirmation code received
 					{
-						printf("Thread[%d]:Led Driver: Failed to receive message, return code [%d]\n", *P_threadID, L_rc );
-						L_fCommWithLedDriver = FALSE;
-
-					} else // if received characters..
+						printf("Thread[%d]: Expected [%s] message from Led Driver but got [%s]\n", *P_threadID, P_confMsg , L_buf );
+					} else // if right confirmation code is received..
 					{
-						/* Check if received message is as expected */
-						L_size = (sizeof(L_rgConfMsg) / sizeof(L_rgConfMsg[0]));
-						L_cConfReceived = equalArrays(L_buf, L_rgConfMsg, L_size);
-
-						if (!L_cConfReceived) // not right or no confirmation code received
-						{
-							L_fCommWithLedDriver = FALSE;
-							printf("Thread[%d]: Expected [%s] message from Led Driver but got [%s]\n", *P_threadID, L_rgConfMsg , L_buf );
-							printf("Thread[%d]:Led Driver: Not alive\n", *P_threadID );
-						} else // if right confirmation code is received..
-						{
-							L_fCommWithLedDriver = TRUE;
-							printf("Thread[%d]:Led Driver: Alive\n", *P_threadID );
-
-						}
+						L_fReceivedConf = TRUE;
 					}
 				}
 			}
-			/* Clear buffer */
-			L_size = (sizeof(L_buf) / sizeof(L_buf[0]));
-			memset(L_buf, 0, L_size);
-
-			/* Interval time for checking if alive */
-			usleep(1000 * 1000); // 1 sec..
-
 		}
-		/* Close COM port */
-		RS232_CloseComport(COMPORT);
-
-		/* Interval time for trying to make an connection */
-		usleep(500 * 1000); // 500 ms..
 	}
+	return(L_fReceivedConf);
+}
+
+/*******************************************************************************
+ * Function:		ledDriver_SerialPortIsOpen
+ * Parameters(s):
+ * Returns:			TRUE or FALSE
+ * Description:		This function opens the serial port for communicating
+ * Reference:
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	--
+ *******************************************************************************/
+static BOOLEAN ledDriver_SerialPortIsOpen(const INT8U *P_threadID)
+{
+	BOOLEAN L_fSerialPortOpen = FALSE;
+	INT8U L_rc = 0;
+	INT8U L_failingCount = 0;
+
+	while(FALSE == L_fSerialPortOpen)
+	{
+		/* Set up connection with Led Driver */
+		L_rc = RS232_OpenComport(COMPORT, BAUDRATE);
+
+		if (L_rc != SUCCESS) // if failed then..
+		{
+			L_failingCount++;
+
+			if (RETRYCOUNT <= L_failingCount) // if failed to many times..
+			{
+				printf("Thread[%d]:Led Driver: Failed to setup Serial port. Admin rights on port?\n", *P_threadID);
+				L_failingCount = 0;
+
+				/* Close COM port */
+				RS232_CloseComport(COMPORT);
+
+				break;
+			}
+
+			printf("Thread[%d]:Led Driver: Failed to setup serial port, retrying %d/%d..\n\r", *P_threadID , L_failingCount, RETRYCOUNT);
+			usleep(500 * 1000);
+
+		} else // else success
+		{
+			L_fSerialPortOpen = TRUE;
+		}
+	}
+	return(L_fSerialPortOpen);
+}
+
+/*******************************************************************************
+ * Function:		equalArrays
+ * Parameters(s):	Pointer to char array
+ * 					Pointer to char array
+ * 					Size of second char array
+ * Returns:			TRUE or FALSE
+ * Description:		This function checks if two unsigned char array are equal or
+ * 					not with respect to the size of the second char array
+ * Reference:
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	--
+ *******************************************************************************/
+static BOOLEAN equalArrays (const INT8U *P_p1, const INT8U *P_p2, const size_t *P_size2)
+{
+	INT8U i;
+	BOOLEAN L_fEqual = TRUE;
+
+	for(i = 0; i < *P_size2; i++)
+	{
+		if (P_p1[i] != P_p2[i])
+		{
+			L_fEqual = FALSE;
+			break;
+		}
+	}
+
+	return(L_fEqual);
+}
+
+/*******************************************************************************
+ * Function:		ledDriver_convertValueToMsg
+ * Parameters(s):	Pointer to value. MAX 65535
+ * 					Pointer to the message
+ * Returns:
+ * Description:		This function covert a INT16U to a three byte c string.
+ * 					In case of a Linux 64 bit system the third and fourth byte
+ * 					are ignored.
+ * Reference:
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	--
+ *******************************************************************************/
+static void ledDriver_convertValueToMsg( const INT16U *P_value, INT8U *P_msg)
+{
+	// copy 2-bytes from INT16 to INT8. Rest of bytes are ignored.
+	memcpy( P_msg, P_value, 2);
+
+	// add NULL terminating character
+	P_msg += 2;
+	*P_msg = '\0';
+	P_msg -= 2;
+}
+
+/*******************************************************************************
+ * Function:		ledDriver_convertMsgToValue
+ * Parameters(s):	Pointer to the message
+ * 					Pointer to value. MAX 65535
+ * Returns:
+ * Description:		This function covert a INT16U to a three byte c string.
+ * 					In case of a Linux 64 bit system the third and fourth byte
+ * 					are ignored.
+ * Reference:
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	--
+ *******************************************************************************/
+static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value)
+{
+	// copy 2-bytes from INT16 to INT8. Rest of bytes are ignored.
+	memcpy( P_value, P_msg, 2);
+
+	// First two bytes are numbers. rest is 0
+
+	P_value += 2;
+	*P_value = '0'; // third byte is 0
+	P_value++;
+	*P_value = '0'; // fourth byte is 0
+	P_value -= 4; // reset ptr to first
+
+}
+
+/*******************************************************************************
+ * Function:		initLedDrivers
+ * Parameters(s):
+ * Returns:
+ * Description:		This function initialize the led drivers structures with
+ * 					some initial values
+ * Reference:
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	--
+ *******************************************************************************/
+static void ledDriver_init()
+{
+	INT8U i = 0;
+	size_t L_size = 0;
+	L_size = (sizeof(G_stLedDriver) / sizeof(G_stLedDriver[0]));
+	for(i = 0; i < L_size; i++)
+	{
+		G_stLedDriver[i].id = i;
+		G_stLedDriver[i].newValue = TRUE;
+		G_stLedDriver[i].value = ((i * 1000) + 1);
+	}
+}
+
+/*******************************************************************************
+ * Function:		newValues
+ * Parameters(s):
+ * Returns:			If new values is present in one of the struct then it returns
+ * 					the first struct number where this is. else return -1.
+ * Description:		This function checks if there are new values present in
+ * 					the struct by checking the flags of each struct
+ * Reference:
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	--
+ *******************************************************************************/
+static INT8U ledDriver_newValue()
+{
+	INT8U i = 0;
+	size_t L_size = 0;
+	INT8U L_fNewValue = 0;
+
+	L_size = (sizeof(G_stLedDriver) / sizeof(G_stLedDriver[0]));
+
+	for(i = 0; i < L_size; i++)
+	{
+		if (G_stLedDriver[i].newValue == TRUE)
+		{
+			L_fNewValue = ( i + 1 );
+			break;
+		}
+	}
+	return (L_fNewValue);
 }
 
 /*******************************************************************************

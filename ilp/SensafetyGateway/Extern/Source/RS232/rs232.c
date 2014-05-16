@@ -172,10 +172,9 @@ int RS232_GetFileDes(int comport_number)
 	return(Cport[comport_number]);
 }
 
-int RS232_PollComport(int comport_number, unsigned char *buf, int size)
+int RS232_PollComport(int comport_number, unsigned char *buf, size_t size)
 {
-	int n;
-
+	int n = 0;
 	n = read(Cport[comport_number], buf, size);
 	if(n<0)  return(1);
 
@@ -183,7 +182,7 @@ int RS232_PollComport(int comport_number, unsigned char *buf, int size)
 }
 
 
-int RS232_SendByte(int comport_number, unsigned char byte)
+int RS232_SendByte(int comport_number, const unsigned char byte)
 {
 	int n;
 
@@ -194,7 +193,7 @@ int RS232_SendByte(int comport_number, unsigned char byte)
 }
 
 
-int RS232_SendBuf(int comport_number, unsigned char *buf, int size)
+int RS232_SendBuf(int comport_number, const unsigned char *buf, size_t size)
 {
 	int n;
 

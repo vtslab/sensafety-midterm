@@ -64,9 +64,9 @@ extern "C" {
 
 int RS232_OpenComport(int, int);
 int RS232_GetFileDes(int);
-int RS232_PollComport(int, unsigned char *, int);
-int RS232_SendByte(int, unsigned char);
-int RS232_SendBuf(int, unsigned char *, int);
+int RS232_PollComport(int, unsigned char *, size_t);
+int RS232_SendByte(int, const unsigned char);
+int RS232_SendBuf(int, const unsigned char *, size_t);
 void RS232_CloseComport(int);
 void RS232_cputs(int, const char *);
 int RS232_IsDCDEnabled(int);
