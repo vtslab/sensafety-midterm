@@ -52,6 +52,7 @@ typedef double FP64;
 /* Global variables */
 BOOLEAN G_fMqttBrokerComm = FALSE;
 BOOLEAN G_fLedDriverComm = FALSE;
+
 pthread_mutex_t signalIO_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 struct
@@ -59,14 +60,14 @@ struct
 	INT8U id;
 	BOOLEAN newValue;
 	INT16U value;
+	pthread_mutex_t threadLock;
 }G_stLedDriver[LEDDRIVERS];
 
 /** Function prototypes **/
 static void ledDriver_thread(INT8U *P_threadID);
 static void ledDriver_init();
 static BOOLEAN equalArrays (const INT8U *P_p1, const INT8U *P_p2,const size_t *P_size2);
-static void convertInt16uToMsg(const INT16U *P_char, INT8U *P_st);
-static INT8U ledDriver_newValue();
+static INT8U ledDriver_newValue(const INT8U *P_threadID, INT8U *P_driverNr);
 static INT8U ledDriver_msgSentAndConfirmed(	const INT8U *P_threadID,
 		const INT8U *P_sendMsg,
 		const INT8U *P_confMsg,
@@ -88,14 +89,8 @@ int main(int argc, char* argv[])
 	pthread_t thread2; // Thread identities
 	pthread_create(&thread2, NULL, (void*) ledDriver_thread, &t2);
 
-	while(TRUE)
-	{
-		usleep(1000 * 1000);
-	}
-	//	int threadID = 2;
-	//	int *P_threadID;
-	//	P_threadID = &threadID;
-
+	// Main thread goes to sleep unitl thread is terminated. in this case for ever
+	pthread_join(thread2, NULL);
 
 }
 
@@ -149,7 +144,7 @@ static void ledDriver_thread(INT8U *P_threadID)
 	INT8U L_rgComReqMsg[] = "comreq"; // message for communication request
 	INT8U L_rgComConfMsg[] = "comconf"; // message for communication confirmation
 	INT8U L_rgValConfMsg[] = "valconf"; // message for value confirmation
-	INT8U L_newValueNr = 0;
+	INT8U L_driverNr = 0;
 	INT8U L_value[3] = {'0','0','0'}; // 2 bytes for value (max 65536) and one for \0
 
 
@@ -174,13 +169,14 @@ static void ledDriver_thread(INT8U *P_threadID)
 			} else
 			{
 				printf("Thread[%d]:Led Driver: Alive\n", *P_threadID );
-				while (0 < ledDriver_newValue())
+				while (0 < ledDriver_newValue(P_threadID, &L_driverNr))
 				{
 					/* Interval time for sending new value */
-					usleep(1000 * 1000);
-					L_newValueNr = (ledDriver_newValue() - 1); // -1 for right struct array access
+					usleep(100 * 1000);
 
-					ledDriver_convertValueToMsg( &G_stLedDriver[L_newValueNr].value, L_value);
+					L_driverNr--; // -1 accessing right driver. 1..n to 0..n
+
+					ledDriver_convertValueToMsg( &G_stLedDriver[L_driverNr].value, L_value);
 
 					L_size1 = (sizeof(L_value) / sizeof(L_value[0]));
 					L_size2 = (sizeof(L_rgValConfMsg) / sizeof(L_rgValConfMsg[0]));
@@ -189,11 +185,13 @@ static void ledDriver_thread(INT8U *P_threadID)
 					if (!L_rc) // Not succes..
 					{
 						printf("Thread[%d]:Led Driver: Failed to update value\n", *P_threadID );
+						pthread_mutex_unlock(&G_stLedDriver[L_driverNr].threadLock); // unlock locked driver
 						break;
 					} else // if succes..
 					{
-						printf("Thread[%d]:Led Driver: Driver [%d] updated with value [%d]\n", *P_threadID,(G_stLedDriver[L_newValueNr].id + 1), G_stLedDriver[L_newValueNr].value );
-						G_stLedDriver[L_newValueNr].newValue = FALSE;
+						printf("Thread[%d]:Led Driver: Driver [%d] updated with value [%d]\n", *P_threadID,(G_stLedDriver[L_driverNr].id + 1), G_stLedDriver[L_driverNr].value - 1);
+						pthread_mutex_unlock(&G_stLedDriver[L_driverNr].threadLock); // unlock locked driver
+						G_stLedDriver[L_driverNr--].newValue = FALSE;
 					}
 
 				}
@@ -467,6 +465,7 @@ static void ledDriver_init()
 		G_stLedDriver[i].id = i;
 		G_stLedDriver[i].newValue = TRUE;
 		G_stLedDriver[i].value = ((i * 1000) + 1);
+		pthread_mutex_init(&G_stLedDriver[i].threadLock, NULL); // Initialize mutexen
 	}
 }
 
@@ -483,23 +482,35 @@ static void ledDriver_init()
  * 		used:		--
  * Error handling:	--
  *******************************************************************************/
-static INT8U ledDriver_newValue()
+static INT8U ledDriver_newValue(const INT8U *P_threadID, INT8U *P_driverNr)
 {
 	INT8U i = 0;
+	INT8U rc = FALSE;
 	size_t L_size = 0;
-	INT8U L_fNewValue = 0;
+	*P_driverNr = 0; // init value is 0 (no new value)
 
 	L_size = (sizeof(G_stLedDriver) / sizeof(G_stLedDriver[0]));
 
+	// Check every value of a struct if there is a new value. If so, return this number
 	for(i = 0; i < L_size; i++)
 	{
-		if (G_stLedDriver[i].newValue == TRUE)
+		if (EBUSY != pthread_mutex_trylock(&G_stLedDriver[i].threadLock)) // check if another thread  blocking this driver. If not then lock
 		{
-			L_fNewValue = ( i + 1 );
-			break;
+			if (G_stLedDriver[i].newValue == TRUE)
+			{
+				*P_driverNr = ( i + 1 ); // + 1 for change driver number from 0..n to 1..n so that 0 is no new value
+				rc = TRUE;
+				break;
+			} else // if no new value for driver..
+			{
+				pthread_mutex_unlock(&G_stLedDriver[i].threadLock); // unlock locked driver
+			}
+		} else // Driver is locked and used by another thread
+		{
+			printf("Thread[%d]:Led Driver: Driver [%d] is locked\n", *P_threadID, (i + 1));
 		}
 	}
-	return (L_fNewValue);
+	return (rc); // return driver number. 0 = no new value
 }
 
 /*******************************************************************************
