@@ -1,0 +1,52 @@
+
+
+#define _BSD_SOURCE //Define necessary for the function usleep.
+
+/**	Standard header files	**/
+#include <pthread.h> /* POSIX Thread definitions */
+#include <stdio.h>   /* Standard input/output definitions */
+#include <stdlib.h>  /* General library functions */
+#include <string.h>  /* String function definitions */
+#include <unistd.h>  /* UNIX standard function definitions */
+#include <fcntl.h>   /* File control definitions */
+#include <errno.h>   /* Error number definitions */
+#include <termios.h> /* POSIX terminal control definitions */
+
+/** Special header files	**/
+#include "App/Source/MQTTClient/MQTT.h"
+
+/** Type definitions **/
+typedef unsigned char BOOLEAN;
+typedef unsigned char INT8U;
+typedef signed char INT8S;
+typedef unsigned int INT16U;
+typedef signed int INT16S;
+typedef unsigned long INT32U;
+typedef signed long INT32S;
+typedef float FP32;
+typedef double FP64;
+
+#define SUCCES 0
+#define TRUE 1
+#define FALSE 0
+
+int main(int argc, char* argv[])
+{
+	INT8U rc;
+	INT32U value = 25;
+	INT32U *p;
+	p = &value;
+
+	if ((rc = initializeSapComm()) != SUCCES)
+	{
+		printf("Failed to initialize, MQTT return code [%d]\n", rc);
+	}
+	while(TRUE)
+	{
+		if ((rc = sendValueToSap(&value, "sg1")) != SUCCES)
+		{
+			printf("Failed to send value, MQTT return code [%d]\n", rc);
+		}
+	}
+
+}

@@ -21,8 +21,8 @@
 #define CONFIGURATION_H_
 
 /* Constants */
-//#define ADDRESS "tcp://192.168.1.2:1883" // Address of MQTT broker
-//#define CLIENTID "ilpClient"	// Client ID of this client
+#define MQTT_ADDRESS "tcp://192.168.1.2:1883" // Address of MQTT broker
+#define MQTT_CLIENTID "ilpClient1"	// Client ID of this client
 #define COMPORT 22 // 22 for "/dev/ttyAMA0"	 see rs232.c
 #define BAUDRATE 9600 // // Baud rate
 #define ERRORTIMEOUT 1 // Timeout time in seconds

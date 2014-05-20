@@ -1,0 +1,27 @@
+/*
+ ============================================================================
+ Name        : helloworld.c
+ Author      : Jeffrey
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <MQTTClient.h>
+
+#define TRUE 1
+#define FALSE 0
+
+int main(void) {
+	while(TRUE)
+	{
+	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
+	sleep(1);
+	}
+	return EXIT_SUCCESS;
+}

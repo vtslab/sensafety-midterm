@@ -1,0 +1,10 @@
+16:52:25 **** Incremental Build of configuration Debug for project Serial_Com ****
+make all 
+Building file: ../Bsp/Source/serial/serial.c
+Invoking: Cross GCC Compiler
+arm-unknown-linux-gnueabi-gcc -std=c99 -I"c:\cygwin\opt\cross\x-tools\arm-unknown-linux-gnueabi\arm-unknown-linux-gnueabi\sysroot\usr\include" -I"/home/jeffrey/software/workspace/Serial_Com" -O0 -g3 -Wall -c -fmessage-length=0 -pthread -MMD -MP -MF"Bsp/Source/serial/serial.d" -MT"Bsp/Source/serial/serial.d" -o "Bsp/Source/serial/serial.o" "../Bsp/Source/serial/serial.c"
+/bin/sh: 1: arm-unknown-linux-gnueabi-gcc: not found
+make: *** [Bsp/Source/serial/serial.o] Error 127
+
+16:52:25 Build Finished (took 67ms)
+

@@ -1,0 +1,32 @@
+12:26:44 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/org.eclipse.paho.mqtt.c/src/linux_ia64 -L/home/jeffrey/software/mqtt-lib/lib -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lmqttv3c -lpthread
+./App/Source/main.o: In function `main':
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Debug/../App/Source/main.c:92: multiple definition of `disc_finished'
+./App/Source/MqttBroker/MqttBroker.o:/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Debug/../App/Source/MqttBroker/MqttBroker.c:23: first defined here
+./App/Source/main.o: In function `main':
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Debug/../App/Source/main.c:92: multiple definition of `subscribed'
+./App/Source/MqttBroker/MqttBroker.o:/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Debug/../App/Source/MqttBroker/MqttBroker.c:23: first defined here
+./App/Source/main.o: In function `main':
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Debug/../App/Source/main.c:92: multiple definition of `finished'
+./App/Source/MqttBroker/MqttBroker.o:/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Debug/../App/Source/MqttBroker/MqttBroker.c:23: first defined here
+./App/Source/MqttBroker/MqttBroker.o: In function `connlost':
+MqttBroker.c:(.text+0xce): undefined reference to `MQTTAsync_connect'
+./App/Source/MqttBroker/MqttBroker.o: In function `msgarrvd':
+MqttBroker.c:(.text+0x1a5): undefined reference to `MQTTAsync_freeMessage'
+MqttBroker.c:(.text+0x1b1): undefined reference to `MQTTAsync_free'
+./App/Source/MqttBroker/MqttBroker.o: In function `onConnect':
+MqttBroker.c:(.text+0x38e): undefined reference to `MQTTAsync_subscribe'
+./App/Source/MqttBroker/MqttBroker.o: In function `MQTT_main':
+MqttBroker.c:(.text+0x50f): undefined reference to `MQTTAsync_create'
+MqttBroker.c:(.text+0x533): undefined reference to `MQTTAsync_setCallbacks'
+MqttBroker.c:(.text+0x572): undefined reference to `MQTTAsync_connect'
+MqttBroker.c:(.text+0x60d): undefined reference to `MQTTAsync_disconnect'
+MqttBroker.c:(.text+0x667): undefined reference to `MQTTAsync_destroy'
+collect2: error: ld returned 1 exit status
+make: *** [sensafetyGateway] Error 1
+
+12:26:44 Build Finished (took 113ms)
+

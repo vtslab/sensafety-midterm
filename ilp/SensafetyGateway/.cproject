@@ -26,7 +26,7 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.436684643" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
 								<option id="gnu.c.compiler.option.include.paths.1843195540" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="/home/jeffrey/projects/MidTerm/ilp/mqtt-lib/include"/>
+									<listOptionValue builtIn="false" value="/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src"/>
 									<listOptionValue builtIn="false" value="/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway"/>
 								</option>
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.813648287" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
@@ -35,12 +35,11 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1678141477" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base">
 								<option id="gnu.c.link.option.libs.2087703100" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" value="mqttv3c"/>
+									<listOptionValue builtIn="false" value="paho-mqtt3c"/>
 									<listOptionValue builtIn="false" value="pthread"/>
 								</option>
 								<option id="gnu.c.link.option.paths.1860803761" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="/home/jeffrey/projects/MidTerm/ilp/org.eclipse.paho.mqtt.c/src/linux_ia64"/>
-									<listOptionValue builtIn="false" value="/home/jeffrey/software/mqtt-lib/lib"/>
+									<listOptionValue builtIn="false" value="/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.512329953" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

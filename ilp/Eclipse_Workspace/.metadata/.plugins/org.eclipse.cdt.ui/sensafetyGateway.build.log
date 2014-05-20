@@ -1,0 +1,6 @@
+10:32:56 **** Incremental Build of configuration Debug for project sensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+
+10:32:56 Build Finished (took 63ms)
+

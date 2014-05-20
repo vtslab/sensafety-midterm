@@ -1,0 +1,73 @@
+14:31:48 **** Clean-only build of configuration Debug for project SensafetyGateway ****
+make clean 
+rm -rf  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o  ./Extern/Source/RS232/rs232.d  ./App/Source/MqttBroker/MqttBroker.d  ./App/Source/main.d  sensafetyGateway
+ 
+14:31:52 **** Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../Extern/Source/RS232/rs232.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"Extern/Source/RS232/rs232.d" -MT"Extern/Source/RS232/rs232.d" -o "Extern/Source/RS232/rs232.o" "../Extern/Source/RS232/rs232.c"
+Finished building: ../Extern/Source/RS232/rs232.c
+ 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building file: ../App/Source/main.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/main.d" -MT"App/Source/main.d" -o "App/Source/main.o" "../App/Source/main.c"
+../App/Source/main.c:82:3: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+   .address = MQTT_ADDRESS,
+   ^
+../App/Source/main.c:82:3: warning: (near initialization for ‘G_stMQTT_threadPar.address’) [-Wpointer-sign]
+../App/Source/main.c:84:1: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+ };
+ ^
+../App/Source/main.c:84:1: warning: (near initialization for ‘G_stMQTT_threadPar.client’) [-Wpointer-sign]
+../App/Source/main.c:428:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
+ static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value)
+             ^
+Finished building: ../App/Source/main.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+14:33:13 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/main.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/main.d" -MT"App/Source/main.d" -o "App/Source/main.o" "../App/Source/main.c"
+../App/Source/main.c:428:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
+ static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value)
+             ^
+Finished building: ../App/Source/main.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+14:36:19 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/main.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/main.d" -MT"App/Source/main.d" -o "App/Source/main.o" "../App/Source/main.c"
+../App/Source/main.c:427:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
+ static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value)
+             ^
+Finished building: ../App/Source/main.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+14:36:56 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+14:38:44 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.

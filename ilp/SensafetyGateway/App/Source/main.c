@@ -72,9 +72,21 @@ struct
 	pthread_mutex_t threadLock;
 } G_stLedDriver[LEDDRIVERS];
 
+struct
+{
+	INT8U threadID;
+	INT8U address[100];
+	INT8U client[100];
+} MQTT_threadData;
+
+struct MQTT_threadData G_stMQTT_threadPar = {
+		.threadID = 3,
+		.address = MQTT_ADDRESS,
+		.client = MQTT_CLIENTID
+};
+
 /** Function prototypes **/
 static void ledDriver_thread(INT8U *P_threadID);
-//static void MQTT_thread(INT8U *threadID);
 static void ledDriver_init();
 static BOOLEAN equalArrays (const INT8U *P_p1, const INT8U *P_p2,const size_t *P_size2);
 static INT8U ledDriver_newValue(const INT8U *P_threadID, INT8U *P_driverNr);
@@ -93,13 +105,13 @@ int main(int argc, char* argv[])
 	ledDriver_init();
 
 	/* Creating Threads */
-	INT8U t2 = 2, t3 = 3; // Thread ID
+	INT8U t2 = 2; // Thread ID
 	pthread_t thread2, thread3; // Thread identities
-	//	pthread_create(&thread2, NULL, (void*) ledDriver_thread, &t2);
-//	pthread_create(&thread3, NULL, (void*) MQTT_thread, &t3);
+	pthread_create(&thread2, NULL, (void*) ledDriver_thread, &t2);
+	pthread_create(&thread3, NULL, (void*) MQTT_thread, &G_stMQTT_threadPar);
 
 	// Main thread goes to sleep until thread is terminated. in this case for ever
-	//	pthread_join(thread2, NULL);
+	pthread_join(thread2, NULL);
 	pthread_join(thread3, NULL);
 
 	return(EXIT_SUCCESS);
@@ -136,8 +148,6 @@ static void ledDriver_thread(INT8U *P_threadID)
 
 	while(TRUE)
 	{
-		/* Interval time for setting up serial port */
-		usleep(1000 * 1000);
 		while(ledDriver_SerialPortIsOpen(P_threadID))
 		{
 			/* Interval time for sending live signal */
@@ -184,7 +194,8 @@ static void ledDriver_thread(INT8U *P_threadID)
 			}
 
 		}
-
+		/* Interval time for setting up serial port */
+		usleep(60000 * 1000);
 	}
 }
 
@@ -512,7 +523,3 @@ static INT8U ledDriver_newValue(const INT8U *P_threadID, INT8U *P_driverNr)
  * Error handling:	--
  *
  *******************************************************************************/
-//static void MQTT_thread(INT8U *threadID)
-//{
-//
-//}

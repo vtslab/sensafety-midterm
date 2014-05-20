@@ -1,25 +1,38 @@
+
+/**	Standard header files	**/
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
-#include "MQTTAsync.h"
 
-#define ADDRESS "tcp://192.168.1.2:1883" // Address of MQTT broker
-#define CLIENTID "ilpClient"	// Client ID of this client
-#define TOPIC       "ilp/1/1/"
-#define PAYLOAD     "Hello World!"
-#define QOS         1
-#define TIMEOUT     10000L
+/** Special header files	**/
+#include "MQTTClient.h"
 
-volatile MQTTAsync_token deliveredtoken;
-int disc_finished = 0;
-int subscribed = 0;
-int finished = 0;
+/** Type definitions **/
+typedef unsigned char BOOLEAN;
+typedef unsigned char INT8U;
+typedef signed char INT8S;
+typedef unsigned int INT16U;
+typedef signed int INT16S;
+typedef unsigned long INT32U;
+typedef signed long INT32S;
+typedef float FP32;
+typedef double FP64;
 
+/** Constants	**/
+#define SUCCESS 0
+#define TRUE 1
+#define FALSE 0
+
+/* Global variables */
+#define ADDRESS "tcp://192.168.1.2:1883"
+#define CLIENTID "clientID-Jeffrey"
+#define TOPIC "topic-Jeffrey"
+#define PAYLOAD "Hello World by Jeffrey!"
+#define QOS 1
+#define TIMEOUT 10000L
+volatile MQTTClient_deliveryToken deliveredtoken;
+
+void delivered(void *context, MQTTClient_deliveryToken dt);
+int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message);
 void connlost(void *context, char *cause);
-int msgarrvd(void *context, char *topicName, int topicLen, MQTTAsync_message *message);
-void onDisconnect(void* context, MQTTAsync_successData* response);
-void onSubscribe(void* context, MQTTAsync_successData* response);
-void onSubscribeFailure(void* context, MQTTAsync_failureData* response);
-void onConnectFailure(void* context, MQTTAsync_failureData* response);
-void onConnect(void* context, MQTTAsync_successData* response);
-int MQTT_main();
+int MQTT_thread(INT8U *P_threadID);
