@@ -2,14 +2,16 @@ Module: Intelligent Lamp Post
 
 Environment:
 
-	OS: Ubuntu 14.14 LTS 64bit
-	Developmentboard: Raspberry PI Model B
-	Toolchain: arm-bcm2708-linux-gnueabi from [1]
-	IDE: Eclipse IDE for C/C++ Developers 64bit
-	External libraries:  MQTT Client C Library from [2] 
+	-- OS: Ubuntu 14.14 LTS 64bit
+	-- Developmentboard: Raspberry PI Model B
+	-- Toolchain: arm-bcm2708-linux-gnueabi from [1]
+	-- IDE: Eclipse IDE for C/C++ Developers 64bit
+	-- External libraries:  MQTT Client C Library from [2] 
 
+Build and use MQTT:
 
-
+	-- Follow instructions on [3]
 
 [1] https://github.com/raspberrypi/tools
 [2] http://git.eclipse.org/c/paho/org.eclipse.paho.mqtt.c.git/
+[3] http://andypiper.co.uk/2012/03/10/paho-gets-started/

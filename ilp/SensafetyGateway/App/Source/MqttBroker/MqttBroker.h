@@ -1,60 +1,25 @@
-/*
-================================================================================
-  (c) 2014 Strukton Embedded Solutions
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "MQTTAsync.h"
 
-  Project/Module: Sensafety Gateway
-
-  Description: Situation Awareness Portal driver
-
-  Reference:
-
-  Version Control
-  	  $workfile: SapDriver.h
-  	  $Revision:
-  	  $Date: 02-05-2014
-  	  Modtime:
-
-================================================================================
- */
-
-#ifndef MQTTBROKER_H_
-#define MQTTBROKER_H_
-
-/**	Standard header files	**/
-#include <pthread.h> /* POSIX Thread definitions */
-#include <stdio.h>   /* Standard input/output definitions */
-#include <stdlib.h>  /* General library functions */
-#include <string.h>  /* String function definitions */
-#include <unistd.h>  /* UNIX standard function definitions */
-#include <fcntl.h>   /* File control definitions */
-#include <errno.h>   /* Error number definitions */
-#include <termios.h> /* POSIX terminal control definitions */
-
-/** Special header files	**/
-#include <MQTTClient.h>
-#include "Config/configuration.h"
-
-/** Type definitions **/
-typedef unsigned char BOOLEAN;
-typedef unsigned char INT8U;
-typedef signed char INT8S;
-typedef unsigned int INT16U;
-typedef signed int INT16S;
-typedef unsigned long INT32U;
-typedef signed long INT32S;
-typedef float FP32;
-typedef double FP64;
-
+#define ADDRESS "tcp://192.168.1.2:1883" // Address of MQTT broker
+#define CLIENTID "ilpClient"	// Client ID of this client
+#define TOPIC       "ilp/1/1/"
 #define PAYLOAD     "Hello World!"
 #define QOS         1
 #define TIMEOUT     10000L
 
-MQTTClient client;
-MQTTClient_deliveryToken token;
+volatile MQTTAsync_token deliveredtoken;
+int disc_finished = 0;
+int subscribed = 0;
+int finished = 0;
 
-INT8U initMqttBrokerComm();
-
-INT8U sendMsgToMqttBroker(char* str, char* topic);
-
-
-#endif /* MQTTBROKER_H_ */
+void connlost(void *context, char *cause);
+int msgarrvd(void *context, char *topicName, int topicLen, MQTTAsync_message *message);
+void onDisconnect(void* context, MQTTAsync_successData* response);
+void onSubscribe(void* context, MQTTAsync_successData* response);
+void onSubscribeFailure(void* context, MQTTAsync_failureData* response);
+void onConnectFailure(void* context, MQTTAsync_failureData* response);
+void onConnect(void* context, MQTTAsync_successData* response);
+int MQTT_main();

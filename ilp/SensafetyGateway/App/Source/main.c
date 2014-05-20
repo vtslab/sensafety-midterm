@@ -14,6 +14,14 @@
   	  $Date: 08-04-2014
   	  Modtime:
 
+Toolchaine settings:
+
+for Raspberry Pi:
+C/C++ Build -> Setting -> Cross settings
+Prefix: arm-linux-gnueabihf-
+Path : /home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/bin
+libmqttv3c.so
+libmqttv3c.so
 ================================================================================
  */
 
@@ -32,6 +40,7 @@
 /** Special header files	**/
 #include "App/Source/MqttBroker/MqttBroker.h"
 #include "Extern/Source/RS232/rs232.h"
+#include "Config/configuration.h"
 
 /** Type definitions **/
 typedef unsigned char BOOLEAN;
@@ -61,10 +70,11 @@ struct
 	BOOLEAN newValue;
 	INT16U value;
 	pthread_mutex_t threadLock;
-}G_stLedDriver[LEDDRIVERS];
+} G_stLedDriver[LEDDRIVERS];
 
 /** Function prototypes **/
 static void ledDriver_thread(INT8U *P_threadID);
+//static void MQTT_thread(INT8U *threadID);
 static void ledDriver_init();
 static BOOLEAN equalArrays (const INT8U *P_p1, const INT8U *P_p2,const size_t *P_size2);
 static INT8U ledDriver_newValue(const INT8U *P_threadID, INT8U *P_driverNr);
@@ -80,45 +90,21 @@ static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value);
 
 int main(int argc, char* argv[])
 {
-	//		INT8U rc;
-	//		INT32U value = 1;
 	ledDriver_init();
 
 	/* Creating Threads */
-	INT8U t2 = 2; // Thread ID
-	pthread_t thread2; // Thread identities
-	pthread_create(&thread2, NULL, (void*) ledDriver_thread, &t2);
+	INT8U t2 = 2, t3 = 3; // Thread ID
+	pthread_t thread2, thread3; // Thread identities
+	//	pthread_create(&thread2, NULL, (void*) ledDriver_thread, &t2);
+//	pthread_create(&thread3, NULL, (void*) MQTT_thread, &t3);
 
-	// Main thread goes to sleep unitl thread is terminated. in this case for ever
-	pthread_join(thread2, NULL);
+	// Main thread goes to sleep until thread is terminated. in this case for ever
+	//	pthread_join(thread2, NULL);
+	pthread_join(thread3, NULL);
+
+	return(EXIT_SUCCESS);
 
 }
-
-/* Convert value to char */
-/* Send msg to MQTT Broker */
-/*
-		int size;
-		size = sizeof(value);
-		char str[size];
-		sprintf(str, "%lu", value);
-
-		rc = sendMsgToMqttBroker(&str[0], "sg1");
-		if (rc != SUCCESS)
-		{
-			printf("Failed to send value to MQTT Broker, MQTT return code [%d]\n", rc);
-		}
- */
-
-/* Debug info*/
-//printf("Message [%lu] send to Lamp Driver to MQTT Broker\n", value);
-
-/* Increment value and sleep for a while.. */
-//value++;
-//usleep(500 * 1000);
-
-
-
-//}
 
 
 /*******************************************************************************
@@ -514,7 +500,7 @@ static INT8U ledDriver_newValue(const INT8U *P_threadID, INT8U *P_driverNr)
 }
 
 /*******************************************************************************
- * Function:		threadMqttBrokerComm
+ * Function:		MQTT_thread
  * Parameters(s):	Thread ID number
  * Returns:
  * Description:		Thread function to initialize communication with MQTT Broker
@@ -526,56 +512,7 @@ static INT8U ledDriver_newValue(const INT8U *P_threadID, INT8U *P_driverNr)
  * Error handling:	--
  *
  *******************************************************************************/
-//static void threadMqttBrokerComm(void * threadID)
+//static void MQTT_thread(INT8U *threadID)
 //{
-//	int rc;
-//	char L_sMsg[256];
-//	char *p_startMsg;
-//	p_startMsg = &L_sMsg[0];
-//
-//	while(TRUE)
-//	{
-//		/* Set up connection with MQTT Broker */
-//		rc = initMqttBrokerComm();
-//		if (rc != SUCCESS) // if failed then..
-//		{
-//			printf("Failed to connect to MQTT Broker@%s, return code [%d]\n", ADDRESS , rc);
-//			G_fMqttBrokerComm = FALSE;
-//		} else // else success
-//		{
-//			printf("Connection with MQTT Broker@%s\n",ADDRESS );
-//			G_fMqttBrokerComm = TRUE;
-//		}
-//
-//
-//		while(G_fMqttBrokerComm)
-//		{
-//			printf("Thread[%p] While loop in threadLampDriverComm\n\r", threadID );
-//
-//			/* Send 'H'(ello) to Lamp Driver */
-//			rc = sendMsgtoLampDriver('H');
-//			if (rc != SUCCESS)
-//			{
-//				printf("Connection lost with Lamp Driver, Lamp Driver return code [%d]\n", rc);
-//				G_fLampDriverComm = FALSE;
-//			} else // if success..
-//			{
-//				/* Wait for confirmation msg 'W'(orld) from Lam Driver*/
-//				rc = receiveMsgFromLampDriver(*p_startMsg);
-//				if (rc != SUCCESS)
-//				{
-//					printf("Failed to receive message from Lamp Driver, Lamp Driver return code [%d]\n", rc);
-//					G_fLampDriverComm = FALSE;
-//				} else if ('W' == L_sMsg[0])
-//				{
-//					printf("Thread[%p] Lamp Driver communication life\n\r", threadID );
-//				} else
-//				{
-//					printf("Expected 'W' message from Lamp Driver but got [%s]\n", L_sMsg);
-//					G_fLampDriverComm = FALSE;
-//				}
-//			}
-//		}
-//	}
 //
 //}
