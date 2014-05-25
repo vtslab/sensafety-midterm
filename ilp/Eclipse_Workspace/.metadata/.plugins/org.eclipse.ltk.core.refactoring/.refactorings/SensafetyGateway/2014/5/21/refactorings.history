@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;SensafetyGateway/Config/configuration.h&apos; to &apos;Configuration.h&apos;" description="Rename resource &apos;configuration.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Config/configuration.h" name="Configuration.h" stamp="1400772504898" updateReferences="true"/>
+</session>

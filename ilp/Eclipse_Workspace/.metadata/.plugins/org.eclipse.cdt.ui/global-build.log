@@ -1,8 +1,4 @@
-14:31:48 **** Clean-only build of configuration Debug for project SensafetyGateway ****
-make clean 
-rm -rf  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o  ./Extern/Source/RS232/rs232.d  ./App/Source/MqttBroker/MqttBroker.d  ./App/Source/main.d  sensafetyGateway
- 
-14:31:52 **** Build of configuration Debug for project SensafetyGateway ****
+20:13:57 **** Build of configuration Debug for project SensafetyGateway ****
 make all 
 Building file: ../Extern/Source/RS232/rs232.c
 Invoking: GCC C Compiler
@@ -12,35 +8,173 @@ Finished building: ../Extern/Source/RS232/rs232.c
 Building file: ../App/Source/MqttBroker/MqttBroker.c
 Invoking: GCC C Compiler
 gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:44:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_thread’:
+../App/Source/MqttBroker/MqttBroker.c:42:8: warning: unused variable ‘L_driverNr’ [-Wunused-variable]
+  INT8U L_driverNr = 0;
+        ^
+../App/Source/MqttBroker/MqttBroker.c:41:10: warning: unused variable ‘L_fNewValue’ [-Wunused-variable]
+  BOOLEAN L_fNewValue = FALSE;
+          ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:310:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+../App/Source/MqttBroker/MqttBroker.c:310:2: warning: passing argument 4 of ‘MQTTClient_subscribeMany’ makes pointer from integer without a cast [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘int *’ but argument is of type ‘int’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
 Finished building: ../App/Source/MqttBroker/MqttBroker.c
  
 Building file: ../App/Source/main.c
 Invoking: GCC C Compiler
 gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/main.d" -MT"App/Source/main.d" -o "App/Source/main.o" "../App/Source/main.c"
-../App/Source/main.c:82:3: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
-   .address = MQTT_ADDRESS,
-   ^
-../App/Source/main.c:82:3: warning: (near initialization for ‘G_stMQTT_threadPar.address’) [-Wpointer-sign]
-../App/Source/main.c:84:1: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
- };
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/main.c:29:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:44:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
  ^
-../App/Source/main.c:84:1: warning: (near initialization for ‘G_stMQTT_threadPar.client’) [-Wpointer-sign]
-../App/Source/main.c:428:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/main.c:29:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/main.c:61:3: error: conflicting types for ‘G_stLedDriver’
+ } G_stLedDriver[LEDDRIVERS];
+   ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/main.c:29:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:70:3: note: previous declaration of ‘G_stLedDriver’ was here
+ } G_stLedDriver[LEDDRIVERS];
+   ^
+In file included from ../App/Source/main.c:29:0:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:32:14: warning: ‘MQTT_setupConnection’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_setupConnection( MQTTClient *P_client , MQTTClient_connectOptions *P_conn_opts , const INT8U *P_threadID);
+              ^
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:37:14: warning: ‘MQTT_subscribeTopics’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_subscribeTopics(MQTTClient *P_client ,const INT8U *P_threadID);
+              ^
+../App/Source/main.c:433:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
  static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value)
              ^
-Finished building: ../App/Source/main.c
+make: *** [App/Source/main.o] Error 1
+20:18:35 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:44:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:308:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+../App/Source/MqttBroker/MqttBroker.c:308:2: warning: passing argument 4 of ‘MQTTClient_subscribeMany’ makes pointer from integer without a cast [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘int *’ but argument is of type ‘int’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
  
-Building target: sensafetyGateway
-Invoking: GCC C Linker
-gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
-Finished building target: sensafetyGateway
- 
-14:33:13 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+Building file: ../App/Source/main.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/main.d" -MT"App/Source/main.d" -o "App/Source/main.o" "../App/Source/main.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/main.c:29:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:44:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/main.c:29:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/main.c:61:3: error: conflicting types for ‘G_stLedDriver’
+ } G_stLedDriver[LEDDRIVERS];
+   ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/main.c:29:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:70:3: note: previous declaration of ‘G_stLedDriver’ was here
+ } G_stLedDriver[LEDDRIVERS];
+   ^
+In file included from ../App/Source/main.c:29:0:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:32:14: warning: ‘MQTT_setupConnection’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_setupConnection( MQTTClient *P_client , MQTTClient_connectOptions *P_conn_opts , const INT8U *P_threadID);
+              ^
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:37:14: warning: ‘MQTT_subscribeTopics’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_subscribeTopics(MQTTClient *P_client ,const INT8U *P_threadID);
+              ^
+../App/Source/main.c:433:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
+ static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value)
+             ^
+make: *** [App/Source/main.o] Error 1
+20:18:42 **** Incremental Build of configuration Debug for project SensafetyGateway ****
 make all 
 Building file: ../App/Source/main.c
 Invoking: GCC C Compiler
 gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/main.d" -MT"App/Source/main.d" -o "App/Source/main.o" "../App/Source/main.c"
-../App/Source/main.c:428:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/main.c:29:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:44:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/main.c:29:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+In file included from ../App/Source/main.c:29:0:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:32:14: warning: ‘MQTT_setupConnection’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_setupConnection( MQTTClient *P_client , MQTTClient_connectOptions *P_conn_opts , const INT8U *P_threadID);
+              ^
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:37:14: warning: ‘MQTT_subscribeTopics’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_subscribeTopics(MQTTClient *P_client ,const INT8U *P_threadID);
+              ^
+../App/Source/main.c:409:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
  static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value)
              ^
 Finished building: ../App/Source/main.c
@@ -50,12 +184,276 @@ Invoking: GCC C Linker
 gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
 Finished building target: sensafetyGateway
  
-14:36:19 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+20:19:30 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:19:48 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:20:45 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:23:45 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:25:46 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:308:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+../App/Source/MqttBroker/MqttBroker.c:308:2: warning: passing argument 4 of ‘MQTTClient_subscribeMany’ makes pointer from integer without a cast [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘int *’ but argument is of type ‘int’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+20:25:53 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:26:30 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:308:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+../App/Source/MqttBroker/MqttBroker.c:308:2: warning: passing argument 4 of ‘MQTTClient_subscribeMany’ makes pointer from integer without a cast [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘int *’ but argument is of type ‘int’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+20:26:32 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:28:07 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:310:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+../App/Source/MqttBroker/MqttBroker.c:310:2: warning: passing argument 4 of ‘MQTTClient_subscribeMany’ makes pointer from integer without a cast [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘int *’ but argument is of type ‘int’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+20:28:35 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:311:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+../App/Source/MqttBroker/MqttBroker.c:311:2: warning: passing argument 4 of ‘MQTTClient_subscribeMany’ makes pointer from integer without a cast [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘int *’ but argument is of type ‘int’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+20:28:40 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:31:59 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:32:23 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:33:51 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+20:33:56 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:38:04 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+20:38:06 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:40:25 **** Incremental Build of configuration Debug for project SensafetyGateway ****
 make all 
 Building file: ../App/Source/main.c
 Invoking: GCC C Compiler
 gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/main.d" -MT"App/Source/main.d" -o "App/Source/main.o" "../App/Source/main.c"
-../App/Source/main.c:427:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/main.c:29:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/main.c:29:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+In file included from ../App/Source/main.c:29:0:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:32:14: warning: ‘MQTT_setupConnection’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_setupConnection( MQTTClient *P_client , MQTTClient_connectOptions *P_conn_opts , const INT8U *P_threadID);
+              ^
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:37:14: warning: ‘MQTT_subscribeTopics’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_subscribeTopics(MQTTClient *P_client ,const INT8U *P_threadID);
+              ^
+../App/Source/main.c:409:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
  static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value)
              ^
 Finished building: ../App/Source/main.c
@@ -65,9 +463,919 @@ Invoking: GCC C Linker
 gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
 Finished building target: sensafetyGateway
  
-14:36:56 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+20:40:28 **** Incremental Build of configuration Debug for project SensafetyGateway ****
 make all 
 make: Nothing to be done for `all'.
-14:38:44 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+20:42:21 **** Incremental Build of configuration Debug for project SensafetyGateway ****
 make all 
 make: Nothing to be done for `all'.
+20:43:02 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+20:43:11 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:45:53 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:48:14 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+20:48:17 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+20:50:11 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+20:50:14 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:07:29 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_thread_msgarrvd’:
+../App/Source/MqttBroker/MqttBroker.c:248:41: warning: assignment makes integer from pointer without a cast [enabled by default]
+  G_stMQTTmsgQueue[L_driverNumber].value = L_receivedMsg;
+                                         ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+21:08:09 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_thread_msgarrvd’:
+../App/Source/MqttBroker/MqttBroker.c:248:43: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  G_stMQTTmsgQueue[L_driverNumber].value = (INT16U) L_receivedMsg;
+                                           ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+21:08:59 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_thread_msgarrvd’:
+../App/Source/MqttBroker/MqttBroker.c:248:2: warning: pointer targets in passing argument 1 of ‘atoi’ differ in signedness [-Wpointer-sign]
+  G_stMQTTmsgQueue[L_driverNumber].value = atoi(L_receivedMsg);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:28:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/stdlib.h:147:12: note: expected ‘const char *’ but argument is of type ‘INT8U *’
+ extern int atoi (const char *__nptr)
+            ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+21:09:23 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+21:09:27 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:11:34 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:15:03 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_thread_msgarrvd’:
+../App/Source/MqttBroker/MqttBroker.c:221:5: error: expected ‘)’ before ‘{’ token
+     {
+     ^
+../App/Source/MqttBroker/MqttBroker.c:235:4: error: expected expression before ‘}’ token
+    }
+    ^
+make: *** [App/Source/MqttBroker/MqttBroker.o] Error 1
+21:15:20 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_thread_msgarrvd’:
+../App/Source/MqttBroker/MqttBroker.c:220:59: error: expected expression before ‘>’ token
+     if ((0 <= atoi ( (char *) L_topic[3]) && (LEDDRIVERS => atoi ( (char *) L_topic[3])))
+                                                           ^
+../App/Source/MqttBroker/MqttBroker.c:221:5: error: expected ‘)’ before ‘{’ token
+     {
+     ^
+../App/Source/MqttBroker/MqttBroker.c:235:4: error: expected expression before ‘}’ token
+    }
+    ^
+make: *** [App/Source/MqttBroker/MqttBroker.o] Error 1
+21:15:53 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_thread_msgarrvd’:
+../App/Source/MqttBroker/MqttBroker.c:220:5: error: expected ‘)’ before ‘{’ token
+     {
+     ^
+../App/Source/MqttBroker/MqttBroker.c:234:4: error: expected expression before ‘}’ token
+    }
+    ^
+make: *** [App/Source/MqttBroker/MqttBroker.o] Error 1
+21:16:54 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+21:21:24 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_thread_msgarrvd’:
+../App/Source/MqttBroker/MqttBroker.c:163:10: warning: variable ‘L_fMsgReceived’ set but not used [-Wunused-but-set-variable]
+  BOOLEAN L_fMsgReceived = FALSE;
+          ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+21:25:52 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+21:25:56 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:26:22 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:26:37 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:27:30 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:28:04 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:28:16 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:28:44 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:34:09 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+21:34:17 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:34:22 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:34:28 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:34:51 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:52:31 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:56:03 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+21:56:06 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:56:17 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+21:59:05 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+21:59:07 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+22:01:25 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:320:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , 5 , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+../App/Source/MqttBroker/MqttBroker.c:320:2: warning: passing argument 4 of ‘MQTTClient_subscribeMany’ makes pointer from integer without a cast [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , 5 , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘int *’ but argument is of type ‘int’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:01:28 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+22:03:26 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:320:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , 1 , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+../App/Source/MqttBroker/MqttBroker.c:320:2: warning: passing argument 4 of ‘MQTTClient_subscribeMany’ makes pointer from integer without a cast [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , 1 , L_topic , QOS);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘int *’ but argument is of type ‘int’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:04:26 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:321:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , 1 , L_topic , &L_qos);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+../App/Source/MqttBroker/MqttBroker.c:321:2: warning: passing argument 4 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , 1 , L_topic , &L_qos);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘int *’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:05:22 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:321:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , 1 , L_topic , &L_qos);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:05:48 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:321:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , 1 , &L_topic , &L_qos);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char (*)[100]’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:06:56 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:308:13: warning: assignment makes integer from pointer without a cast [enabled by default]
+  L_ptrTopic = &L_topic;
+             ^
+../App/Source/MqttBroker/MqttBroker.c:323:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ makes pointer from integer without a cast [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , 1 , L_ptrTopic , &L_qos);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:07:08 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:308:13: warning: assignment from incompatible pointer type [enabled by default]
+  L_ptrTopic = &L_topic;
+             ^
+../App/Source/MqttBroker/MqttBroker.c:323:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , 1 , L_ptrTopic , &L_qos);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:07:19 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_subscribeTopics’:
+../App/Source/MqttBroker/MqttBroker.c:323:2: warning: passing argument 3 of ‘MQTTClient_subscribeMany’ from incompatible pointer type [enabled by default]
+  L_rc = MQTTClient_subscribeMany( *P_client , 1 , L_ptrTopic , &L_qos);
+  ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:696:15: note: expected ‘char **’ but argument is of type ‘char *’
+ DLLExport int MQTTClient_subscribeMany(MQTTClient handle, int count, char** topic, int* qos);
+               ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:07:35 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:07:45 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+22:11:15 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:11:18 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+22:12:06 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+22:12:49 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+22:13:05 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+22:13:31 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+make: Nothing to be done for `all'.
+22:17:09 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:17:12 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 
+22:18:21 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:4:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/Config/Configuration.h:23:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:3,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lpaho-mqtt3c -lpthread
+Finished building target: sensafetyGateway
+ 

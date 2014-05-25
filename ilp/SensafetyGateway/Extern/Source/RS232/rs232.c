@@ -36,8 +36,6 @@
 
 #include "Extern/Source/RS232/rs232.h"
 
-
-
 #ifdef __linux__   /* Linux */
 
 
@@ -122,7 +120,7 @@ int RS232_OpenComport(int comport_number, int baudrate)
 	Cport[comport_number] = open(comports[comport_number], O_RDWR | O_NOCTTY | O_NDELAY);
 	if(Cport[comport_number]==-1)
 	{
-		perror("unable to open comport ");
+//		perror("unable to open comport ");
 		return(1);
 	}
 
@@ -130,7 +128,7 @@ int RS232_OpenComport(int comport_number, int baudrate)
 	if(error==-1)
 	{
 		close(Cport[comport_number]);
-		perror("unable to read portsettings ");
+//		perror("unable to read portsettings ");
 		return(1);
 	}
 	memset(&new_port_settings, 0, sizeof(new_port_settings));  /* clear the new struct */
@@ -145,13 +143,13 @@ int RS232_OpenComport(int comport_number, int baudrate)
 	if(error==-1)
 	{
 		close(Cport[comport_number]);
-		perror("unable to adjust portsettings ");
+//		perror("unable to adjust portsettings ");
 		return(1);
 	}
 
 	if(ioctl(Cport[comport_number], TIOCMGET, &status) == -1)
 	{
-		perror("unable to get portstatus");
+//		perror("unable to get portstatus");
 		return(1);
 	}
 
@@ -160,7 +158,7 @@ int RS232_OpenComport(int comport_number, int baudrate)
 
 	if(ioctl(Cport[comport_number], TIOCMSET, &status) == -1)
 	{
-		perror("unable to set portstatus");
+//		perror("unable to set portstatus");
 		return(1);
 	}
 
@@ -210,7 +208,7 @@ void RS232_CloseComport(int comport_number)
 
 	if(ioctl(Cport[comport_number], TIOCMGET, &status) == -1)
 	{
-		perror("unable to get portstatus");
+//		perror("unable to get portstatus");
 	}
 
 	status &= ~TIOCM_DTR;    /* turn off DTR */
@@ -218,7 +216,7 @@ void RS232_CloseComport(int comport_number)
 
 	if(ioctl(Cport[comport_number], TIOCMSET, &status) == -1)
 	{
-		perror("unable to set portstatus");
+//		perror("unable to set portstatus");
 	}
 
 	tcsetattr(Cport[comport_number], TCSANOW, old_port_settings + comport_number);

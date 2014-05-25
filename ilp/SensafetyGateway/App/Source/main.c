@@ -25,65 +25,18 @@ libmqttv3c.so
 ================================================================================
  */
 
-#define _BSD_SOURCE //Define necessary for the function usleep.
-
-/**	Standard header files	**/
-#include <pthread.h> /* POSIX Thread definitions */
-#include <stdio.h>   /* Standard input/output definitions */
-#include <stdlib.h>  /* General library functions */
-#include <string.h>  /* String function definitions */
-#include <unistd.h>  /* UNIX standard function definitions */
-#include <fcntl.h>   /* File control definitions */
-#include <errno.h>   /* Error number definitions */
-#include <termios.h> /* POSIX terminal control definitions */
-
 /** Special header files	**/
 #include "App/Source/MqttBroker/MqttBroker.h"
 #include "Extern/Source/RS232/rs232.h"
-#include "Config/configuration.h"
-
-/** Type definitions **/
-typedef unsigned char BOOLEAN;
-typedef unsigned char INT8U;
-typedef signed char INT8S;
-typedef unsigned int INT16U;
-typedef signed int INT16S;
-typedef unsigned long INT32U;
-typedef signed long INT32S;
-typedef float FP32;
-typedef double FP64;
-
-/** Constants	**/
-#define SUCCESS 0
-#define TRUE 1
-#define FALSE 0
+#include "Config/Configuration.h"
 
 /* Global variables */
-BOOLEAN G_fMqttBrokerComm = FALSE;
+BOOLEAN G_fMQTTBrokerComm = FALSE;
 BOOLEAN G_fLedDriverComm = FALSE;
 
 pthread_mutex_t signalIO_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-struct
-{
-	INT8U id;
-	BOOLEAN newValue;
-	INT16U value;
-	pthread_mutex_t threadLock;
-} G_stLedDriver[LEDDRIVERS];
-
-struct
-{
-	INT8U threadID;
-	INT8U address[100];
-	INT8U client[100];
-} MQTT_threadData;
-
-struct MQTT_threadData G_stMQTT_threadPar = {
-		.threadID = 3,
-		.address = MQTT_ADDRESS,
-		.client = MQTT_CLIENTID
-};
+struct MQTT_threadData G_stMQTT_threadPar = {0};
 
 /** Function prototypes **/
 static void ledDriver_thread(INT8U *P_threadID);
@@ -99,25 +52,28 @@ static BOOLEAN ledDriver_SerialPortIsOpen(const INT8U *P_threadID);
 static BOOLEAN equalArrays (const INT8U *P_p1, const INT8U *P_p2, const size_t *P_size2);
 static void ledDriver_convertValueToMsg( const INT16U *P_value, INT8U *P_msg);
 static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value);
+static void MQTT_init();
 
 int main(int argc, char* argv[])
 {
+	INT8U t2 = 2; // Thread ID numbers comes in handy with debugging
+	pthread_t thread2, thread3; // Thread identities
+
+	// Initializations
 	ledDriver_init();
+	MQTT_init();
 
 	/* Creating Threads */
-	INT8U t2 = 2; // Thread ID
-	pthread_t thread2, thread3; // Thread identities
 	pthread_create(&thread2, NULL, (void*) ledDriver_thread, &t2);
 	pthread_create(&thread3, NULL, (void*) MQTT_thread, &G_stMQTT_threadPar);
 
-	// Main thread goes to sleep until thread is terminated. in this case for ever
+	// Main thread goes to sleep while trying to join threads until thread is terminated. in this case for ever
 	pthread_join(thread2, NULL);
 	pthread_join(thread3, NULL);
 
 	return(EXIT_SUCCESS);
 
 }
-
 
 /*******************************************************************************
  * Function:		threadLedDriverComm
@@ -160,7 +116,7 @@ static void ledDriver_thread(INT8U *P_threadID)
 			if (!L_rc) // Not succes..
 			{
 				printf("Thread[%d]:Led Driver: Not alive\n", *P_threadID );
-				RS232_CloseComport(COMPORT);
+				RS232_CloseComport(LEDDRIVER_COMPORT);
 				break;
 			} else
 			{
@@ -195,8 +151,33 @@ static void ledDriver_thread(INT8U *P_threadID)
 
 		}
 		/* Interval time for setting up serial port */
-		usleep(60000 * 1000);
+		usleep(600000 * 1000);
 	}
+}
+
+/*******************************************************************************
+ * Function:		MQTT_init
+ * Parameters(s):
+ * Returns:
+ * Description:		This function initialize the the MQTT thread and Broker details
+ * Reference:
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	--
+ *******************************************************************************/
+static void MQTT_init()
+{
+	// Set MQTT Client ID
+	strcpy( (char *) &G_stMQTT_threadPar.clientID, MQTT_ILP_ID);
+
+	//Set MQTT broker address
+	strcpy( (char *) &G_stMQTT_threadPar.address, MQTT_SERVERADDRESS);
+
+	// Set MQTT thread ID for debugging.
+	// Main thread = 1
+	// Led Driver = 2
+	G_stMQTT_threadPar.threadID = 3;
 }
 
 /*******************************************************************************
@@ -235,7 +216,7 @@ static INT8U ledDriver_msgSentAndConfirmed(
 	while (FALSE == L_fReceivedConf)
 	{
 		/* Send message to Led Driver */
-		L_rc = RS232_SendBuf(COMPORT, P_sendMsg, *P_sizeSendMsg);
+		L_rc = RS232_SendBuf(LEDDRIVER_COMPORT, P_sendMsg, *P_sizeSendMsg);
 
 		if (L_rc != SUCCESS)
 		{
@@ -244,13 +225,13 @@ static INT8U ledDriver_msgSentAndConfirmed(
 		} else // if request message is send..
 		{
 			/* Timeout time */
-			L_sTimeout.tv_sec = ERRORTIMEOUT;
+			L_sTimeout.tv_sec = ERROR_TIMEOUT;
 
 			/* Function Select needs File Descriptor (fd) settings.
 			 * 	Added RS232_GetFileDes function to rs232 library to get the fd
 			 * 	Make a fd set with the fd integer
 			 */
-			fd = RS232_GetFileDes(COMPORT);
+			fd = RS232_GetFileDes(LEDDRIVER_COMPORT);
 			FD_ZERO(&readset);
 			FD_SET(fd, &readset);
 
@@ -265,14 +246,14 @@ static INT8U ledDriver_msgSentAndConfirmed(
 			{
 				L_failingCount++;
 
-				if (RETRYCOUNT <= L_failingCount) // if failed to many times..
+				if (ERROR_RETRYCOUNT <= L_failingCount) // if failed to many times..
 				{
 					printf("Thread[%d]:Led Driver: Sending massage failed\n", *P_threadID);
 					L_failingCount = 0;
 					break;
 				}
 
-				printf("Thread[%d]:Led Driver: Timeout receiving confirmation message, retrying %d/%d..\n", *P_threadID, L_failingCount, RETRYCOUNT);
+				printf("Thread[%d]:Led Driver: Timeout receiving confirmation message, retrying %d/%d..\n", *P_threadID, L_failingCount, ERROR_RETRYCOUNT);
 
 			} else // if ready for reading file..
 			{
@@ -281,7 +262,7 @@ static INT8U ledDriver_msgSentAndConfirmed(
 
 				/* Read serial line */
 				L_sizeBuf = (sizeof(L_buf) / sizeof(L_buf[0]));
-				L_rc = RS232_PollComport(COMPORT, L_buf, L_sizeBuf);
+				L_rc = RS232_PollComport(LEDDRIVER_COMPORT, L_buf, L_sizeBuf);
 
 				if (L_rc != SUCCESS)
 				{
@@ -327,24 +308,24 @@ static BOOLEAN ledDriver_SerialPortIsOpen(const INT8U *P_threadID)
 	while(FALSE == L_fSerialPortOpen)
 	{
 		/* Set up connection with Led Driver */
-		L_rc = RS232_OpenComport(COMPORT, BAUDRATE);
+		L_rc = RS232_OpenComport(LEDDRIVER_COMPORT, LEDDRIVER_BAUDRATE);
 
 		if (L_rc != SUCCESS) // if failed then..
 		{
 			L_failingCount++;
 
-			if (RETRYCOUNT <= L_failingCount) // if failed to many times..
+			if (ERROR_RETRYCOUNT <= L_failingCount) // if failed to many times..
 			{
 				printf("Thread[%d]:Led Driver: Failed to setup Serial port. Admin rights on port?\n", *P_threadID);
 				L_failingCount = 0;
 
 				/* Close COM port */
-				RS232_CloseComport(COMPORT);
+				RS232_CloseComport(LEDDRIVER_COMPORT);
 
 				break;
 			}
 
-			printf("Thread[%d]:Led Driver: Failed to setup serial port, retrying %d/%d..\n\r", *P_threadID , L_failingCount, RETRYCOUNT);
+			printf("Thread[%d]:Led Driver: Failed to setup serial port, retrying %d/%d..\n\r", *P_threadID , L_failingCount, ERROR_RETRYCOUNT);
 			usleep(500 * 1000);
 
 		} else // else success
@@ -460,8 +441,8 @@ static void ledDriver_init()
 	for(i = 0; i < L_size; i++)
 	{
 		G_stLedDriver[i].id = i;
-		G_stLedDriver[i].newValue = TRUE;
-		G_stLedDriver[i].value = ((i * 1000) + 1);
+		G_stLedDriver[i].newValue = FALSE;
+		G_stLedDriver[i].value = 0;
 		pthread_mutex_init(&G_stLedDriver[i].threadLock, NULL); // Initialize mutexen
 	}
 }
@@ -509,17 +490,3 @@ static INT8U ledDriver_newValue(const INT8U *P_threadID, INT8U *P_driverNr)
 	}
 	return (rc); // return driver number. 0 = no new value
 }
-
-/*******************************************************************************
- * Function:		MQTT_thread
- * Parameters(s):	Thread ID number
- * Returns:
- * Description:		Thread function to initialize communication with MQTT Broker
- * 					and keeping this alive
- * Reference:
- * Global/static variables
- * 		modified:	--
- * 		used:		--
- * Error handling:	--
- *
- *******************************************************************************/
