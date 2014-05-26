@@ -9,6 +9,7 @@
 CLASSPATH=lib/*:$CLASSPATH
 export CLASSPATH
 
-jython CEPengine/main.py
+java -Dpython.cachedir.skip=false -Dpython.cachedir=/tmp \
+    org.python.util.jython CEPengine/main.py
 
 exit 0
