@@ -4,7 +4,7 @@ CLASSPATH=lib/*:$CLASSPATH
 export CLASSPATH
 
 arch=`uname -m`
-if [ $arch == "x86_64" ]; then
+if [ $arch = "x86_64" ]; then
     libpath=lib/x86_64
 else
     libpath=lib/i386

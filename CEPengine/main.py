@@ -49,13 +49,19 @@ class CEPengine(object):
 
     def __init__(self):
         self._cep = jycep.EsperEngine(ENGINEURI)
-        self._avahiBrowse() # Not actually used by CEPengine
+        try:
+            self._avahiBrowse() # Presently not used by CEPengine
+        except:
+            print "No avahi-daemon running on localhost"
         # Todo: get mqtt broker url from avahi
-        self.pahoclient = paho.PahoClient(MQTT_BROKER_URL)
+        try:
+            self.pahoclient = paho.PahoClient(MQTT_BROKER_URL)
+            mqttsensors.MqttTiltSensor(self._cep, self.pahoclient)
+            mqttsensors.MqttBreachSensor(self._cep, self.pahoclient)
+        except:
+            print "No mqtt broker listening on localhost port 1883"
         httpsensors.HttpSensors(self._cep, ENGINEURI, ANOMALOUS_SOUND_URL, 
                                 ANOMALOUS_SOUND_PORT)
-        mqttsensors.MqttTiltSensor(self._cep, self.pahoclient)
-        mqttsensors.MqttBreachSensor(self._cep, self.pahoclient)
         qman = QueryManager(self._cep)
         qman.addQuery(QueryAnomalousSound())  
         qman.addQuery(QueryTilt())  
