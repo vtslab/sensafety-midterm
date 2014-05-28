@@ -1,16 +1,17 @@
 #!/bin/sh
 
-#ESPER_LOCATION=../esper-4.9.0
-#CLASSPATH=$ESPER_LOCATION/esper-4.9.0.jar:$CLASSPATH
-#CLASSPATH=$ESPER_LOCATION/esper/lib/*:$CLASSPATH
-#CLASSPATH=$ESPER_LOCATION/esperio-http-4.9.0.jar:$CLASSPATH
-#CLASSPATH=$ESPER_LOCATION/esperio-http/lib/*:$CLASSPATH
-#CLASSPATH=../avahi4j-0.1/avahi4j.jar:$CLASSPATH
 CLASSPATH=lib/*:$CLASSPATH
 export CLASSPATH
 
+arch=`uname -m`
+if [ $arch == "x86_64" ]; then
+    libpath=lib/x86_64
+else
+    libpath=lib/i386
+fi
+
 java -Dpython.cachedir.skip=false -Dpython.cachedir=/tmp \
-     -Djava.library.path=lib \
+     -Djava.library.path=$libpath \
     org.python.util.jython CEPengine/main.py
 
 exit 0
