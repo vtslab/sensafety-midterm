@@ -27,18 +27,22 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.436684643" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
 								<option id="gnu.c.compiler.option.include.paths.1843195540" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src"/>
+									<listOptionValue builtIn="false" value="/usr/include/libxml2"/>
 									<listOptionValue builtIn="false" value="/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway"/>
 								</option>
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.813648287" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.debugging.level.1253653076" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
+								<option id="gnu.c.compiler.option.dialect.std.1368561272" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1282652514" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1678141477" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base">
 								<option id="gnu.c.link.option.libs.2087703100" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" value="paho-mqtt3c"/>
+									<listOptionValue builtIn="false" value="xml2"/>
+									<listOptionValue builtIn="false" value="mqttv3c"/>
 									<listOptionValue builtIn="false" value="pthread"/>
 								</option>
 								<option id="gnu.c.link.option.paths.1860803761" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ia64"/>
 									<listOptionValue builtIn="false" value="/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.512329953" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
@@ -120,15 +124,6 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="helloworld.cdt.managedbuild.target.gnu.cross.exe.502643988" name="Executable" projectType="cdt.managedbuild.target.gnu.cross.exe"/>
 	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.432286925;cdt.managedbuild.config.gnu.cross.exe.debug.432286925.;cdt.managedbuild.tool.gnu.cross.c.compiler.667188140;cdt.managedbuild.tool.gnu.c.compiler.input.121097862">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.1269447812;cdt.managedbuild.config.gnu.cross.exe.release.1269447812.;cdt.managedbuild.tool.gnu.cross.c.compiler.1911279928;cdt.managedbuild.tool.gnu.c.compiler.input.1940454621">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Release">
@@ -139,4 +134,16 @@
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.1269447812;cdt.managedbuild.config.gnu.cross.exe.release.1269447812.;cdt.managedbuild.tool.gnu.cross.c.compiler.1911279928;cdt.managedbuild.tool.gnu.c.compiler.input.1940454621">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.432286925;cdt.managedbuild.config.gnu.cross.exe.debug.432286925.;cdt.managedbuild.tool.gnu.cross.c.compiler.667188140;cdt.managedbuild.tool.gnu.c.compiler.input.121097862">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.432286925;cdt.managedbuild.config.gnu.cross.exe.debug.432286925.;cdt.managedbuild.tool.gnu.c.compiler.base.436684643;cdt.managedbuild.tool.gnu.c.compiler.input.1282652514">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+	</storageModule>
 </cproject>

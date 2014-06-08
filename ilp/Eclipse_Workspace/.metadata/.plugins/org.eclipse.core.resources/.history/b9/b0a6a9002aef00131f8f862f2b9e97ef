@@ -1,24 +1,12 @@
 /*
-================================================================================
-  (c) 2014 Strukton Embedded Solutions
-
-  Project/Module: Sensafety Gateway
-
-  Description: Configuration file
-
-  Reference:
-
-  Version Control
-  	  $workfile: configuration.h
-  	  $Revision:
-  	  $Date: 02-05-2014
-  	  Modtime:
-
-================================================================================
+ * GlobalDefs_E.h
+ *
+ *  Created on: Jun 6, 2014
+ *      Author: jeffrey
  */
 
-#ifndef CONFIGURATION_H_
-#define CONFIGURATION_H_
+#ifndef GLOBALDEFS_E_H_
+#define GLOBALDEFS_E_H_
 
 #define _BSD_SOURCE 								//Define necessary for the function usleep.
 
@@ -31,15 +19,6 @@
 #include <fcntl.h>   /* File control definitions */
 #include <errno.h>   /* Error number definitions */
 #include <termios.h> /* POSIX terminal control definitions */
-
-/* MQTT Constants */
-#define MQTT_SERVERADDRESS "tcp://localhost:1883" 	// Address of MQTT broker
-#define MQTT_ILP_ID "1"								// Client ID of this client
-
-/* Led driver constants */
-#define LEDDRIVER_COMPORT 22 						// 22 for "/dev/ttyAMA0"	 see rs232.c
-#define LEDDRIVER_BAUDRATE 9600 					// Baud rate
-#define MAXLEDDRIVERVALUE 4096						// Max value to receive and send to Led drivers
 
 /* Miscellaneous */
 #define ERROR_TIMEOUT 1 							// Timeout time in seconds
@@ -63,7 +42,7 @@ typedef signed long INT32S;
 typedef float FP32;
 typedef double FP64;
 
-
+/* Global variables */
 struct
 {
 	INT8U id;
@@ -72,4 +51,10 @@ struct
 	pthread_mutex_t threadLock;
 } G_stLedDriver[LEDDRIVERS];
 
-#endif /* CONFIGURATION_H_ */
+/* Global variables */
+extern BOOLEAN G_fMQTTBrokerComm = FALSE;
+extern BOOLEAN G_fLedDriverComm = FALSE;
+
+
+
+#endif /* GLOBALDEFS_E_H_ */

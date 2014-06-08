@@ -1,7 +1,12 @@
 
+#ifndef MQTTBROKER_H
+#define MQTTBROKER_H
+
 /** Special header files	**/
 #include "MQTTClient.h"
-#include "Config/Configuration.h"
+#include "Config/Configuration_E.h"
+#include "App/Include/GlobalDefs_E.h"
+#include "libxml/parser.h"
 
 /* Global variables */
 #define PAYLOAD "2045"
@@ -27,7 +32,6 @@ struct MQTT_threadData
 	INT8U clientID;
 };
 
-BOOLEAN L_fisCommunication = FALSE;
 
 /** Function prototypes **/
 void MQTT_thread(void *P_stMQTT_threadPar);
@@ -38,3 +42,4 @@ void MQTT_thread_connlost(void *context, char *cause);
 static void MQTT_init();
 static INT8U MQTT_subscribeTopics(MQTTClient *P_client ,const INT8U *P_threadID);
 
+#endif /* MQTTBROKER_H */

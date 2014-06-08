@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Scenario sheet: Rainbow  -->
+<!-- Published on MQTT Topic: /ilp/n/rainbow -->
+
+<rainbow>
+
+    <!-- Low color range in RGB color system: 0..255 -->
+    <lowColor>
+        <red> 100 </red>
+        <green> 100</green>
+        <blauw> 100 </blauw>
+    </lowColor>
+
+    <!-- high color range in RGB color system: 0..255 -->
+    <highColor2>
+        <red> 100 </red>
+        <green> 100</green>
+        <blauw> 100 </blauw>
+    </highColor2>
+
+    <!-- Interval time for repeating rainbow show in ms 0..max int -->
+    <interval> 1000 </interval>
+
+    <!-- Duration time for how long in total in ms 0..max long int -->
+    <duration> 10000 </duration>
+
+    <!-- Start time for when to start in hr,min and sec. 0`s is start direct. -->
+    <startTime>
+        <hour> 0 </hour>
+        <minutes> 0 </minutes>
+        <seconds> 0 </seconds>
+    </startTime>
+
+</rainbow>

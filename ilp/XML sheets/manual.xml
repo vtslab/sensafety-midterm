@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Scenario sheet: Manual  -->
+<!-- Published on MQTT Topic: /ilp/n/manual for direct manupulation -->
+
+<manual>
+
+    <!-- Driver number to manipulate 1..n -->
+    <driver> 1 </driver>
+
+    <!-- Driver value 0..4096 -->
+    <driverValue> 4096 </driverValue>
+
+</manual>

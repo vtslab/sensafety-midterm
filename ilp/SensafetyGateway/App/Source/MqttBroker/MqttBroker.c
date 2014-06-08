@@ -19,6 +19,8 @@
 
 #include "App/Source/MqttBroker/MqttBroker.h"
 
+BOOLEAN L_fisCommunication = FALSE; // Put here because of error in case when placed in header file
+
 void MQTT_thread(void *P_stMQTT_threadPar)
 {
 	/* Cast pointer to the right type */
