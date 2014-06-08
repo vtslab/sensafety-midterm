@@ -3,6 +3,7 @@
 CLASSPATH=../lib/*:$CLASSPATH
 export CLASSPATH
 
-jython paho.py
+java -Dpython.cachedir.skip=false -Dpython.cachedir=/tmp \
+    org.python.util.jython paho.py
 
 exit 0
