@@ -21,7 +21,7 @@
 #define CONFIGURATION_H_
 
 /* MQTT Constants */
-#define MQTT_SERVERADDRESS "tcp://localhost:1883" 	// Address of MQTT broker
+#define MQTT_SERVERADDRESS "tcp://192.168.1.2:1883" 	// Address of MQTT broker
 #define MQTT_ILP_ID "1"								// Client ID of this client
 
 /* Led driver constants */

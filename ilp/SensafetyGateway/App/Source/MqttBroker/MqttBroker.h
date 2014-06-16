@@ -14,15 +14,14 @@
 #define TIMEOUT 10000L
 volatile MQTTClient_deliveryToken deliveredtoken;
 
-typedef struct
-{
-	INT8U id;
-	BOOLEAN newValue;
-	INT16U value;
-	pthread_mutex_t threadLock;
-} ST_MQTTmsgQueue;
-
-ST_MQTTmsgQueue G_stMQTTmsgQueue[LEDDRIVERS];
+//typedef struct
+//{
+//	ST_scenario
+//	BOOLEAN newScenario;
+//	pthread_mutex_t threadLock;
+//} ST_ScenarioQueue;
+//
+//ST_MQTTmsgQueue G_stMQTTmsgQueue[LEDDRIVERS];
 
 // Struct declaration and init for thread attributes
 struct MQTT_threadData
@@ -32,9 +31,20 @@ struct MQTT_threadData
 	INT8U clientID;
 };
 
+typedef struct
+{
+	INT8U ScenarioName[25];
+	INT8U driver;
+	INT8U driverValue;
+	BOOLEAN newValue;
+	pthread_mutex_t threadLock;
+} ST_scenario;
+
+ST_scenario G_stScenario;
 
 /** Function prototypes **/
 void MQTT_thread(void *P_stMQTT_threadPar);
+static void print_element_names(xmlNode * a_node);
 static INT8U MQTT_setupConnection( MQTTClient *P_client , MQTTClient_connectOptions *P_conn_opts , const INT8U *P_threadID);
 void MQTT_thread_delivered(void *context, MQTTClient_deliveryToken dt);
 int MQTT_thread_msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message);

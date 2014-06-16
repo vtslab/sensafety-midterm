@@ -25,6 +25,19 @@ libmqttv3c.so
 ================================================================================
  */
 
+/*
+ * To change from Linux toolchain to Cross toolchain (for PI):
+ * Project properties -> C/C++ Build -> Toolchain Editor: Change toolchain
+ * Project properties -> C/C++ Build -> Settings -> Cross settings -> Prefix & Path:
+ * 	Prefix:
+ * 	Path:
+ *
+ * Project properties -> C/C++ Build -> Cross GCC Linker -> Libraries:
+ * For Linux: paho-mqtt3c
+ * For Pi: mqttv3c
+ */
+
+
 /** Special header files	**/
 #include "App/Source/MqttBroker/MqttBroker.h"
 #include "Extern/Source/RS232/rs232.h"
@@ -99,11 +112,12 @@ static void ledDriver_thread(INT8U *P_threadID)
 	INT8S L_rc = 0; // Return code
 	size_t L_size1 = 0;
 	size_t L_size2 = 0;
+	INT8U L_breakChar= '/';
 	static INT8U L_rgComReqMsg[] = "comreq"; // message for communication request
 	static INT8U L_rgComConfMsg[] = "comconf"; // message for communication confirmation
 	static INT8U L_rgValConfMsg[] = "valconf"; // message for value confirmation
 	INT8U L_driverNr = 0;
-	INT8U L_value[3] = {'0','0','0'}; // 2 bytes for value (max 65536) and one for \0
+	INT8U L_driverAndValue[4]; // 1 byte for driver number + 1 byte '/' + 1 bytes for value (max 255) + 1 byte for \0
 
 
 	while(TRUE)
@@ -135,11 +149,15 @@ static void ledDriver_thread(INT8U *P_threadID)
 
 					L_driverNr--; // -1 accessing right driver. 1..n to 0..n
 
-					ledDriver_convertValueToMsg( &G_stLedDriver[L_driverNr].value, L_value);
+					//ledDriver_convertValueToMsg( &G_stLedDriver[L_driverNr].value, L_driverAndValue);
+					L_driverAndValue[0] = (char) (L_driverNr + 1);
+					L_driverAndValue[1] = '/';
+					L_driverAndValue[2] = G_stLedDriver[L_driverNr].value;
+					L_driverAndValue[3] = '\0';
 
-					L_size1 = (sizeof(L_value) / sizeof(L_value[0]));
+					L_size1 = (sizeof(L_driverAndValue) / sizeof(L_driverAndValue[0]));
 					L_size2 = (sizeof(L_rgValConfMsg) / sizeof(L_rgValConfMsg[0]));
-					L_rc = ledDriver_msgSentAndConfirmed(P_threadID, L_value, L_rgValConfMsg, &L_size1, &L_size2);
+					L_rc = ledDriver_msgSentAndConfirmed(P_threadID, L_driverAndValue, L_rgValConfMsg, &L_size1, &L_size2);
 
 					if (!L_rc) // Not succes..
 					{
@@ -158,7 +176,7 @@ static void ledDriver_thread(INT8U *P_threadID)
 
 		}
 		/* Interval time for setting up serial port */
-		usleep(600000 * 1000);
+		usleep(5000 * 1000);
 	}
 }
 
@@ -328,6 +346,7 @@ static BOOLEAN ledDriver_SerialPortIsOpen(const INT8U *P_threadID)
 
 				/* Close COM port */
 				RS232_CloseComport(LEDDRIVER_COMPORT);
+				break;
 			}else
 			{
 

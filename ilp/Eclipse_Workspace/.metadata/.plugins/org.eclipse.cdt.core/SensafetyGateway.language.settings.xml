@@ -4,19 +4,19 @@
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider id="org.eclipse.cdt.build.crossgcc.CrossGCCBuiltinSpecsDetector">
 				<language id="org.eclipse.cdt.core.gcc">
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/include">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__ACCUM_EPSILON__" value="0x1P-15K">
@@ -1071,28 +1071,28 @@
 					</entry>
 				</language>
 				<language id="org.eclipse.cdt.core.g++">
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/include/c++/4.8.3">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/include/c++/4.8.3">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/include/c++/4.8.3/arm-linux-gnueabihf">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/include/c++/4.8.3/arm-linux-gnueabihf">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/include/c++/4.8.3/backward">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/include/c++/4.8.3/backward">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/include">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="/home/jeffrey/tools/rpi-toolchain/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf">
+					<entry kind="includePath" name="/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="_GNU_SOURCE" value="1">

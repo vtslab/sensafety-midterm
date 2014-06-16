@@ -1,0 +1,186 @@
+io1.o: io1.c \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/stdio.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/features.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/predefs.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/sys/cdefs.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/wordsize.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/gnu/stubs.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include/stddef.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/types.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/typesizes.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/libio.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/_G_config.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/wchar.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include/stdarg.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/stdio_lim.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/sys_errlist.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/stdio.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/string.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/xlocale.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/string.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/string2.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/stdlib.h \
+ ../../include/libxml/parser.h ../../include/libxml/xmlversion.h \
+ ../../include/libxml/xmlexports.h ../../include/libxml/tree.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed/limits.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed/syslimits.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/limits.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/posix1_lim.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/local_lim.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/linux/limits.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/posix2_lim.h \
+ ../../include/libxml/xmlstring.h ../../include/libxml/xmlregexp.h \
+ ../../include/libxml/dict.h ../../include/libxml/hash.h \
+ ../../include/libxml/valid.h ../../include/libxml/xmlerror.h \
+ ../../include/libxml/list.h ../../include/libxml/xmlautomata.h \
+ ../../include/libxml/entities.h ../../include/libxml/encoding.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/iconv.h \
+ ../../include/libxml/xmlIO.h ../../include/libxml/globals.h \
+ ../../include/libxml/SAX.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/waitflags.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/waitstatus.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/endian.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/endian.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/byteswap.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/sys/types.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/time.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/sys/select.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/select.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/sigset.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/time.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/sys/sysmacros.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/pthreadtypes.h \
+ /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/alloca.h \
+ ../../include/libxml/xlink.h ../../include/libxml/SAX2.h \
+ ../../include/libxml/xmlmemory.h ../../include/libxml/threads.h \
+ ../../include/libxml/xinclude.h
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/stdio.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/features.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/predefs.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/sys/cdefs.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/wordsize.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/gnu/stubs.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include/stddef.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/types.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/typesizes.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/libio.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/_G_config.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/wchar.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include/stdarg.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/stdio_lim.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/sys_errlist.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/stdio.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/string.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/xlocale.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/string.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/string2.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/stdlib.h:
+
+../../include/libxml/parser.h:
+
+../../include/libxml/xmlversion.h:
+
+../../include/libxml/xmlexports.h:
+
+../../include/libxml/tree.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed/limits.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed/syslimits.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/limits.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/posix1_lim.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/local_lim.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/linux/limits.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/posix2_lim.h:
+
+../../include/libxml/xmlstring.h:
+
+../../include/libxml/xmlregexp.h:
+
+../../include/libxml/dict.h:
+
+../../include/libxml/hash.h:
+
+../../include/libxml/valid.h:
+
+../../include/libxml/xmlerror.h:
+
+../../include/libxml/list.h:
+
+../../include/libxml/xmlautomata.h:
+
+../../include/libxml/entities.h:
+
+../../include/libxml/encoding.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/iconv.h:
+
+../../include/libxml/xmlIO.h:
+
+../../include/libxml/globals.h:
+
+../../include/libxml/SAX.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/waitflags.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/waitstatus.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/endian.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/endian.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/byteswap.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/sys/types.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/time.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/sys/select.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/select.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/sigset.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/time.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/sys/sysmacros.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/arm-linux-gnueabihf/bits/pthreadtypes.h:
+
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/alloca.h:
+
+../../include/libxml/xlink.h:
+
+../../include/libxml/SAX2.h:
+
+../../include/libxml/xmlmemory.h:
+
+../../include/libxml/threads.h:
+
+../../include/libxml/xinclude.h:

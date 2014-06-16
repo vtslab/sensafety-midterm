@@ -47,7 +47,7 @@ struct
 {
 	INT8U id;
 	BOOLEAN newValue;
-	INT16U value;
+	INT8U value;
 	pthread_mutex_t threadLock;
 } G_stLedDriver[LEDDRIVERS];
 
