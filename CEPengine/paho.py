@@ -4,10 +4,10 @@
 # Adapted from org.eclipse.paho.sample.mqttv3app
 
 # Marc de Lignie, Politie IV-organisatie
-# May 2, 2014
+# July 1, 2014
 
 import java.lang
-import sys, time
+import sys, time, re
 import org.eclipse.paho.client.mqttv3.MqttCallback as MqttCallback 
 import org.eclipse.paho.client.mqttv3.MqttClient as MqttClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions as MqttConnectOptions
@@ -16,16 +16,23 @@ import org.eclipse.paho.client.mqttv3.MqttMessage as MqttMessage
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence \
                                               as MemoryPersistence
 
+USERNAME = 'cs08' # for tcp://vps38114.public.cloudvps.com:1883
+PASSWORD = 'cs08_2014' # for tcp://vps38114.public.cloudvps.com:1883
+CLIENTID = 'Commit_829'
+
 class PahoClient(MqttCallback): 
 
     def __init__(self, brokerUrl):
         try: 
-            self._client = MqttClient(brokerUrl, "SenSafety-CEPengine",
+            self._client = MqttClient(brokerUrl, CLIENTID,
                                                  MemoryPersistence())
             # Set this instance as the callback handler
             self._client.setCallback(self)
             # Leave client connected
-            self._client.connect(MqttConnectOptions())
+            conopts = MqttConnectOptions()
+            conopts.setUserName(USERNAME)
+            conopts.setPassword(PASSWORD)
+            self._client.connect(conopts)
         except MqttException, e:
             print str(e)
             sys.exit(1)
@@ -45,8 +52,14 @@ class PahoClient(MqttCallback):
          * @param qos the maximum quality of service to receive messages at for 
            this subscription
         """
+        if topicName.find('#') < (len(topicName) - 1) and \
+           topicName.find('#') > -1:
+            raise ValueError('# wildcard only supported as final character')
         self._client.subscribe(topicName, qos)
-        self._destinations[topicName] = callback
+        topicName = topicName.replace('//','/+/').replace('//','/+/')
+        regex = '^' + topicName.replace('+', '[^/\s]+'
+                                ).replace('#', '[^\s]+') + '$'
+        self._destinations[regex] = callback
        
     def publish(self, topicName, qos, payload):
         """
@@ -65,6 +78,12 @@ class PahoClient(MqttCallback):
             self._client.publish(topicName, message)
         except:
             print "Trying mqtt publish after client disconnect
+
+    def _topicmatch(self, topic):
+        for regex in self._destinations:
+            if re.search(regex, topic):
+                return self._destinations[regex]
+    	return None
     	
     """**************************************************************"""
     """ Default methods to implement the MqttCallback interface      """
@@ -80,9 +99,10 @@ class PahoClient(MqttCallback):
     def messageArrived(self, topic, message):
         # Called when a message arrives from the server that matches any
         # subscription made by the client
-        destination = self._destinations.get(topic)
+        #print topic, message.toString()
+        destination = self._topicmatch(topic)
         if destination:
-            destination(message)
+            destination(topic, message)
         else:
             print ("Time: " + str(time.time()) +
                    "  Topic: " + topic +

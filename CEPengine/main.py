@@ -28,12 +28,13 @@ particular way and in a particular format. The following events are foreseen:
 CEPengine and the mqtt broker make themselves known using mDNS/DNS-SD.
 
 Marc de Lignie, Politie IV-organisatie, COMMIT/
-May 8, 2014
+July 1, 2014
 """
 
 import java.lang
 import time, sys, threading
 import avahi, paho, jycep, httpsensors, mqttsensors, eventgenerator
+import paho  # Python wrapper for mqtt-client-0.4.0.jar
 
 ENGINEURI = "CEPengine"
 SERVICENAME = "sensafety"
@@ -42,7 +43,12 @@ ANOMALOUS_SOUND_PORT = 33433
 ANOMALOUS_SOUND_URL = 'http://localhost:' + str(ANOMALOUS_SOUND_PORT) +\
                       '/' + SERVICENAME
 TILT = 'Tilt'
-MQTT_BROKER_URL = "tcp://localhost:1883"
+CONTACT = 'Contact'
+
+# URL where Ambient pushes mqtt events
+MQTT_BROKER_URL = "tcp://vps38114.public.cloudvps.com:1883"
+# Can be used locally together with mqtt generator(s)
+# MQTT_BROKER_URL = "tcp://localhost:1883"
 
 
 class CEPengine(object):
@@ -57,7 +63,7 @@ class CEPengine(object):
         try:
             self.pahoclient = paho.PahoClient(MQTT_BROKER_URL)
             mqttsensors.MqttTiltSensor(self._cep, self.pahoclient)
-            mqttsensors.MqttBreachSensor(self._cep, self.pahoclient)
+            mqttsensors.MqttContactSensor(self._cep, self.pahoclient)
         except:
             print "No mqtt broker listening on localhost port 1883"
         httpsensors.HttpSensors(self._cep, ENGINEURI, ANOMALOUS_SOUND_URL, 
@@ -65,6 +71,7 @@ class CEPengine(object):
         qman = QueryManager(self._cep)
         qman.addQuery(QueryAnomalousSound())  
         qman.addQuery(QueryTilt())  
+        qman.addQuery(QueryContact())  
        
     def _avahiBrowse(self):
         # Get zeroconf info for connection with Mqtt broker
@@ -109,8 +116,8 @@ class QueryAnomalousSound(object):
         if not isinstance(data_new, list):
             data_new = [data_new]
         for item in data_new:
-            print 'Anomalous sound event passed through CEPengine'
-            #print 'Anomalous sound: ', str(item)[:160]
+            print 'Anomalous sound event passed through CEPengine:\n', \
+                  str(item)[:160]
 
 
 class QueryTilt(object):
@@ -123,22 +130,34 @@ class QueryTilt(object):
         if not isinstance(data_new, list):
             data_new = [data_new]
         for item in data_new:
-            print 'Tilt event passed through CEPengine'
-#            print 'Tilt: ', str(item)[:160]
+            print 'Tilt event passed through CEPengine:\n', str(item)[:320]
+
+
+class QueryContact(object):
+    # For now: just print incoming events after passing through the cep engine
+
+    def getQueries(self):
+        return ['select * from %s' % CONTACT]
+
+    def listener(self, data_new, data_old):
+        if not isinstance(data_new, list):
+            data_new = [data_new]
+        for item in data_new:
+            print 'Contact event passed through CEPengine:\n', str(item)[:320]
 
 
 if __name__ == "__main__":
     cep = CEPengine()
     # Random events for initial testing
-    soundevents = eventgenerator.AnomalousSound(ANOMALOUS_SOUND_URL, 3)
+    soundevents = eventgenerator.AnomalousSound(ANOMALOUS_SOUND_URL, 30)
     soundevents.start()
-    tiltevents = eventgenerator.Tilt(cep.pahoclient, 3)
-    tiltevents.start()
-    ilpevents = eventgenerator.ILP_control(cep.pahoclient, 3)
+#    tiltevents = eventgenerator.Tilt(cep.pahoclient, 3)
+#    tiltevents.start()
+    ilpevents = eventgenerator.ILP_control(cep.pahoclient, 30)
     ilpevents.start()
-    time.sleep(10)
+    time.sleep(300)
     soundevents.stop()
-    tiltevents.stop()
+#    tiltevents.stop()
     ilpevents.stop()
     cep.pahoclient.close()  # Required for jython to exit
    

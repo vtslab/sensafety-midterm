@@ -5,7 +5,7 @@
 # The module eventgenerator provides a few types of random events for testing
 
 # Marc de Lignie, Politie IV-organisatie, COMMIT/
-# May 8, 2014
+# July 1, 2014
 
 import random, time, urllib, urllib2, threading
 from main import ANOMALOUS_SOUND
@@ -30,7 +30,6 @@ class AnomalousSound(threading.Thread):
             time.sleep(2. * self._interval * random.random())
             
     def postEvent(self):
-        print 'Anomalous sound event posted'
         eventdata = {
             'timestamp': '2014-04-10T11:22:33.44+02:00', # ISO 8601
             'geoNB': '52.12345',                         # ISO 6709
@@ -42,6 +41,7 @@ class AnomalousSound(threading.Thread):
         # Events can also be posted manually using an ordinary browser
         eventurl = self._url + urllib.urlencode(eventdata)
         urllib2.urlopen(eventurl)
+        #print 'Anomalous sound event posted'
 
      
 class Tilt(threading.Thread):
@@ -71,7 +71,7 @@ class Tilt(threading.Thread):
             '<Parameter name="event">MOTIONSTART</Parameter>',
             '<Parameter name="state">MOTION</Parameter>',
             '</Payload>']))
-        print 'Mqtt message sent on topic ' + TILTTOPIC
+        #print 'Mqtt message sent on topic ' + TILTTOPIC
 
 
 class ILP_control(threading.Thread):
