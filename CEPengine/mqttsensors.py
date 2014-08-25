@@ -6,7 +6,7 @@
 # registered type
 
 # Marc de Lignie, Politie IV-organisatie
-# July 1, 2014
+# August 25, 2014
 
 import java.lang
 from java.io import StringReader
@@ -16,7 +16,7 @@ from org.w3c.dom import Node
 
 MQTTQOS = 1
 # Topics: 'owner/net_id/class/sub_class/function/type/device_id'
-TILTTOPIC = '+/+/Motion/Tilt/MotionStatus/+/+'  
+TILTTOPIC = '+/+/Motion/Tilt/MotionStatus/ALERT/+'  
 CONTACTTOPIC = '+/+/Contact/OpenClose/State/+/+' 
 
 
