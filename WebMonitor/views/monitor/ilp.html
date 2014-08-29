@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>   
+    <link href="{{=URL('static','css/jquery.dataTables.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{=URL('static','js/jquery.js')}}"></script>
+    <script src="{{=URL('static','js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{=URL('static','js/dataTables.fnReloadAjax.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            s = $('#silent').dataTable( {
+	            "bProcessing": true,
+	            "sAjaxSource": "{{=URL('monitor','silentevents.json')}}"
+            } );
+            s.fnSort( [ [1,'desc'] ] );
+            setInterval(function() {
+                s.fnReloadAjax();
+            }, 5000);	            
+	        b = $('#busy').dataTable( {
+		        "bProcessing": true,
+		        "sAjaxSource": "{{=URL('monitor','busyevents.json')}}"
+	        } );
+	        b.fnSort( [ [1,'desc'] ] );
+            setInterval(function() {
+                b.fnReloadAjax();
+            }, 5000);	            
+	        t = $('#tilt').dataTable( {
+		        "bProcessing": true,
+		        "sAjaxSource": "{{=URL('monitor','tiltevents.json')}}"
+	        } );
+	        t.fnSort( [ [1,'desc'] ] );
+            setInterval(function() {
+                t.fnReloadAjax();
+            }, 5000);	            
+        } );
+    </script>
+</head>
+<body>
+<h1>Intelligent Lamp Post controlling events</h1>
+<h3>Silent -> moving lights during 8 seconds</h3>
+<div style='width:700px'>
+<table id="silent">
+    <thead>
+        <tr>
+            <th width="28%">Location</th>
+            <th width="16%">Timestamp</th>
+            <th width="28%">Facecount</th>
+            <th width="28%">Soundlevel</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Location</th>
+            <th>Timestamp</th>
+            <th>Facecount</th>
+            <th>Soundlevel</th>
+        </tr>
+    </tfoot>
+    <tbody>
+        <tr>
+            <td>Row 1 Data 1</td>
+            <td>Row 1 Data 2</td>
+            <td>etc</td>
+        </tr>
+        <tr>
+            <td>Row 2 Data 1</td>
+            <td>Row 2 Data 2</td>
+            <td>etc</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<br><br>
+<h3>Busy -> warm/reddisch lighting conditions</h3>
+<div style='width:700px'>
+<table id="busy">
+    <thead>
+        <tr>
+            <th width="28%">Location</th>
+            <th width="16%">Timestamp</th>
+            <th width="28%">Facecount</th>
+            <th width="28%">Soundlevel</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Location</th>
+            <th>Timestamp</th>
+            <th>Facecount</th>
+            <th>Soundlevel</th>
+        </tr>
+    </tfoot>
+    <tbody>
+        <tr>
+            <td>Row 1 Data 1</td>
+            <td>Row 1 Data 2</td>
+            <td>etc</td>
+        </tr>
+        <tr>
+            <td>Row 2 Data 1</td>
+            <td>Row 2 Data 2</td>
+            <td>etc</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<br><br>
+<h3>Tilt -> flashing yellow lights during 3 seconds</h3>
+<div style='width:700px'>
+<table class="display" id="tilt">
+    <thead>
+        <tr>
+            <th width="28%">Sensor</th>
+            <th width="16%">Timestamp</th>
+            <th width="28%">Origin</th>
+            <th width="28%">State</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Sensor</th>
+            <th>Timestamp</th>
+            <th>Origin</th>
+            <th>State</th>
+        </tr>
+    </tfoot>
+    <tbody>
+        <tr>
+            <td>Row 1 Data 1</td>
+            <td>Row 1 Data 2</td>
+            <td>etc</td>
+        </tr>
+        <tr>
+            <td>Row 2 Data 1</td>
+            <td>Row 2 Data 2</td>
+            <td>etc</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<br><br>{{=HR()}}
+Go to raw {{=A('raw facecount events', _href=URL('monitor','face'))}} or
+{{=A('raw sound events', _href=URL('monitor','sound'))}}
+</body>
+</html>

@@ -28,28 +28,35 @@ particular way and in a particular format. The following events are foreseen:
 CEPengine and the mqtt broker make themselves known using mDNS/DNS-SD.
 
 Marc de Lignie, Politie IV-organisatie, COMMIT/
-July 1, 2014
+August 29, 2014
 """
 
 import java.lang
-import time, sys, threading
+import time, sys, threading, urllib, urllib2
 import avahi, paho, jycep, httpsensors, mqttsensors, eventgenerator
 import paho  # Python wrapper for mqtt-client-0.4.0.jar
 
 ENGINEURI = "CEPengine"
 SERVICENAME = "sensafety"
-ANOMALOUS_SOUND = 'AnomalousSound'
 ANOMALOUS_SOUND_PORT = 33433
 ANOMALOUS_SOUND_URL = 'http://localhost:' + str(ANOMALOUS_SOUND_PORT) +\
                       '/' + SERVICENAME
-TILT = 'Tilt'
-CONTACT = 'Contact'
+SILENT = 'Silent'
+BUSY = 'Busy'
 
-# URL where Ambient pushes mqtt events
-MQTT_BROKER_URL = "tcp://vps38114.public.cloudvps.com:1883"
+# WebMonitor URLs
+URL_SOUND = 'http://localhost:8666/SenSafety_MidTerm/eventdb/sound'
+URL_FACE = 'http://localhost:8666/SenSafety_MidTerm/eventdb/face'
+URL_TILT = 'http://localhost:8666/SenSafety_MidTerm/eventdb/tilt'
+URL_SILENT = 'http://localhost:8666/SenSafety_MidTerm/eventdb/silent'
+URL_BUSY = 'http://localhost:8666/SenSafety_MidTerm/eventdb/busy'
+
+# URL where Ambient pushes mqtt events (does not allow publish?)
+# MQTT_BROKER_URL = "tcp://vps38114.public.cloudvps.com:1883"
 # Can be used locally together with mqtt generator(s)
 # MQTT_BROKER_URL = "tcp://localhost:1883"
-
+# Can be used from the cloud when using the mqtt event generator
+MQTT_BROKER_URL = "tcp://m2m.eclipse.org:1883"
 
 class CEPengine(object):
 
@@ -70,8 +77,11 @@ class CEPengine(object):
                                 ANOMALOUS_SOUND_PORT)
         qman = QueryManager(self._cep)
         qman.addQuery(QueryAnomalousSound())  
+        qman.addQuery(QueryFacecount())  
         qman.addQuery(QueryTilt())  
         qman.addQuery(QueryContact())  
+        faceevents = httpsensors.Facecount(self._cep, 7)
+        faceevents.start()
        
     def _avahiBrowse(self):
         # Get zeroconf info for connection with Mqtt broker
@@ -98,19 +108,23 @@ class QueryManager(object):
     # EPL queries are based on the Esper 4.9.0 Reference
 
     def __init__(self, cep):
-        self.cep = cep
-    
+        self._cep = cep
+
     def addQuery(self, queryobject):
+        try:
+            (eventtype, eventfields) = queryobject.getResultEvent()
+            self._cep.define_event(eventtype, eventfields)
+        except  AttributeError:
+            pass    # Event definitions absent for filtering queries
         for query in queryobject.getQueries(): 
-            stmt = self.cep.create_query(query)
+            stmt = self._cep.create_query(query)
             stmt.addListener(jycep.EventListener(queryobject.listener))
  
 
 class QueryAnomalousSound(object):
-    # For now: just print incoming events after passing through the cep engine
 
     def getQueries(self):
-        return ['select * from %s' % ANOMALOUS_SOUND]
+        return ['select * from %s' % httpsensors.ANOMALOUS_SOUND]
 
     def listener(self, data_new, data_old):
         if not isinstance(data_new, list):
@@ -118,26 +132,91 @@ class QueryAnomalousSound(object):
         for item in data_new:
             print 'Anomalous sound event passed through CEPengine:\n', \
                   str(item)[:160]
+            # Post to Web monitor
+            eventdata = {
+                'mac': item['MAC'],
+                'timestamp': item['timestamp'],
+                'soundlevel': item['probability']}
+            eventurl = URL_SOUND + urllib.urlencode(eventdata)
+            urllib2.urlopen(eventurl)
 
 
-class QueryTilt(object):
-    # For now: just print incoming events after passing through the cep engine
+class QueryFacecount(object):
+
+    def getResultEvent(self):
+        return (httpsensors.FACECOUNT, {
+            'dataset': java.lang.String,
+            'timestamp': java.lang.String, # ISO 8601
+            'facecount': java.lang.Integer })
 
     def getQueries(self):
-        return ['select * from %s' % TILT]
+        return ['select * from %s' % httpsensors.FACECOUNT]
+
+    def listener(self, data_new, data_old):
+        if not isinstance(data_new, list):
+            data_new = [data_new]
+        for item in data_new:
+            print 'Facecount event passed through CEPengine:\n', \
+                  str(item)[:160]
+            # Post to Web monitor
+            eventdata = {
+                'dataset': item['dataset'],
+                'timestamp': item['timestamp'],
+                'facecount': item['facecount']}
+            urllib2.urlopen(URL_FACE, urllib.urlencode(eventdata))
+
+""" Event generator sends directly to WebMonitor
+class QuerySilent(object):
+
+    def getResultEvent(self):
+        return (SILENT, {
+            'dataset': java.lang.String,
+            'timestamp': java.lang.String, # ISO 8601
+            'facecount': java.lang.Integer })
+
+    def getQueries(self):
+        return ['select * from %s' % SILENT]
+
+    def listener(self, data_new, data_old):
+        if not isinstance(data_new, list):
+            data_new = [data_new]
+        for item in data_new:
+            print 'Silent event passed through CEPengine:\n', \
+                  str(item)[:160]
+            # Post to Web monitor
+            eventdata = {
+                'location': item['location'],
+                'timestamp': item['timestamp'],
+                'facecount': item['facecount'],
+                'soundlevel': item['silent']}
+            eventurl = URL_SILENT + urllib.urlencode(eventdata)
+            urllib2.urlopen(eventurl)
+"""
+
+class QueryTilt(object):
+
+    def getQueries(self):
+        return ['select * from %s' % mqttsensors.TILT]
 
     def listener(self, data_new, data_old):
         if not isinstance(data_new, list):
             data_new = [data_new]
         for item in data_new:
             print 'Tilt event passed through CEPengine:\n', str(item)[:320]
-
+            # Post to Web monitor
+            eventdata = {
+                'sensor_id': item['sensor_id'],
+                'timestamp': item['timestamp'],
+                'event': item['event'],
+                'state': item['state']}
+            urllib2.urlopen(URL_TILT, urllib.urlencode(eventdata))
+            
 
 class QueryContact(object):
     # For now: just print incoming events after passing through the cep engine
 
     def getQueries(self):
-        return ['select * from %s' % CONTACT]
+        return ['select * from %s' % mqttsensors.CONTACT]
 
     def listener(self, data_new, data_old):
         if not isinstance(data_new, list):
@@ -149,16 +228,23 @@ class QueryContact(object):
 if __name__ == "__main__":
     cep = CEPengine()
     # Random events for initial testing
-    soundevents = eventgenerator.AnomalousSound(ANOMALOUS_SOUND_URL, 30)
-    soundevents.start()
-#    tiltevents = eventgenerator.Tilt(cep.pahoclient, 3)
-#    tiltevents.start()
-    ilpevents = eventgenerator.ILP_control(cep.pahoclient, 30)
-    ilpevents.start()
+#    soundevents = eventgenerator.AnomalousSound(ANOMALOUS_SOUND_URL, 30)
+#    soundevents.start()
+    tiltevents = eventgenerator.Tilt(cep.pahoclient, 30)
+    tiltevents.start()
+    silentevents = eventgenerator.Silent(URL_SILENT, 10) 
+    silentevents.start()
+    busyevents = eventgenerator.Busy(URL_BUSY, 10) 
+    busyevents.start()
+#    ilpevents = eventgenerator.ILP_control(cep.pahoclient, 30)
+#    ilpevents.start()
     time.sleep(300)
-    soundevents.stop()
-#    tiltevents.stop()
-    ilpevents.stop()
+#    soundevents.stop()
+    cep.faceevents.stop()
+    tiltevents.stop()
+    silentevents.stop()
+    busyevents.stop()
+#    ilpevents.stop()
     cep.pahoclient.close()  # Required for jython to exit
    
 

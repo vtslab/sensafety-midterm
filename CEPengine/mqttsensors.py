@@ -18,6 +18,8 @@ MQTTQOS = 1
 # Topics: 'owner/net_id/class/sub_class/function/type/device_id'
 TILTTOPIC = '+/+/Motion/Tilt/MotionStatus/ALERT/+'  
 CONTACTTOPIC = '+/+/Contact/OpenClose/State/+/+' 
+TILT = 'Tilt'
+CONTACT = 'Contact'
 
 
 class MqttTiltSensor(object):
@@ -54,7 +56,7 @@ class MqttTiltSensor(object):
                 tiltEvent[atts.item(0).getNodeValue()] = node1.getTextContent()
         except Exception, e:
             print "Error in SenSafety/mqtt xml format, " + str(e)
-        tiltEvent['sensor-id'] = topic.split('/')[-1]
+        tiltEvent['sensor_id'] = topic.split('/')[-1]
         #print 'tiltCallback reached: ', tiltEvent
         self._cep.send_event(tiltEvent, self.eventspecs['type'])
         

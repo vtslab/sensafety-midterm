@@ -4,7 +4,7 @@
 # Adapted from org.eclipse.paho.sample.mqttv3app
 
 # Marc de Lignie, Politie IV-organisatie
-# July 1, 2014
+# August 29, 2014
 
 import java.lang
 import sys, time, re
@@ -115,7 +115,8 @@ if __name__ == "__main__":
     paho = PahoClient("tcp://m2m.eclipse.org:1883")
 #    paho = PahoClient("tcp://test.mosquitto.org:1883")  # too many messages?
 #    paho = PahoClient("tcp://localhost:1883") # Assumes local mosquitto broker
-    paho.subscribe("#", 1)
+    paho.subscribe("SenSafety/test", 1)
+    time.sleep(1)
     paho.publish("SenSafety/test", 1, "Test")
-    time.sleep(1)  # Increase to also publish with mosquitto_pub in shell
+    time.sleep(5)  # Increase to also publish with mosquitto_pub in shell
     paho.close()  # Otherwise python does not exit
