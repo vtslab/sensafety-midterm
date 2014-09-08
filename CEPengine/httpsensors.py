@@ -6,7 +6,7 @@
 # registered type
 
 # Marc de Lignie, Politie IV-organisatie
-# August 29, 2014
+# September 5, 2014
 
 
 import java.lang
@@ -16,20 +16,16 @@ from com.espertech.esperio.http.config import ConfigurationHTTPAdapter
 from com.espertech.esperio.http.config import Service
 from com.espertech.esperio.http.config import GetHandler
 
-ANOMALOUS_SOUND = 'AnomalousSound'
 FACECOUNT = 'Facecount'
 
 
 class HttpSensors(object):
 
     eventtypes = {
-        'AnomalousSound':    { 
-            'timestamp': java.lang.String, # ISO 8601:
-                                           # 2014-04-10T11:22:33.44+02:00
-            'geoNB': java.lang.Float,      # ISO 6709: 52.12345
-            'geoEL': java.lang.Float,      # ISO 6709:  5.12345
-            'MAC': java.lang.String,
-            'probability': java.lang.Float },
+        FACECOUNT:    { 
+            'timestamp': java.lang.String, # ISO 8601
+            'dataset': java.lang.String,
+            'facecount': java.lang.Integer }
         }
 
     def __init__(self, cep, engineURI, url, port):
@@ -86,4 +82,3 @@ class Facecount(threading.Thread):
         #print 'Facecount event posted'
 
      
-

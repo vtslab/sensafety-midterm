@@ -1,6 +1,7 @@
 #!/bin/sh
 
 CLASSPATH=lib/*:$CLASSPATH
+CLASSPATH="../Noldus-NCF-0.10/NCF/0.10/Java/Lib/Noldus Communication Framework.jar":$CLASSPATH
 export CLASSPATH
 
 arch=`uname -m`

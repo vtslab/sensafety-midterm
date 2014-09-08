@@ -20,36 +20,44 @@ CEPengine assumes the presence of sensors that publish sensing events in a
 particular way and in a particular format. The following events are foreseen:
  - fence breach events; published to an mqtt broker in a known format
  - fence tilt events; published to an mqtt broker in a known format
- - anomalous sound events; CEPengine has a http interface to which sound
-   sensors can post events in a known format
- - face count events;  CEPengine has a http interface to which face counting
+ - anomalous sound events; CEPengine has a Noldus Communication Frame interface 
+   to which sound sensors can post events in a known format
+ - facecount events;  CEPengine has a http interface to which face counting
    cameras can post events in a known format
 
 CEPengine and the mqtt broker make themselves known using mDNS/DNS-SD.
 
 Marc de Lignie, Politie IV-organisatie, COMMIT/
-August 29, 2014
+September 8, 2014
 """
 
 import java.lang
 import time, sys, threading, urllib, urllib2
-import avahi, paho, jycep, httpsensors, mqttsensors, eventgenerator
+import avahi, paho, jycep, httpsensors, mqttsensors, ncfsensors, eventgenerator
 import paho  # Python wrapper for mqtt-client-0.4.0.jar
+from ncfsensors import ANOMALOUS_SOUND
 
 ENGINEURI = "CEPengine"
-SERVICENAME = "sensafety"
-ANOMALOUS_SOUND_PORT = 33433
-ANOMALOUS_SOUND_URL = 'http://localhost:' + str(ANOMALOUS_SOUND_PORT) +\
-                      '/' + SERVICENAME
+HTTPSENSOR_SERVICENAME = "sensafety"
+HTTPSENSOR_PORT = 33433
+HTTPSENSOR_URL = 'http://localhost:' + str(HTTPSENSOR_PORT) +\
+                      '/' + HTTPSENSOR_SERVICENAME
+NCFHOST = 'localhost'
+NCFPORT = 5672
+NCFUSERNAME = 'guest'
+NCFPASSWORD = 'guest'
+NCFVIRTUALHOST = ""
+NCFSOUND_EXCHANGE = 'SenSafety_Sweet'
+
 SILENT = 'Silent'
 BUSY = 'Busy'
 
 # WebMonitor URLs
-URL_SOUND = 'http://localhost:8666/SenSafety_MidTerm/eventdb/sound'
-URL_FACE = 'http://localhost:8666/SenSafety_MidTerm/eventdb/face'
-URL_TILT = 'http://localhost:8666/SenSafety_MidTerm/eventdb/tilt'
-URL_SILENT = 'http://localhost:8666/SenSafety_MidTerm/eventdb/silent'
-URL_BUSY = 'http://localhost:8666/SenSafety_MidTerm/eventdb/busy'
+URL_SOUND = 'http://localhost:8555/SenSafety_MidTerm/eventdb/sound'
+URL_FACE = 'http://localhost:8555/SenSafety_MidTerm/eventdb/face'
+URL_TILT = 'http://localhost:8555/SenSafety_MidTerm/eventdb/tilt'
+URL_SILENT = 'http://localhost:8555/SenSafety_MidTerm/eventdb/silent'
+URL_BUSY = 'http://localhost:8555/SenSafety_MidTerm/eventdb/busy'
 
 # URL where Ambient pushes mqtt events (does not allow publish?)
 # MQTT_BROKER_URL = "tcp://vps38114.public.cloudvps.com:1883"
@@ -62,19 +70,21 @@ class CEPengine(object):
 
     def __init__(self):
         self._cep = jycep.EsperEngine(ENGINEURI)
-        try:
-            self._avahiBrowse() # Presently not used by CEPengine
-        except:
-            print "No avahi-daemon running on localhost"
-        # Todo: get mqtt broker url from avahi
+        #try: Future work: plug and play setup with Avahi
+        #    self._avahiBrowse() # Presently not used by CEPengine
+        #except:
+        #    print "No avahi-daemon running on localhost"
         try:
             self.pahoclient = paho.PahoClient(MQTT_BROKER_URL)
             mqttsensors.MqttTiltSensor(self._cep, self.pahoclient)
             mqttsensors.MqttContactSensor(self._cep, self.pahoclient)
         except:
             print "No mqtt broker listening on localhost port 1883"
-        httpsensors.HttpSensors(self._cep, ENGINEURI, ANOMALOUS_SOUND_URL, 
-                                ANOMALOUS_SOUND_PORT)
+        httpsensors.HttpSensors(self._cep, ENGINEURI, HTTPSENSOR_URL, 
+                                HTTPSENSOR_PORT)
+        self.NcfSoundSensor = ncfsensors.NcfSoundSensor(self._cep, 
+                NCFHOST, NCFPORT, NCFUSERNAME, NCFPASSWORD, 
+                NCFVIRTUALHOST, NCFSOUND_EXCHANGE)
         qman = QueryManager(self._cep)
         qman.addQuery(QueryAnomalousSound())  
         qman.addQuery(QueryFacecount())  
@@ -83,7 +93,7 @@ class CEPengine(object):
         faceevents = httpsensors.Facecount(self._cep, 7)
         faceevents.start()
        
-    def _avahiBrowse(self):
+    """def _avahiBrowse(self):
         # Get zeroconf info for connection with Mqtt broker
         b1 = avahi.ServiceBrowser("_mqtt._tcp")
         time.sleep(1) # Time delay for browsing services
@@ -101,7 +111,7 @@ class CEPengine(object):
         if len(self._cocoonservices) == 0:
             print "No Cocoon service advertized with mDNS/DNS-SD"
         else:
-            print "Cocoon service(s):\n", self._cocoonservices
+            print "Cocoon service(s):\n", self._cocoonservices"""
         
 
 class QueryManager(object):
@@ -124,7 +134,7 @@ class QueryManager(object):
 class QueryAnomalousSound(object):
 
     def getQueries(self):
-        return ['select * from %s' % httpsensors.ANOMALOUS_SOUND]
+        return ['select * from %s' % ANOMALOUS_SOUND]
 
     def listener(self, data_new, data_old):
         if not isinstance(data_new, list):
@@ -228,18 +238,18 @@ class QueryContact(object):
 if __name__ == "__main__":
     cep = CEPengine()
     # Random events for initial testing
-#    soundevents = eventgenerator.AnomalousSound(ANOMALOUS_SOUND_URL, 30)
-#    soundevents.start()
+    soundevents = eventgenerator.AnomalousSound(3, NCFSOUND_EXCHANGE)
+    soundevents.start()
     tiltevents = eventgenerator.Tilt(cep.pahoclient, 30)
     tiltevents.start()
-    silentevents = eventgenerator.Silent(URL_SILENT, 10) 
+    silentevents = eventgenerator.Silent(URL_SILENT, 30) 
     silentevents.start()
-    busyevents = eventgenerator.Busy(URL_BUSY, 10) 
+    busyevents = eventgenerator.Busy(URL_BUSY, 30) 
     busyevents.start()
 #    ilpevents = eventgenerator.ILP_control(cep.pahoclient, 30)
 #    ilpevents.start()
     time.sleep(300)
-#    soundevents.stop()
+    soundevents.stop()
     cep.faceevents.stop()
     tiltevents.stop()
     silentevents.stop()

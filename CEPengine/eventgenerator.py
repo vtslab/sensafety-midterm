@@ -5,44 +5,43 @@
 # The module eventgenerator provides a few types of random events for testing
 
 # Marc de Lignie, Politie IV-organisatie, COMMIT/
-# August 27, 2014
+# Sept 8, 2014
 
-import java.lang
 import random, time, urllib, urllib2, threading
-from httpsensors import ANOMALOUS_SOUND
+import simplejson as json
+import nl.noldus.nmf.NCNmfProducer as NCNmfProducer
+import nl.noldus.nmf.NCNmfTypes as NCNmfTypes
 from mqttsensors import TILTTOPIC
 
 ILPTOPIC = 'ilp'
 
 class AnomalousSound(threading.Thread):
-    def __init__(self, url, interval):
+    def __init__(self, interval, exchange):
         threading.Thread.__init__(self)
-        self._url = url + '?stream=' + ANOMALOUS_SOUND + '&'
         self._interval = interval
         self._stop = threading.Event()
+        self.producer = NCNmfProducer()
+        self.producer.Open("127.0.0.1", 5672, "guest", "guest", "")
+        self.producer.Bind(
+            NCNmfTypes.EExchangeType.eExchangeTypeFanout, exchange)
 
     def stop(self):
         self._stop.set()
     
     def run(self):
-        print 'Http anomalous sound message generator started'
+        print 'AMQP anomalous sound message generator started'
         while not self._stop.isSet():
             self.postEvent()
             time.sleep(2. * self._interval * random.random())
             
     def postEvent(self):
         eventdata = {
-            'timestamp': '2014-04-10T11:22:33.44+02:00', # ISO 8601
-            'geoNB': '52.12345',                         # ISO 6709
-            'geoEL': '5.12345',
-            'MAC': '01-23-45-67-89-ab',
-            'probability': 33 }
-        # Posts on the http interface to be used by Viet Duc's Sound app
-        # urlencode converts ':' into '%3A'
-        # Events can also be posted manually using an ordinary browser
-        eventurl = self._url + urllib.urlencode(eventdata)
-        urllib2.urlopen(eventurl)
-        #print 'Anomalous sound event posted'
+            "message":       "Sweet sound event",
+            "id":            "00:11:22:33:44:AF",
+             "soundLevel":    "0.123" }
+        # Posts to the local RabbitMQ server using Noldus NCF
+        self.producer.Publish(json.dumps(eventdata), "");
+        print 'Anomalous sound event posted'
 
      
 class Tilt(threading.Thread):
