@@ -56,11 +56,15 @@ class FaceCount(object):
         # Simple xml structure can be parsed with the standard library
         nframe = xmlstr.count('<frame ')
         nid = xmlstr.count('person id=')
+        if nframe > 0:
+            nface = float(nid) / nframe
+        else:
+            nface = 0
         return {
             'timestamp': time.strftime("%Y-%m-%dT%H:%M:%S",   # ISO 8601
                                        time.localtime(thistime)),
             'cam': self._mac,
-            'facecount': float(nid) / nframe
+            'facecount': nface
             }
 
     def _postData(self, eventdict):
