@@ -7,3 +7,4 @@
 # ignore local web2py files
 WebMonitor/databases/*
 WebMonitor/sessions/*
+WebMonitor/errors/*

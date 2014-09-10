@@ -5,13 +5,14 @@
 # The module eventgenerator provides a few types of random events for testing
 
 # Marc de Lignie, Politie IV-organisatie, COMMIT/
-# Sept 8, 2014
+# Sept 10, 2014
 
 import random, time, urllib, urllib2, threading
 import simplejson as json
 import nl.noldus.nmf.NCNmfProducer as NCNmfProducer
 import nl.noldus.nmf.NCNmfTypes as NCNmfTypes
 from mqttsensors import TILTTOPIC
+from httpsensors import FACECOUNT
 
 ILPTOPIC = 'ilp'
 
@@ -44,6 +45,38 @@ class AnomalousSound(threading.Thread):
         print 'Anomalous sound event posted'
 
      
+class Facecount(threading.Thread):
+    """
+    Facecount will poll facecount events from a web server.
+    The current implementation only acts as event generator.
+    """
+
+    def __init__(self, url, interval):
+        threading.Thread.__init__(self)
+        self._url = url + '?stream=' + FACECOUNT + '&'
+        self._interval = interval
+        self._stop = threading.Event()
+
+    def stop(self):
+        self._stop.set()
+    
+    def run(self):
+        print 'Facecount message generator started'
+        while not self._stop.isSet():
+            self.postEvent()
+            time.sleep(2. * self._interval * random.random())
+            
+    def postEvent(self):
+        # Can be converted into a polling engine of the facecount database
+        print 'Facecount event generated'
+        eventdict = {
+            'timestamp': '2014-04-10T11:22:33.44+02:00', # ISO 8601
+            'mac': '00:11:22:33:44:FF',
+            'facecount': 8 }
+        eventurl = self._url + urllib.urlencode(eventdict)
+        urllib2.urlopen(eventurl)
+
+
 class Tilt(threading.Thread):
 
     def __init__(self, pahoclient, interval):

@@ -40,6 +40,7 @@ class MqttTiltSensor(object):
         self._cep.define_event(self.eventspecs['type'], 
                                self.eventspecs['fields'])
         pahoclient.subscribe(TILTTOPIC, MQTTQOS, self.tiltCallback)
+        print 'Tilt sensor initialized (MQTT)'
         
     def tiltCallback(self, topic, message):
         tiltEvent = {'name': 'Motion/Tilt/MotionStatus'}
@@ -78,6 +79,7 @@ class MqttContactSensor(object):
         self._cep.define_event(self.eventspecs['type'], 
                                self.eventspecs['fields'])
         pahoclient.subscribe(CONTACTTOPIC, MQTTQOS, self.contactCallback)
+        print 'Contact sensor initialized (MQTT)'
         
     def contactCallback(self, topic, message):
         contactEvent = {'name': 'Contact/OpenClose/State'}

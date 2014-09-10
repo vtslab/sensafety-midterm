@@ -40,7 +40,7 @@ class NcfSoundSensor(NINmfConsumeString, NINmfShutdown) :
         # Bind to the specified Exchange and create an anonymous queue.
         self.consumer.Bind(NCNmfTypes.EExchangeType.eExchangeTypeFanout, 
                            SOUND_EXCHANGE, "", "")
-        print 'NcfSoundSensor initialized'
+        print 'Sound sensors initialized (NCF AMQP)'
     
     def _registerNcfEvents(self, eventtypes):
         for eventtype in self.eventtypes.keys():
