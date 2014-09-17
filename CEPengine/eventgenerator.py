@@ -5,7 +5,7 @@
 # The module eventgenerator provides a few types of random events for testing
 
 # Marc de Lignie, Politie IV-organisatie, COMMIT/
-# Sept 10, 2014
+# Sept 17, 2014
 
 import random, time, urllib, urllib2, threading
 import simplejson as json
@@ -14,7 +14,6 @@ import nl.noldus.nmf.NCNmfTypes as NCNmfTypes
 from mqttsensors import TILTTOPIC
 from httpsensors import FACECOUNT
 
-ILPTOPIC = 'ilp'
 
 class AnomalousSound(threading.Thread):
     def __init__(self, interval, exchange):
@@ -165,33 +164,26 @@ class Busy(threading.Thread):
         print 'Busy event sent to WebMonitor'
 
 
-class ILP_control(threading.Thread):
+class ILP(threading.Thread):
 
-    def __init__(self, pahoclient, interval):
+    def __init__(self, pahoclient, interval, ilpclient):
         threading.Thread.__init__(self)
         self._pahoclient = pahoclient
         self._interval = interval
+        self._ilpclient = ilpclient
         self._stop = threading.Event()
 
     def stop(self):
         self._stop.set()
     
     def run(self):
-        print 'Mqtt ILP_control message generator started'
+        print 'Mqtt ILP control message generator started'
+        time.sleep(5)
+        self._ilpclient.tilt()
+        time.sleep(5)
+        self._ilpclient.silent()
         while not self._stop.isSet():
-            self.postEvent()
+            self._ilpclient.setILPS(20, 0xAA3344, 20)
             time.sleep(2. * self._interval * random.random())
-
-    def postEvent(self):
-        self._pahoclient.publish(ILPTOPIC, 1, 
-            ''.join(['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
-            '<Payload driver_version="1" request_id="220">',
-            '<Parameter name="timestamp">2014-03-28T07:11:33+00:00</Parameter>',
-            '<Parameter name="direction">50</Parameter>',
-            '<Parameter name="intensity">50</Parameter>',
-            '<Parameter name="color">0x33AA44</Parameter>',
-            '</Payload>']))
-        print 'Mqtt message sent on topic ' + ILPTOPIC
-
 
 

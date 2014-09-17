@@ -89,7 +89,7 @@ db.define_table(
 
 db.define_table(
     'face',
-    Field('dataset'),
+    Field('mac'),
     Field('eventtime'),
     Field('facecount', 'integer')
     )

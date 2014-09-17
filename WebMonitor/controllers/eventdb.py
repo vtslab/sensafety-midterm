@@ -16,7 +16,7 @@ def tilt():  # Accept and store tilt events
 def face():  # Accept and store facecount events
     pv = request.post_vars
     db.face.insert(**{
-        'dataset': pv.dataset,
+        'mac': pv.mac,
         'eventtime': pv.timestamp,
         'facecount': pv.facecount})
     return str(pv)  # Echo posted parameters

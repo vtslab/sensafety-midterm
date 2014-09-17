@@ -35,7 +35,6 @@ class PahoClient(MqttCallback):
             self._client.connect(conopts)
         except MqttException, e:
             print str(e)
-            sys.exit(1)
         self._destinations = {}
 
     def close(self):
@@ -55,7 +54,10 @@ class PahoClient(MqttCallback):
         if topicName.find('#') < (len(topicName) - 1) and \
            topicName.find('#') > -1:
             raise ValueError('# wildcard only supported as final character')
-        self._client.subscribe(topicName, qos)
+        try:
+            self._client.subscribe(topicName, qos)
+        except:
+            print "Attempting mqtt subscribe after client disconnect"      
         topicName = topicName.replace('//','/+/').replace('//','/+/')
         regex = '^' + topicName.replace('+', '[^/\s]+'
                                 ).replace('#', '[^\s]+') + '$'
@@ -77,7 +79,7 @@ class PahoClient(MqttCallback):
         try:
             self._client.publish(topicName, message)
         except:
-            print "Trying mqtt publish after client disconnect
+            print "Attempting mqtt publish after client disconnect"
 
     def _topicmatch(self, topic):
         for regex in self._destinations:

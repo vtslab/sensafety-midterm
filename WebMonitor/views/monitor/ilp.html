@@ -1,8 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head>   
-    <link href="{{=URL('static','css/jquery.dataTables.css')}}" rel="stylesheet" type="text/css">
+<head>  
+    <link href="{{=URL('static','timeglider_version_1.0.2/css/jquery-ui-1.10.3.custom.css')}}"
+          rel="stylesheet" type="text/css">
+    <link href="{{=URL('static','timeglider_version_1.0.2/timeglider/Timeglider.css')}}"
+          rel="stylesheet" type="text/css">
+    <link href="{{=URL('static','timeglider_version_1.0.2/timeglider/timeglider.datepicker.css')}}" 
+          rel="stylesheet" type="text/css"> 
+    <link href="{{=URL('static','css/jquery.dataTables.css')}}" 
+          rel="stylesheet" type="text/css">
     <script src="{{=URL('static','js/jquery.js')}}"></script>
+    <script src="{{=URL('static','timeglider_version_1.0.2/js/underscore-min.js')}}"></script>
+    <script src="{{=URL('static','timeglider_version_1.0.2/js/backbone-min.js')}}"></script>
+    <script src="{{=URL('static','timeglider_version_1.0.2/js/json2.js')}}"></script>
+    <script src="{{=URL('static','timeglider_version_1.0.2/js/jquery.tmpl.js')}}"></script>
+    <script src="{{=URL('static','timeglider_version_1.0.2/js/ba-tinyPubSub.js')}}"></script>
+    <script src="{{=URL('static','timeglider_version_1.0.2/js/jquery.mousewheel.js')}}"></script>
+    <script src="{{=URL('static','timeglider_version_1.0.2/js/jquery.ui.ipad.js')}}"></script>
+    <script src="{{=URL('static','timeglider_version_1.0.2/js/globalize.js')}}"></script>	
+    <script src="{{=URL('static','timeglider_version_1.0.2/js/ba-debug.min.js')}}"></script>
+    <script src="{{=URL('static','timeglider_version_1.0.2/js/jquery-ui-1.10.3.custom.min.js')}}"></script>
+    <script src="{{=URL('static','timeglider_version_1.0.2/timeglider/timeglider-1.0.1.min.js')}}"></script>
     <script src="{{=URL('static','js/jquery.dataTables.min.js')}}"></script>
     <script src="{{=URL('static','js/dataTables.fnReloadAjax.js')}}"></script>
     <script type="text/javascript">
@@ -33,75 +51,93 @@
             }, 5000);	            
         } );
     </script>
+    <!--    setInterval(function () {alert("Hello")}, 10000);
+    myVar=setTimeout("javascript function", milliseconds); -->
 </head>
 <body>
-<h1>Intelligent Lamp Post controlling events</h1>
-<h3>Silent -> moving lights during 8 seconds</h3>
-<div style='width:700px'>
-<table id="silent">
-    <thead>
-        <tr>
-            <th width="28%">Location</th>
-            <th width="16%">Timestamp</th>
-            <th width="28%">Facecount</th>
-            <th width="28%">Soundlevel</th>
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            <th>Location</th>
-            <th>Timestamp</th>
-            <th>Facecount</th>
-            <th>Soundlevel</th>
-        </tr>
-    </tfoot>
-    <tbody>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>etc</td>
-        </tr>
-        <tr>
-            <td>Row 2 Data 1</td>
-            <td>Row 2 Data 2</td>
-            <td>etc</td>
-        </tr>
-    </tbody>
-</table>
-</div>
-<br><br>
-<h3>Busy -> warm/reddisch lighting conditions</h3>
-<div style='width:700px'>
-<table id="busy">
-    <thead>
-        <tr>
-            <th width="28%">Location</th>
-            <th width="16%">Timestamp</th>
-            <th width="28%">Facecount</th>
-            <th width="28%">Soundlevel</th>
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            <th>Location</th>
-            <th>Timestamp</th>
-            <th>Facecount</th>
-            <th>Soundlevel</th>
-        </tr>
-    </tfoot>
-    <tbody>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>etc</td>
-        </tr>
-        <tr>
-            <td>Row 2 Data 1</td>
-            <td>Row 2 Data 2</td>
-            <td>etc</td>
-        </tr>
-    </tbody>
-</table>
+<h1>SenSafety - Intelligent Lamp Post controlling events
+    <img id="COMMIT" src="{{=URL('static','images/COMMIT_logo_RGB.png')}}"
+         style="margin-left:100px;width:10%;vertical-align: -20px">
+</h1>
+<div id='timeline_wrapper' style='width:1240px;height:500px;margin:0px;margin-bottom:0'></div>
+    <script type="text/javascript">
+        $(document).ready(function () { 
+              var tg1 = $("#timeline_wrapper").timeline({
+                 /*"data_source":"{{=URL('static','presentation.json')}}",*/
+                 "data_source":"{{=URL('static','ilpgenerated.json')}}",
+                 /*"data_source":"{{=URL('monitor','timeline')}}",*/
+                 "min_zoom":1,
+                 "max_zoom":50, 
+             });
+           });   
+    </script>
+<div style='width:1240px;height:700px'>
+    <div style='width:580px;float:left'>
+    <h3>Silent -> moving lights during 8 seconds</h3>
+    <table id="silent">
+        <thead>
+            <tr>
+                <th width="28%">Location</th>
+                <th width="16%">Timestamp</th>
+                <th width="28%">Facecount</th>
+                <th width="28%">Soundlevel</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Location</th>
+                <th>Timestamp</th>
+                <th>Facecount</th>
+                <th>Soundlevel</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+                <td>etc</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+                <td>etc</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <div style='width:580px;float:right'>
+    <h3>Busy -> warm/reddisch lighting conditions</h3>
+    <table id="busy">
+        <thead>
+            <tr>
+                <th width="28%">Location</th>
+                <th width="16%">Timestamp</th>
+                <th width="28%">Facecount</th>
+                <th width="28%">Soundlevel</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Location</th>
+                <th>Timestamp</th>
+                <th>Facecount</th>
+                <th>Soundlevel</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+                <td>etc</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+                <td>etc</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
 </div>
 <br><br>
 <h3>Tilt -> flashing yellow lights during 3 seconds</h3>

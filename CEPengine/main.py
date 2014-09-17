@@ -28,14 +28,13 @@ particular way and in a particular format. The following events are foreseen:
 CEPengine and the mqtt broker make themselves known using mDNS/DNS-SD.
 
 Marc de Lignie, Politie IV-organisatie, COMMIT/
-September 9, 2014
+September 17, 2014
 """
 
 import java.lang
 import time, sys, threading, urllib, urllib2
-import paho, jycep, httpsensors, mqttsensors, ncfsensors, eventgenerator
+import jycep, httpsensors, mqttsensors, ncfsensors, ilpcontrol, eventgenerator
 import paho  # Python wrapper for mqtt-client-0.4.0.jar
-from ncfsensors import ANOMALOUS_SOUND
 
 ENGINEURI = "CEPengine"
 HTTPSENSOR_PORT = 3433
@@ -44,8 +43,8 @@ NCFHOST = 'localhost'
 NCFPORT = 5672
 NCFUSERNAME = 'guest'
 NCFPASSWORD = 'guest'
-NCFVIRTUALHOST = ""
-NCFSOUND_EXCHANGE = 'SenSafety_Sweet'
+NCFVIRTUALHOST = '/'
+NCFSOUND_EXCHANGE = 'sensors_meta_data' #'SenSafety_Sweet'
 
 SILENT = 'Silent'
 BUSY = 'Busy'
@@ -57,12 +56,12 @@ URL_TILT = 'http://localhost:8555/SenSafety_MidTerm/eventdb/tilt'
 URL_SILENT = 'http://localhost:8555/SenSafety_MidTerm/eventdb/silent'
 URL_BUSY = 'http://localhost:8555/SenSafety_MidTerm/eventdb/busy'
 
-# URL where Ambient pushes mqtt events (does not allow publish?)
-# MQTT_BROKER_URL = "tcp://vps38114.public.cloudvps.com:1883"
+# URL where Ambient pushes mqtt events (does not allow publish)
+MQTT_BROKER_AMBIENT = "tcp://vps38114.public.cloudvps.com:1883"
 # Can be used locally together with mqtt generator(s)
-# MQTT_BROKER_URL = "tcp://localhost:1883"
+MQTT_BROKER_LOCAL = "tcp://localhost:1883"
 # Can be used from the cloud when using the mqtt event generator
-MQTT_BROKER_URL = "tcp://m2m.eclipse.org:1883"
+# MQTT_BROKER_URL = "tcp://m2m.eclipse.org:1883"
 
 
 class CEPengine(object):
@@ -74,11 +73,11 @@ class CEPengine(object):
         #except:
         #    print "No avahi-daemon running on localhost"
         try:
-            self.pahoclient = paho.PahoClient(MQTT_BROKER_URL)
-            mqttsensors.MqttTiltSensor(self._cep, self.pahoclient)
+            self.pahoclient_ambient = paho.PahoClient(MQTT_BROKER_AMBIENT)
+            mqttsensors.MqttTiltSensor(self._cep, self.pahoclient_ambient)
             # mqttsensors.MqttContactSensor(self._cep, self.pahoclient)
         except:
-            print "No mqtt broker listening on localhost port 1883"
+            print "Ambient mqtt broker not available"
         httpsensors.HttpSensors(self._cep, ENGINEURI, HTTPSENSOR_PORT)
         self.NcfSoundSensor = ncfsensors.NcfSoundSensor(self._cep, 
                 NCFHOST, NCFPORT, NCFUSERNAME, NCFPASSWORD, 
@@ -88,6 +87,11 @@ class CEPengine(object):
         qman.addQuery(QueryFacecount())  
         qman.addQuery(QueryTilt())  
         # qman.addQuery(QueryContact())  Not used for MidTerm demo
+        try:
+            self.pahoclient_local = paho.PahoClient(MQTT_BROKER_LOCAL)
+        except:
+            print "Local mqtt broker not available"
+        self.ilpclient = ilpcontrol.ILPControl(self.pahoclient_local)
        
     """def _avahiBrowse(self):
         # Future work: plug and play setup with Avahi
@@ -131,7 +135,7 @@ class QueryManager(object):
 class QueryAnomalousSound(object):
 
     def getQueries(self):
-        return ['select * from %s' % ANOMALOUS_SOUND]
+        return ['select * from %s' % ncfsensors.ANOMALOUS_SOUND]
 
     def listener(self, data_new, data_old):
         if not isinstance(data_new, list):
@@ -169,7 +173,7 @@ class QueryFacecount(object):
             # Post to Web monitor
             eventdata = {
                 'mac': item['mac'],
-                'timestamp': item['timestamp'],
+                'eventtime': item['timestamp'],
                 'facecount': item['facecount']}
             urllib2.urlopen(URL_FACE, urllib.urlencode(eventdata))
 
@@ -238,23 +242,24 @@ if __name__ == "__main__":
     # Random events for initial testing
 #    soundevents = eventgenerator.AnomalousSound(30, NCFSOUND_EXCHANGE)
 #    soundevents.start()
-    faceevents = eventgenerator.Facecount(HTTPSENSOR_URL, 7)
-    faceevents.start()
-#    tiltevents = eventgenerator.Tilt(cep.pahoclient, 30)
+    #faceevents = eventgenerator.Facecount(HTTPSENSOR_URL, 7)
+    #faceevents.start()
+#    tiltevents = eventgenerator.Tilt(cep.pahoclient_ambient, 30)
 #    tiltevents.start()
 #    silentevents = eventgenerator.Silent(URL_SILENT, 30) 
 #    silentevents.start()
 #    busyevents = eventgenerator.Busy(URL_BUSY, 30) 
 #    busyevents.start()
-#    ilpevents = eventgenerator.ILP_control(cep.pahoclient, 30)
-#    ilpevents.start()
+    ilpevents = eventgenerator.ILP(cep.pahoclient_local, 30, cep.ilpclient)
+    ilpevents.start()
     time.sleep(300)
 #    soundevents.stop()
-    faceevents.stop()
+    #faceevents.stop()
 #    tiltevents.stop()
 #    silentevents.stop()
 #    busyevents.stop()
-#    ilpevents.stop()
-    cep.pahoclient.close()  # Required for jython to exit
+    ilpevents.stop()
+    cep.pahoclient_local.close()  # Required for jython to exit
+    cep.pahoclient_ambient.close()  # Required for jython to exit
    
 

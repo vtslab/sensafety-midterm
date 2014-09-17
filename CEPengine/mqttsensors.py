@@ -6,7 +6,7 @@
 # registered type
 
 # Marc de Lignie, Politie IV-organisatie
-# August 25, 2014
+# September 17, 2014
 
 import java.lang
 from java.io import StringReader
@@ -40,7 +40,7 @@ class MqttTiltSensor(object):
         self._cep.define_event(self.eventspecs['type'], 
                                self.eventspecs['fields'])
         pahoclient.subscribe(TILTTOPIC, MQTTQOS, self.tiltCallback)
-        print 'Tilt sensor initialized (MQTT)'
+        print 'Tilt sensors initialized (MQTT)'
         
     def tiltCallback(self, topic, message):
         tiltEvent = {'name': 'Motion/Tilt/MotionStatus'}
