@@ -1,4 +1,4 @@
-mosquitto_sub -h vps38114.public.cloudvps.com -I Commit_ -p 1883 -u cs08 -P cs08_2014 -v -t "#" > ambient.txt
+mosquitto_sub -h vps38114.public.cloudvps.com -I Commit_ -p 1883 -u cs08 -P cs08_2014 -v -t "#" 
 
 
 cs08/00:00:00:00:00:00/Temperature/TMP102/Temperature/PUSH/10:00:00:00:2d:35 <?xml version="1.0" encoding="UTF-8" standalone="yes"?><Payload driver_version="1" request_id="53"><Parameter name="timestamp">1970-01-01T00:15:09+00:00</Parameter><Parameter name="temperature">24.25</Parameter><Parameter name="temperature_range">0</Parameter><Parameter name="temperature_change">0</Parameter><Parameter name="calibrated">0</Parameter><Parameter name="Range_alarm">0</Parameter><Parameter name="Change_alarm">0</Parameter></Payload>

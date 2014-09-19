@@ -28,7 +28,7 @@ particular way and in a particular format. The following events are foreseen:
 CEPengine and the mqtt broker make themselves known using mDNS/DNS-SD.
 
 Marc de Lignie, Politie IV-organisatie, COMMIT/
-September 17, 2014
+September 19, 2014
 """
 
 import java.lang
@@ -75,7 +75,6 @@ class CEPengine(object):
         try:
             self.pahoclient_ambient = paho.PahoClient(MQTT_BROKER_AMBIENT)
             mqttsensors.MqttTiltSensor(self._cep, self.pahoclient_ambient)
-            # mqttsensors.MqttContactSensor(self._cep, self.pahoclient)
         except:
             print "Ambient mqtt broker not available"
         httpsensors.HttpSensors(self._cep, ENGINEURI, HTTPSENSOR_PORT)
@@ -153,13 +152,6 @@ class QueryAnomalousSound(object):
 
 
 class QueryFacecount(object):
-
-# Define in httpsensors.py
-#    def getResultEvent(self):
-#        return (httpsensors.FACECOUNT, {
-#            'mac': java.lang.String,
-#            'timestamp': java.lang.String, # ISO 8601
-#            'facecount': java.lang.Float })
 
     def getQueries(self):
         return ['select * from %s' % httpsensors.FACECOUNT]
@@ -250,15 +242,15 @@ if __name__ == "__main__":
 #    silentevents.start()
 #    busyevents = eventgenerator.Busy(URL_BUSY, 30) 
 #    busyevents.start()
-    ilpevents = eventgenerator.ILP(cep.pahoclient_local, 30, cep.ilpclient)
-    ilpevents.start()
-    time.sleep(300)
+#    ilpevents = eventgenerator.ILP(cep.pahoclient_local, 30, cep.ilpclient)
+#    ilpevents.start()
+    time.sleep(30000)
 #    soundevents.stop()
     #faceevents.stop()
 #    tiltevents.stop()
 #    silentevents.stop()
 #    busyevents.stop()
-    ilpevents.stop()
+#    ilpevents.stop()
     cep.pahoclient_local.close()  # Required for jython to exit
     cep.pahoclient_ambient.close()  # Required for jython to exit
    

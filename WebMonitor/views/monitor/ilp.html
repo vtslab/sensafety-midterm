@@ -1,26 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>  
-    <link href="{{=URL('static','timeglider_version_1.0.2/css/jquery-ui-1.10.3.custom.css')}}"
-          rel="stylesheet" type="text/css">
-    <link href="{{=URL('static','timeglider_version_1.0.2/timeglider/Timeglider.css')}}"
-          rel="stylesheet" type="text/css">
-    <link href="{{=URL('static','timeglider_version_1.0.2/timeglider/timeglider.datepicker.css')}}" 
-          rel="stylesheet" type="text/css"> 
     <link href="{{=URL('static','css/jquery.dataTables.css')}}" 
           rel="stylesheet" type="text/css">
     <script src="{{=URL('static','js/jquery.js')}}"></script>
-    <script src="{{=URL('static','timeglider_version_1.0.2/js/underscore-min.js')}}"></script>
-    <script src="{{=URL('static','timeglider_version_1.0.2/js/backbone-min.js')}}"></script>
-    <script src="{{=URL('static','timeglider_version_1.0.2/js/json2.js')}}"></script>
-    <script src="{{=URL('static','timeglider_version_1.0.2/js/jquery.tmpl.js')}}"></script>
-    <script src="{{=URL('static','timeglider_version_1.0.2/js/ba-tinyPubSub.js')}}"></script>
-    <script src="{{=URL('static','timeglider_version_1.0.2/js/jquery.mousewheel.js')}}"></script>
-    <script src="{{=URL('static','timeglider_version_1.0.2/js/jquery.ui.ipad.js')}}"></script>
-    <script src="{{=URL('static','timeglider_version_1.0.2/js/globalize.js')}}"></script>	
-    <script src="{{=URL('static','timeglider_version_1.0.2/js/ba-debug.min.js')}}"></script>
-    <script src="{{=URL('static','timeglider_version_1.0.2/js/jquery-ui-1.10.3.custom.min.js')}}"></script>
-    <script src="{{=URL('static','timeglider_version_1.0.2/timeglider/timeglider-1.0.1.min.js')}}"></script>
     <script src="{{=URL('static','js/jquery.dataTables.min.js')}}"></script>
     <script src="{{=URL('static','js/dataTables.fnReloadAjax.js')}}"></script>
     <script type="text/javascript">
@@ -48,7 +31,15 @@
 	        t.fnSort( [ [1,'desc'] ] );
             setInterval(function() {
                 t.fnReloadAjax();
-            }, 5000);	            
+            }, 5000);
+            var img = new Image();
+            setInterval(function() {
+                $(img).load(function(){
+                  $('#timeline').append($(this));
+                }).attr({
+                  src: "{{=URL('monitor','timeline')}}" + '#' + new Date()
+                });
+            }, 5000);
         } );
     </script>
     <!--    setInterval(function () {alert("Hello")}, 10000);
@@ -59,18 +50,9 @@
     <img id="COMMIT" src="{{=URL('static','images/COMMIT_logo_RGB.png')}}"
          style="margin-left:100px;width:10%;vertical-align: -20px">
 </h1>
-<div id='timeline_wrapper' style='width:1240px;height:500px;margin:0px;margin-bottom:0'></div>
-    <script type="text/javascript">
-        $(document).ready(function () { 
-              var tg1 = $("#timeline_wrapper").timeline({
-                 /*"data_source":"{{=URL('static','presentation.json')}}",*/
-                 "data_source":"{{=URL('static','ilpgenerated.json')}}",
-                 /*"data_source":"{{=URL('monitor','timeline')}}",*/
-                 "min_zoom":1,
-                 "max_zoom":50, 
-             });
-           });   
-    </script>
+<div id="timeline">
+    <!--img src="{{=URL('monitor','timeline')}}"-->
+</div>
 <div style='width:1240px;height:700px'>
     <div style='width:580px;float:left'>
     <h3>Silent -> moving lights during 8 seconds</h3>
