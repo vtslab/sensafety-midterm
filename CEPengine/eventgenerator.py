@@ -5,7 +5,7 @@
 # The module eventgenerator provides a few types of random events for testing
 
 # Marc de Lignie, Politie IV-organisatie, COMMIT/
-# Sept 17, 2014
+# Sept 24, 2014
 
 import random, time, urllib, urllib2, threading
 import simplejson as json
@@ -35,10 +35,11 @@ class AnomalousSound(threading.Thread):
             time.sleep(2. * self._interval * random.random())
             
     def postEvent(self):
+        ids = ["00:11:22:33:44:AF", "44:55:66:77:88:BE"]
         eventdata = {
             "message":       "Sweet sound event",
-            "id":            "00:11:22:33:44:AF",
-             "soundLevel":    "0.123" }
+            "id":            ids[random.randrange(len(ids))],
+            "soundLevel":    "0.123" }
         # Posts to the local RabbitMQ server using Noldus NCF
         self.producer.Publish(json.dumps(eventdata), "");
         print 'Anomalous sound event posted'
@@ -69,8 +70,8 @@ class Facecount(threading.Thread):
         # Can be converted into a polling engine of the facecount database
         print 'Facecount event generated'
         eventdict = {
-            'timestamp': '2014-04-10T11:22:33.44+02:00', # ISO 8601
-            'mac': '00:11:22:33:44:FF',
+            'timestamp': '2014-04-10T11:22:33.44', # ISO 8601
+            'cam': '00:11:22:33:44:FF',
             'facecount': 8 }
         eventurl = self._url + urllib.urlencode(eventdict)
         urllib2.urlopen(eventurl)
@@ -94,10 +95,10 @@ class Tilt(threading.Thread):
             time.sleep(2. * self._interval * random.random())
 
     def postEvent(self):
-        self._pahoclient.publish('x/x/Motion/Tilt/MotionStatus/ALERT/x', 1, 
+        self._pahoclient.publish('x/x/Motion/Tilt/MotionStatus/ALERT/00:D0:AA:77:41:6C', 1, 
             ''.join(['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
             '<Payload driver_version="1" request_id="220">',
-            '<Parameter name="timestamp">2014-03-28T07:11:33+00:00</Parameter>',
+            '<Parameter name="timestamp">2014-03-28T07:11:33</Parameter>',
             '<Parameter name="previous_timestamp">',
                 '2014-03-28T07:11:32+00:00</Parameter>',
             '<Parameter name="event">MOTIONSTART</Parameter>',
@@ -127,8 +128,8 @@ class Silent(threading.Thread):
 
     def postEvent(self):
         eventdata = {
-            'timestamp': '2014-04-10T11:22:33.44+02:00', # ISO 8601
-            'location': 'Trouw Amsterdam',
+            'timestamp': '2014-04-10T11:22:33.44', # ISO 8601
+            'location': 'Trouw',
             'facecount': 1,
             'soundlevel': 5. }
         urllib2.urlopen(self._url, urllib.urlencode(eventdata))
@@ -156,8 +157,8 @@ class Busy(threading.Thread):
 
     def postEvent(self):
         eventdata = {
-            'timestamp': '2014-04-10T11:22:33.44+02:00', # ISO 8601
-            'location': 'Trouw Amsterdam',
+            'timestamp': '2014-04-10T11:22:33.44', # ISO 8601
+            'location': 'Trouw',
             'facecount': 10,
             'soundlevel': 6. }
         urllib2.urlopen(self._url, urllib.urlencode(eventdata))

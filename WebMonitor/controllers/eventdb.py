@@ -24,6 +24,7 @@ def face():  # Accept and store facecount events
 
 def sound():  # Accept and store sound events
     pv = request.post_vars
+    print str(pv)
     db.sound.insert(**{
         'mac': pv.mac,
         'eventtime': pv.timestamp,

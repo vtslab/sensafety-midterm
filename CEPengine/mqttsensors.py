@@ -6,26 +6,25 @@
 # registered type
 
 # Marc de Lignie, Politie IV-organisatie
-# September 17, 2014
+# September 24, 2014
 
 import java.lang
 from java.io import StringReader
 from javax.xml.parsers import DocumentBuilderFactory, DocumentBuilder
 from org.xml.sax import InputSource
 from org.w3c.dom import Node
+from queries import TILT, CONTACT
 
 MQTTQOS = 1
 # Topics: 'owner/net_id/class/sub_class/function/type/device_id'
 TILTTOPIC = '+/+/Motion/Tilt/MotionStatus/ALERT/+'  
 CONTACTTOPIC = '+/+/Contact/OpenClose/State/+/+' 
-TILT = 'Tilt'
-CONTACT = 'Contact'
 
 
 class MqttTiltSensor(object):
 
     eventspecs = {
-        'type': 'Tilt',
+        'type': TILT,
         'fields': {
             'sensor-id': java.lang.String,
             'timestamp': java.lang.String, # ISO 8601:

@@ -6,33 +6,33 @@
 # Noldus Communication Framework
 
 # Marc de Lignie, Politie IV-organisatie
-# September 8, 2014
+# September 24, 2014
 
 import java.lang
-import sys
+import sys, time
 sys.path.append('site-packages') 
 import simplejson as json
 import nl.noldus.nmf.NCNmfConsumer as NCNmfConsumer
 import nl.noldus.nmf.NCNmfTypes as NCNmfTypes
 import nl.noldus.nmf.NINmfConsumeString as NINmfConsumeString
 import nl.noldus.nmf.NINmfShutdown as NINmfShutdown
-
-ANOMALOUS_SOUND = 'Anomalous_Sound'
-
+from queries import ANOMALOUS_SOUND
 
 class NcfSoundSensor(NINmfConsumeString, NINmfShutdown) :
 
-    eventtypes = {
-        ANOMALOUS_SOUND:    { 
-            'message': java.lang.String,
-            'id': java.lang.String,
-            'soundLevel': java.lang.String }
+    eventspecs = {
+        'type': ANOMALOUS_SOUND,
+        'fields': {
+            'timestamp': java.lang.String,
+            'mac': java.lang.String,
+            'soundlevel': java.lang.String }
         }
 
     def __init__(self, cep, HOST, PORT, USERNAME, PASSWORD,
                        VIRTUALHOST, SOUND_EXCHANGE):
         self._cep = cep
-        self._registerNcfEvents(self.eventtypes)
+        self._cep.define_event(self.eventspecs['type'], 
+                               self.eventspecs['fields'])
         self.consumer = NCNmfConsumer()
         self.consumer.SetOnConsumeString(self)
         self.consumer.SetOnShutdown(self)
@@ -42,12 +42,15 @@ class NcfSoundSensor(NINmfConsumeString, NINmfShutdown) :
                            SOUND_EXCHANGE, "", "")
         print 'Sound sensors initialized (NCF AMQP)'
     
-    def _registerNcfEvents(self, eventtypes):
-        for eventtype in self.eventtypes.keys():
-            self._cep.define_event(eventtype, self.eventtypes[eventtype])
-     
     def OnConsumeString(self, jsonstr): 
-        print json.loads(jsonstr)
+        eventin = json.loads(jsonstr)
+        event = {
+            'mac': eventin['id'],
+            'soundlevel': eventin['soundLevel'],
+            'timestamp': time.strftime("%Y-%m-%dT%H:%M:%S", 
+                                       time.localtime(time.time()))
+            }
+        self._cep.send_event(event, self.eventspecs['type'])
 
     def OnShutdown(self):
         pass

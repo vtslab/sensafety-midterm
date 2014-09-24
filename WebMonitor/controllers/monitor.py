@@ -19,6 +19,11 @@ September 19, 2014
 # Instead of periodic polling by the views.
 # This will result in a more real-time response and less server load.
 
+import cStringIO, time
+from matplotlib import rcParams
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 def call():
     """
@@ -92,10 +97,6 @@ def busyevents():
 
 
 
-import matplotlib.pyplot as plt
-import numpy as np
-import matplotlib
-import cStringIO, time
 
 """ Example eventplot with offsets and varibale linewidths
 def timeline():
@@ -163,12 +164,38 @@ def timeline():
 
 @service.run
 def timeline():
-    matplotlib.rcParams['font.size'] = 12.0
+    todaydate = time.strftime("%Y-%m-%dT", time.localtime(time.time()))
+    tilt = []
+    for row in db().select(db.tilt.eventtime):
+        if row.eventtime[0:10] == todaydate:
+            tilt.append(row.eventtime)
+    silent = []
+    for row in db().select(db.silent.eventtime):
+        if row.eventtime[0:10] == todaydate:
+            silent.append(row.eventtime)
+    busy = []
+    for row in db().select(db.busy.eventtime):
+        if row.eventtime[0:10] == todaydate:
+            busy.append(row.eventtime)
+    sound2 = []
+    sound1 = []
+    for row in db().select(db.sound.eventtime):
+        if row.eventtime[0:10] == todaydate:
+            sound2.append(row.eventtime)
+            sound1.append(row.eventtime)
+    face = []
+    for row in db().select(db.face.eventtime):
+        if row.eventtime[0:10] == todaydate:
+            face.append(row.eventtime)
+    data = [tilt, silent, busy, sound2, sound1, face]
+    """
     np.random.seed(int(time.time()))
-    data = 100. + 0.4*np.random.random([6, 50])
+    data = [100. + 0.4*np.random.random(10),100. + 0.4*np.random.random(40),100. + 0.4*np.random.random(50),100. + 0.4*np.random.random(50),100. + 0.4*np.random.random(50),100. + 0.4*np.random.random(50)]"""
     colors = [[0, 0, 0],[0, 1, 0],[0, 0, 0],[0, 0, 1],[0, 0, 1],[0, 0, 0]]
     streamlabels = ['','Tilt', 'Silent', 'Busy','Sound anomaly','Sound anomaly','Face count']
+    rcParams['font.size'] = 8.0
 
+    #matplotParams['font.size'] = 12.0
     fig, ax = plt.subplots(figsize=(15,5))
     #ax = fig.add_subplot()
     # Facecount plot

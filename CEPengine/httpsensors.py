@@ -6,7 +6,7 @@
 # registered type
 
 # Marc de Lignie, Politie IV-organisatie
-# September 10, 2014
+# September 24, 2014
 
 
 import java.lang
@@ -15,8 +15,8 @@ from com.espertech.esperio.http import EsperIOHTTPAdapter
 from com.espertech.esperio.http.config import ConfigurationHTTPAdapter
 from com.espertech.esperio.http.config import Service
 from com.espertech.esperio.http.config import GetHandler
+from queries import FACECOUNT
 
-FACECOUNT = 'Facecount'
 HTTPSENSOR_SERVICE = "sensafety"  # Only used within the CEPengine
 HTTPSENSOR_PATTERN = "*"          # Accepts any url
 
