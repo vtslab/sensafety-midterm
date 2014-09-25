@@ -13,6 +13,6 @@ fi
 
 java -Dpython.cachedir.skip=false -Dpython.cachedir=/tmp \
      -Djava.library.path=$libpath \
-    org.python.util.jython CEPengine/main.py sensing
+    org.python.util.jython CEPengine/main.py generate
 
 exit 0

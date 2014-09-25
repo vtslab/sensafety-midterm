@@ -47,18 +47,15 @@ NCFPASSWORD = 'guest'
 NCFVIRTUALHOST = '/'
 NCFSOUND_EXCHANGE = 'sensors_meta_data' #'SenSafety_Sweet'
 
-TBATCH = 10           # Batch window for CountSounds and AvgFacecount
+TBATCH = 60           # Batch window for CountSounds and AvgFacecount
 BUSYTHRESHOLD = 100   # Config QueryBusy
+BUSYTIMEOUT = 60      # Change interval busy level
 
 # URL where Ambient pushes mqtt events (does not allow publish)
-#MQTT_BROKER_AMBIENT = "tcp://vps38114.public.cloudvps.com:1883"
-MQTT_BROKER_AMBIENT = "tcp://m2m.eclipse.org:1883"
+MQTT_BROKER_AMBIENT = "tcp://vps38114.public.cloudvps.com:1883"
 
-# Can be used locally together with mqtt generator(s)
+# URL to be used locally for publishing mqtt messages
 MQTT_BROKER_LOCAL = "tcp://localhost:1883"
-
-# Can be used from the cloud when using the mqtt event generator
-# MQTT_BROKER_.... = "tcp://m2m.eclipse.org:1883"
 
 
 class CEPengine(object):
@@ -94,7 +91,8 @@ class CEPengine(object):
             self.pahoclient_local = paho.PahoClient(MQTT_BROKER_LOCAL)
         except:
             print "Local mqtt broker not available"
-        self.ilpclient = ilpcontrol.ILPControl(self.pahoclient_local)
+        self.ilpclient = ilpcontrol.ILPControl(
+                                    self.pahoclient_local, BUSYTIMEOUT)
        
     """ Commented out for MidTerm event
         def _avahiBrowse(self):
@@ -135,106 +133,18 @@ class QueryManager(object):
             stmt = self._cep.create_query(query)
             stmt.addListener(jycep.EventListener(listener))
  
- 
-""" To be deleted, moved to queries.py
-class QueryAnomalousSound(object):
 
-    def getQueries(self):
-        return ['select * from %s' % ncfsensors.ANOMALOUS_SOUND]
-
-    def listener(self, data_new, data_old):
-        if not isinstance(data_new, list):
-            data_new = [data_new]
-        for item in data_new:
-            print 'Anomalous sound event passed through CEPengine:\n', \
-                  str(item)[:160]
-            # Post to Web monitor
-            urllib2.urlopen(URL_SOUND, urllib.urlencode(item))"""
-
-
-""" To be deleted, moved to queries.py
-class QueryFacecount(object):
-
-    def getQueries(self):
-        return ['select * from %s' % httpsensors.FACECOUNT]
-
-    def listener(self, data_new, data_old):
-        if not isinstance(data_new, list):
-            data_new = [data_new]
-        for item in data_new:
-            print 'Facecount event passed through CEPengine:\n', \
-                  str(item)[:160]
-            # Post to Web monitor (correct timestamp bug in facecount agent)
-            event = {
-                'mac': item['cam'],
-                'timestamp': time.strftime("%Y-%m-%dT%H:%M:%S", 
-                                  time.localtime(time.time())),
-                'soundlevel': item['soundlevel']
-                }
-            urllib2.urlopen(URL_FACE, urllib.urlencode(event))"""
-
-
-""" To be deleted, moved to queries.py
-class QueryBusy(object):
-
-    def getResultEvent(self):
-        return (BUSY, {
-            'cam': java.lang.String,
-            'timestamp': java.lang.String, # ISO 8601
-            'facecount': java.lang.Float,
-            'soundlevel': java.lang.Float })
-
-    def getQueries(self):
-        return ['select * from %s' % BUSY]
-
-    def listener(self, data_new, data_old):
-        if not isinstance(data_new, list):
-            data_new = [data_new]
-        for item in data_new:
-            print 'Busy event passed through CEPengine:\n', \
-                  str(item)[:160]
-            # Post to Web monitor
-            eventdata = {
-                'location': item['location'],
-                'timestamp': item['timestamp'],
-                'facecount': item['facecount'],
-                'soundlevel': item['sound']}
-            eventurl = URL_BUSY + urllib.urlencode(eventdata)
-            urllib2.urlopen(eventurl)"""
-            
-            
-""" Event generator sends directly to WebMonitor
-class QuerySilent(object):
-
-    def getResultEvent(self):
-        return (SILENT, {
-            'dataset': java.lang.String,
-            'timestamp': java.lang.String, # ISO 8601
-            'facecount': java.lang.Integer })
-
-    def getQueries(self):
-        return ['select * from %s' % SILENT]
-
-    def listener(self, data_new, data_old):
-        if not isinstance(data_new, list):
-            data_new = [data_new]
-        for item in data_new:
-            print 'Silent event passed through CEPengine:\n', \
-                  str(item)[:160]
-            # Post to Web monitor
-            eventdata = {
-                'location': item['location'],
-                'timestamp': item['timestamp'],
-                'facecount': item['facecount'],
-                'soundlevel': item['silent']}
-            eventurl = URL_SILENT + urllib.urlencode(eventdata)
-            urllib2.urlopen(eventurl)
-"""
-
-
-if __name__ == "__main__":
+if __name__ == "__main__" and sys.argv[1] == 'sensing':  # During MidTerm event
     cep = CEPengine()
-    # Random events for initial testing
+    while True:   # Do nothing until CTRL+C keyboard interrupt
+        time.sleep(3000)
+    cep.pahoclient_local.close()  # Required for jython to exit
+    cep.pahoclient_ambient.close()  # Required for jython to exit
+   
+elif __name__ == "__main__" and sys.argv[1] == 'generate':  # For testing
+    TBATCH = 10
+    MQTT_BROKER_AMBIENT = "tcp://m2m.eclipse.org:1883"
+    cep = CEPengine()
     soundevents = eventgenerator.AnomalousSound(3, NCFSOUND_EXCHANGE)
     soundevents.start()
     faceevents = eventgenerator.Facecount(HTTPSENSOR_URL, 7)

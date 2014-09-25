@@ -5,7 +5,7 @@
 # The module eventgenerator provides a few types of random events for testing
 
 # Marc de Lignie, Politie IV-organisatie, COMMIT/
-# Sept 24, 2014
+# Sept 25, 2014
 
 import random, time, urllib, urllib2, threading
 import simplejson as json
@@ -105,35 +105,6 @@ class Tilt(threading.Thread):
             '<Parameter name="state">MOTION</Parameter>',
             '</Payload>']))
         print 'Mqtt message sent on topic ' + TILTTOPIC
-
-
-class Silent(threading.Thread):
-    # Silent events will be derived events but are sent directly
-    # to the WebMonitor for now
-    
-    def __init__(self, url, interval):
-        threading.Thread.__init__(self)
-        self._url = url
-        self._interval = interval
-        self._stop = threading.Event()
-
-    def stop(self):
-        self._stop.set()
-    
-    def run(self):
-        print 'Silent event message generator started'
-        while not self._stop.isSet():
-            self.postEvent()
-            time.sleep(2. * self._interval * random.random())
-
-    def postEvent(self):
-        eventdata = {
-            'timestamp': '2014-04-10T11:22:33.44', # ISO 8601
-            'location': 'Trouw',
-            'facecount': 1,
-            'soundlevel': 5. }
-        urllib2.urlopen(self._url, urllib.urlencode(eventdata))
-        print 'Silent event sent to WebMonitor'
 
 
 class Busy(threading.Thread):

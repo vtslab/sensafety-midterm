@@ -25,6 +25,7 @@ URL_SOUND = 'http://localhost:8555/SenSafety_MidTerm/eventdb/sound'
 URL_FACE = 'http://localhost:8555/SenSafety_MidTerm/eventdb/face'
 URL_TILT = 'http://localhost:8555/SenSafety_MidTerm/eventdb/tilt'
 URL_BUSY = 'http://localhost:8555/SenSafety_MidTerm/eventdb/busy'
+URL_SILENT = 'http://localhost:8555/SenSafety_MidTerm/eventdb/silent'
 
 
 class QueryFacecount(object):

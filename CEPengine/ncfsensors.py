@@ -10,7 +10,7 @@
 
 import java.lang
 import sys, time
-sys.path.append('site-packages') 
+sys.path.append('/home/m-doit/Python/SenSafety/MidTerm/site-packages') 
 import simplejson as json
 import nl.noldus.nmf.NCNmfConsumer as NCNmfConsumer
 import nl.noldus.nmf.NCNmfTypes as NCNmfTypes
