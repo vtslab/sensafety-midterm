@@ -9,12 +9,13 @@
 # September 26, 2014
 
 import java.lang
-import urllib, urllib2
+import time, urllib, urllib2
 
 ANOMALOUS_SOUND = 'Anomalous_Sound'  #ToDo: use in query
 SOUNDGROUP = 'SoundGroup'            #ToDo: use in query
 COUNTSOUNDS = 'CountSounds'          #ToDo: use in query
 FACECOUNT = 'Facecount'
+AVGFACECOUNT = 'AvgFacecount'
 BUSY = 'Busy'
 TILT = 'Tilt'
 CONTACT = 'Contact'
@@ -32,16 +33,16 @@ class QueryFacecount(object):
         self.twindow = twindow
 
     def getResultEvent(self):
-        return (FACECOUNT, { 
+        return (AVGFACECOUNT, { 
             'timestamp': java.lang.String, # ISO 8601
             'mac': java.lang.String,
-            'facecount': java.lang.Float 
+            'avgfacecount': java.lang.Double 
             })      
 
     def getQueries(self):
         #return ['select * from %s' % FACECOUNT]
         return [' '.join(['insert into AvgFacecount',
-                'select avg(facecount) as avgfacecount',
+                'select cam as mac, avg(facecount) as avgfacecount',
                 'from %s.win:time_batch(%i sec)'%(FACECOUNT,self.twindow)]
                 )]
 
@@ -49,16 +50,18 @@ class QueryFacecount(object):
         if not isinstance(data_new, list):
             data_new = [data_new]
         for item in data_new:
-            print 'Facecount event passed through CEPengine:\n', \
-                  str(item)[:160]
+            print 'Facecount event passed through CEPengine:\n',str(item)[0:160]
             # Post to Web monitor (correct timestamp bug in facecount agent)
+            print "Facecount before post"
             event = {
-                'mac': item['cam'],
+                'mac': item['mac'],
                 'timestamp': time.strftime("%Y-%m-%dT%H:%M:%S", 
-                                  time.localtime(time.time())),
-                'soundlevel': item['soundlevel']
+                                           time.localtime(time.time())),
+                'facecount': item['avgfacecount']
                 }
+            print event
             urllib2.urlopen(URL_FACE, urllib.urlencode(event))
+            print "Facecount After urllib2"
 
 
 class QueryAnomalousSound(object):
@@ -86,7 +89,9 @@ class QueryAnomalousSound(object):
             print 'Anomalous sound event passed through CEPengine:\n', \
                   str(item)[:160]
             # Post to Web monitor
+            print "Sound before post"
             urllib2.urlopen(URL_SOUND, urllib.urlencode(item))
+            print "Sound After urllib2"
 
 
 class QueryCountSounds(object):
@@ -113,6 +118,7 @@ class QueryCountSounds(object):
         for item in data_new:
             print 'CountSounds event passed through CEPengine:\n', \
                   str(item)[:160]
+            # Not needed by Web monitor
 
 
 class QueryBusy(object):
@@ -168,16 +174,17 @@ class QueryBusy(object):
                 self._ilpclient.busy(False)
                 eventtype = 'quiet'
             # Post to Web monitor
+            print "Busy before post"
             eventdata = {
                 'eventtype':  eventtype,
                 'timestamp':  time.strftime("%Y-%m-%dT%H:%M:%S", 
                                   time.localtime(time.time())),
-                'level':      item['busylevel'],
+                'busylevel':  item['busylevel'],
                 'facecount':  item['avgfacecount'],
                 'soundlevel': (1+item['nsg1'])*(1+item['nsg2'])
                 }
-            eventurl = URL_ACTIVITY + urllib.urlencode(eventdata)
-            urllib2.urlopen(eventurl)
+            urllib2.urlopen(URL_ACTIVITY, urllib.urlencode(eventdata))
+            print "Busy After urllib2"
 
 
 class QueryTilt(object):
@@ -193,15 +200,17 @@ class QueryTilt(object):
             data_new = [data_new]
         for item in data_new:
             print 'Tilt event passed through CEPengine:\n', str(item)[:320]
-            self._ilpclient.Tilt()
+            self._ilpclient.tilt()
             # Post to Web monitor
-            eventdata = {
+            print "Tilt before post"
+            eventdata = { 
                 'sensor_id': item['sensor_id'],
                 'timestamp': item['timestamp'],
                 'event': item['event'],
                 'state': item['state']}
             if item['event'] == 'MOTIONSTART': 
                 urllib2.urlopen(URL_TILT, urllib.urlencode(eventdata))
+            print "Tilt After urllib2"
   
             
 """ Not for MidTerm event

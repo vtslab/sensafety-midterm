@@ -57,6 +57,7 @@ class MqttTiltSensor(object):
         except Exception, e:
             print "Error in SenSafety/mqtt xml format, " + str(e)
         tiltEvent['sensor_id'] = topic.split('/')[-1]
+        tiltEvent['timestamp'] = tiltEvent['timestamp'][0:19]
         #print 'tiltCallback reached: ', tiltEvent
         self._cep.send_event(tiltEvent, self.eventspecs['type'])
         

@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html>
-<head>  
-    <link href="{{=URL('static','css/jquery.dataTables.css')}}" 
-          rel="stylesheet" type="text/css">
+<head>   
+    <link href="{{=URL('static','css/jquery.dataTables.css')}}" rel="stylesheet" type="text/css">
     <script src="{{=URL('static','js/jquery.js')}}"></script>
     <script src="{{=URL('static','js/jquery.dataTables.min.js')}}"></script>
     <script src="{{=URL('static','js/dataTables.fnReloadAjax.js')}}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            s = $('#activity').dataTable( {
+            f = $('#face').dataTable( {
 	            "bProcessing": true,
-	            "sAjaxSource": "{{=URL('monitor','busyevents.json')}}"
+	            "sAjaxSource": "{{=URL('monitor','faceevents.json')}}"
             } );
-            s.fnSort( [ [1,'desc'] ] );
+            f.fnSort( [ [1,'desc'] ] );
             setInterval(function() {
-                s.fnReloadAjax();
-            }, 5000);
-	        t = $('#tilt').dataTable( {
-		        "bProcessing": true,
-		        "sAjaxSource": "{{=URL('monitor','tiltevents.json')}}"
-	        } );
-	        t.fnSort( [ [1,'desc'] ] );
-            setInterval(function() {
-                t.fnReloadAjax();
-            }, 5000);
+                f.fnReloadAjax();
+            }, 5000);         
         } );
     </script>
-    <!--    setInterval(function () {alert("Hello")}, 10000);
-    myVar=setTimeout("javascript function", milliseconds); -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            g = $('#sound').dataTable( {
+	            "bProcessing": true,
+	            "sAjaxSource": "{{=URL('monitor','soundevents.json')}}"
+            } );
+            f.fnSort( [ [1,'desc'] ] );
+            setInterval(function() {
+                g.fnReloadAjax();
+            }, 5000);         
+        } );
+    </script>
 </head>
 <body>
 <h1>SenSafety - Intelligent Lamp Post control events
@@ -36,25 +37,20 @@
 </h1>
 <div style='width:1240px;height:600px'>
     <div style='width:600px;float:left'>
-    <h3>Busy -> 3 levels of warm/reddisch lighting conditions</h3>
-    <h3>Quiet -> moving lights after 5 minutes</h3>
-    <table id="activity">
+    <h3>Raw facecount events</h3>
+    <table id="face">
         <thead>
             <tr>
-                <th>Event</th>
-                <th>Timestamp</th>
-                <th>Level</th>
-                <th>Faces</th>
-                <th>Sound</th>
+                <th width="28%">Sensor</th>
+                <th width="16%">Timestamp</th>
+                <th width="28%">Facecount</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <th>Event</th>
+                <th>Sensor</th>
                 <th>Timestamp</th>
-                <th>Level</th>
-                <th>Faces</th>
-                <th>Sound</th>
+                <th>Facecount</th>
             </tr>
         </tfoot>
         <tbody>
@@ -71,23 +67,21 @@
         </tbody>
     </table>
     </div>
-
     <div style='width:600px;float:right'>
-    <h3>Tilt -> flashing orange lights during 3 seconds</h3>
-    <h3>&zwnj;</h3>
-    <table class="display" id="tilt">
+    <h3>Raw sound events</h3>
+    <table id="sound">
         <thead>
             <tr>
-                <th width="28%">Event</th>
-                <th width="16%">Timestamp</th>
                 <th width="28%">Sensor</th>
+                <th width="16%">Timestamp</th>
+                <th width="28%">Soundlevel</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <th>Event</th>
-                <th>Timestamp</th>
                 <th>Sensor</th>
+                <th>Timestamp</th>
+                <th>Soundlevel</th>
             </tr>
         </tfoot>
         <tbody>
@@ -106,7 +100,7 @@
     </div>
 </div>
 {{=HR()}}
-Go to {{=A('ILP control event timeline', _href=URL('monitor','timeline'))}} or
-{{=A('raw facecount and sound events', _href=URL('monitor','raw'))}}
+Go to {{=A('ILP control event tables', _href=URL('monitor','ilp'))}} or
+{{=A('ILP control event timeline', _href=URL('monitor','timeline'))}}
 </body>
 </html>

@@ -50,7 +50,7 @@ NCFSOUND_EXCHANGE = 'sensors_meta_data' #'SenSafety_Sweet'
 TBATCH = 60           # Batch window for CountSounds and AvgFacecount
 BUSYTHRESHOLD = 100   # Config QueryBusy
 BUSYTIMEOUT = 60      # Change interval busy level
-MAXBUSY = 3           # Number of busy levels
+MAXBUSY = 4           # Number of busy levels
 MINQUIET = -5         # Number of silent intervals before silent scenario
 
 # URL where Ambient pushes mqtt events (does not allow publish)
@@ -84,16 +84,16 @@ class CEPengine(object):
         self.ilpclient = ilpcontrol.ILPControl(self.pahoclient_local, 
                                                BUSYTIMEOUT, MINQUIET)
         qman = QueryManager(self._cep)
-        q = QueryAnomalousSound()
-        qman.addQuery(q.getQueries(), q.listener)  
-        q = QueryCountSounds(TBATCH)
-        qman.addQuery(q.getQueries(), q.listener)  
-        q = QueryFacecount(TBATCH)
-        qman.addQuery(q.getQueries(), q.listener) 
-        q = QueryBusy(self.ilpclient, BUSYTHRESHOLD) 
-        qman.addQuery(q.getQueries(), q.listener, q.getResultEvent())  
-        q = QueryTilt(self.ilpclient)
-        qman.addQuery(q.getQueries(), q.listener)  
+        qa = QueryAnomalousSound()
+        qman.addQuery(qa.getQueries(), qa.listener)  
+        qc = QueryCountSounds(TBATCH)
+        qman.addQuery(qc.getQueries(), qc.listener)  
+        qf = QueryFacecount(TBATCH)
+        qman.addQuery(qf.getQueries(), qf.listener, qf.getResultEvent()) 
+        qb = QueryBusy(self.ilpclient, BUSYTHRESHOLD) 
+        qman.addQuery(qb.getQueries(), qb.listener, qb.getResultEvent())  
+        qt = QueryTilt(self.ilpclient)
+        qman.addQuery(qt.getQueries(), qt.listener)  
         # qman.addQuery(QueryContact())  Not used for MidTerm demo
        
     """ Commented out for MidTerm event
@@ -149,9 +149,9 @@ elif __name__ == "__main__" and sys.argv[1] == 'generate':  # For testing
     cep = CEPengine()
     soundevents = eventgenerator.AnomalousSound(3, NCFSOUND_EXCHANGE)
     soundevents.start()
-    faceevents = eventgenerator.Facecount(HTTPSENSOR_URL, 7)
+    faceevents = eventgenerator.Facecount(HTTPSENSOR_URL, 6)
     faceevents.start()
-    tiltevents = eventgenerator.Tilt(cep.pahoclient_ambient, 5)
+    tiltevents = eventgenerator.Tilt(cep.pahoclient_ambient, 12)
     tiltevents.start()
 #    ilpevents = eventgenerator.ILP(cep.pahoclient_local, 30, cep.ilpclient)
 #    ilpevents.start()

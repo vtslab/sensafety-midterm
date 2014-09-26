@@ -26,7 +26,7 @@ class HttpSensors(object):
     eventtypes = {
         FACECOUNT:    { 
             'timestamp': java.lang.String, # ISO 8601
-            'mac': java.lang.String,
+            'cam': java.lang.String,
             'facecount': java.lang.Float }
         }
 

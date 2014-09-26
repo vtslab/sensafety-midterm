@@ -53,7 +53,7 @@ def tiltevents():
     events = []
     for row in db().select(db.tilt.ALL, orderby = ~db.tilt.eventtime, 
                            limitby = ( 0, 100)):
-        events.append([row.sensor_id, row.eventtime, row.origin, row.status])
+        events.append([row.origin, row.eventtime, row.sensor_id])
     return {'aaData': events}
 
 @service.run
@@ -62,7 +62,7 @@ def faceevents():
     events = []
     for row in db().select(db.face.ALL, orderby = ~db.face.eventtime, 
                            limitby = ( 0, 100)):
-        events.append([row.dataset, row.eventtime, row.facecount])
+        events.append([row.mac, row.eventtime, row.facecount])
     return {'aaData': events}
 
 @service.run
@@ -75,21 +75,13 @@ def soundevents():
     return {'aaData': events}
 
 @service.run
-def silentevents():
-    # https://datatables.net/release-datatables/examples/ajax/ajax.html
-    events = []
-    for row in db().select(db.silent.ALL, orderby = ~db.silent.eventtime, 
-                           limitby = ( 0, 100)):
-        events.append([row.place, row.eventtime, row.facecount, row.soundlevel])
-    return {'aaData': events}
-
-@service.run
 def busyevents():
     # https://datatables.net/release-datatables/examples/ajax/ajax.html
     events = []
-    for row in db().select(db.busy.ALL, orderby = ~db.busy.eventtime, 
+    for row in db().select(db.activity.ALL, orderby = ~db.activity.eventtime, 
                            limitby = ( 0, 100)):
-        events.append([row.place, row.eventtime, row.facecount, row.soundlevel])
+        events.append([row.eventtype, row.eventtime, row.busylevel, 
+                                      row.facecount, row.soundlevel])
     return {'aaData': events}
 
 

@@ -79,6 +79,7 @@ use_janrain(auth, filename='private/janrain.key')
 ## >>> for row in rows: print row.id, row.myfield
 #########################################################################
 
+
 db.define_table(
     'tilt',
     Field('sensor_id'),
@@ -91,7 +92,7 @@ db.define_table(
     'face',
     Field('mac'),
     Field('eventtime'),
-    Field('facecount', 'integer')
+    Field('facecount', 'double')
     )
 
 db.define_table(
@@ -102,19 +103,11 @@ db.define_table(
     )
     
 db.define_table(
-    'silent',
-    Field('place'),
+    'activity',
     Field('eventtime'),
-    Field('facecount', 'integer'),
-    Field('soundlevel', 'double')
-    )
-
-db.define_table(
-    'busy',
-    Field('eventtime'),
-    Field('place'),
-    Field('eventtime'),
-    Field('facecount', 'integer'),
+    Field('eventtype'),
+    Field('busylevel', 'double'),
+    Field('facecount', 'double'),
     Field('soundlevel', 'double')
     )
 

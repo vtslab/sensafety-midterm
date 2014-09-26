@@ -5,6 +5,7 @@
 
 def tilt():  # Accept and store tilt events
     pv = request.post_vars
+    #print str(pv)
     db.tilt.insert(**{
         'sensor_id': pv.sensor_id,
         'eventtime': pv.timestamp,
@@ -15,6 +16,7 @@ def tilt():  # Accept and store tilt events
 
 def face():  # Accept and store facecount events
     pv = request.post_vars
+    #print str(pv)
     db.face.insert(**{
         'mac': pv.mac,
         'eventtime': pv.timestamp,
@@ -24,7 +26,7 @@ def face():  # Accept and store facecount events
 
 def sound():  # Accept and store sound events
     pv = request.post_vars
-    print str(pv)
+    #print str(pv)
     db.sound.insert(**{
         'mac': pv.mac,
         'eventtime': pv.timestamp,
@@ -32,22 +34,13 @@ def sound():  # Accept and store sound events
     return str(pv)  # Echo posted parameters
 
 
-def silent():  # Accept and store silent events
+def activity():  # Accept and store activity events
     pv = request.post_vars
-    db.silent.insert(**{
-        'place': pv.location,
+    #print str(pv)
+    db.activity.insert(**{
         'eventtime': pv.timestamp,
-        'facecount': pv.facecount,
-        'soundlevel': pv.soundlevel})
-    return str(pv)  # Echo posted parameters
-
-
-def busy():  # Accept and store busy events
-    pv = request.post_vars
-    print pv
-    db.busy.insert(**{
-        'place': pv.location,
-        'eventtime': pv.timestamp,
+        'eventtype': pv.eventtype,
+        'busylevel': pv.busylevel,
         'facecount': pv.facecount,
         'soundlevel': pv.soundlevel})
     return str(pv)  # Echo posted parameters

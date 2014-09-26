@@ -72,7 +72,7 @@ class Facecount(threading.Thread):
         eventdict = {
             'timestamp': '2014-04-10T11:22:33.44', # ISO 8601
             'cam': '00:11:22:33:44:FF',
-            'facecount': 8 }
+            'facecount': 8.341 }
         eventurl = self._url + urllib.urlencode(eventdict)
         urllib2.urlopen(eventurl)
 
