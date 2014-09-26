@@ -5,7 +5,7 @@
 # The module eventgenerator provides a few types of random events for testing
 
 # Marc de Lignie, Politie IV-organisatie, COMMIT/
-# Sept 25, 2014
+# Sept 26, 2014
 
 import random, time, urllib, urllib2, threading
 import simplejson as json
@@ -39,7 +39,7 @@ class AnomalousSound(threading.Thread):
         eventdata = {
             "message":       "Sweet sound event",
             "id":            ids[random.randrange(len(ids))],
-            "soundLevel":    "0.123" }
+            "soundLevel":    "0.12" }
         # Posts to the local RabbitMQ server using Noldus NCF
         self.producer.Publish(json.dumps(eventdata), "");
         print 'Anomalous sound event posted'

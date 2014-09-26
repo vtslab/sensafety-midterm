@@ -43,7 +43,8 @@ class QueryFacecount(object):
         #return ['select * from %s' % FACECOUNT]
         return [' '.join(['insert into AvgFacecount',
                 'select cam as mac, avg(facecount) as avgfacecount',
-                'from %s.win:time_batch(%i sec)'%(FACECOUNT,self.twindow)]
+                'from %s.win:time_batch(%i sec)'%(FACECOUNT,self.twindow),
+                'group by cam']
                 )]
 
     def listener(self, data_new, data_old):
@@ -52,16 +53,13 @@ class QueryFacecount(object):
         for item in data_new:
             print 'Facecount event passed through CEPengine:\n',str(item)[0:160]
             # Post to Web monitor (correct timestamp bug in facecount agent)
-            print "Facecount before post"
             event = {
                 'mac': item['mac'],
                 'timestamp': time.strftime("%Y-%m-%dT%H:%M:%S", 
                                            time.localtime(time.time())),
-                'facecount': item['avgfacecount']
+                'facecount': round(item['avgfacecount'],2)
                 }
-            print event
             urllib2.urlopen(URL_FACE, urllib.urlencode(event))
-            print "Facecount After urllib2"
 
 
 class QueryAnomalousSound(object):
@@ -89,9 +87,7 @@ class QueryAnomalousSound(object):
             print 'Anomalous sound event passed through CEPengine:\n', \
                   str(item)[:160]
             # Post to Web monitor
-            print "Sound before post"
             urllib2.urlopen(URL_SOUND, urllib.urlencode(item))
-            print "Sound After urllib2"
 
 
 class QueryCountSounds(object):
@@ -174,17 +170,15 @@ class QueryBusy(object):
                 self._ilpclient.busy(False)
                 eventtype = 'quiet'
             # Post to Web monitor
-            print "Busy before post"
             eventdata = {
                 'eventtype':  eventtype,
                 'timestamp':  time.strftime("%Y-%m-%dT%H:%M:%S", 
                                   time.localtime(time.time())),
-                'busylevel':  item['busylevel'],
-                'facecount':  item['avgfacecount'],
-                'soundlevel': (1+item['nsg1'])*(1+item['nsg2'])
+                'busylevel':  round(item['busylevel'], 1),
+                'facecount':  round(item['avgfacecount'], 3),
+                'soundlevel': round((1+item['nsg1'])*(1+item['nsg2']), 3)
                 }
             urllib2.urlopen(URL_ACTIVITY, urllib.urlencode(eventdata))
-            print "Busy After urllib2"
 
 
 class QueryTilt(object):
@@ -202,7 +196,6 @@ class QueryTilt(object):
             print 'Tilt event passed through CEPengine:\n', str(item)[:320]
             self._ilpclient.tilt()
             # Post to Web monitor
-            print "Tilt before post"
             eventdata = { 
                 'sensor_id': item['sensor_id'],
                 'timestamp': item['timestamp'],
@@ -210,7 +203,6 @@ class QueryTilt(object):
                 'state': item['state']}
             if item['event'] == 'MOTIONSTART': 
                 urllib2.urlopen(URL_TILT, urllib.urlencode(eventdata))
-            print "Tilt After urllib2"
   
             
 """ Not for MidTerm event

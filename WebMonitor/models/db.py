@@ -99,7 +99,7 @@ db.define_table(
     'sound',
     Field('mac'),
     Field('eventtime'),
-    Field('soundlevel', 'double')
+    Field('soundlevel')
     )
     
 db.define_table(

@@ -9,6 +9,7 @@
         $(document).ready(function() {
             f = $('#face').dataTable( {
 	            "bProcessing": true,
+	            "iDisplayLength": 15,
 	            "sAjaxSource": "{{=URL('monitor','faceevents.json')}}"
             } );
             f.fnSort( [ [1,'desc'] ] );
@@ -21,6 +22,7 @@
         $(document).ready(function() {
             g = $('#sound').dataTable( {
 	            "bProcessing": true,
+	            "iDisplayLength": 15,
 	            "sAjaxSource": "{{=URL('monitor','soundevents.json')}}"
             } );
             f.fnSort( [ [1,'desc'] ] );
@@ -35,7 +37,7 @@
     <img id="COMMIT" src="{{=URL('static','images/COMMIT_logo_RGB.png')}}"
          style="margin-left:100px;width:10%;vertical-align: -20px">
 </h1>
-<div style='width:1240px;height:600px'>
+<div style='width:1240px;height:640px'>
     <div style='width:600px;float:left'>
     <h3>Raw facecount events</h3>
     <table id="face">
