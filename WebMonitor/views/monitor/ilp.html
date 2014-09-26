@@ -32,27 +32,16 @@
             setInterval(function() {
                 t.fnReloadAjax();
             }, 5000);
-            var img = new Image();
-            setInterval(function() {
-                $(img).load(function(){
-                  $('#timeline').append($(this));
-                }).attr({
-                  src: "{{=URL('monitor','timeline')}}" + '#' + new Date()
-                });
-            }, 5000);
         } );
     </script>
     <!--    setInterval(function () {alert("Hello")}, 10000);
     myVar=setTimeout("javascript function", milliseconds); -->
 </head>
 <body>
-<h1>SenSafety - Intelligent Lamp Post controlling events
+<h1>SenSafety - Intelligent Lamp Post control events
     <img id="COMMIT" src="{{=URL('static','images/COMMIT_logo_RGB.png')}}"
          style="margin-left:100px;width:10%;vertical-align: -20px">
 </h1>
-<div id="timeline">
-    <!--img src="{{=URL('monitor','timeline')}}"-->
-</div>
 <div style='width:1240px;height:700px'>
     <div style='width:580px;float:left'>
     <h3>Silent -> moving lights during 8 seconds</h3>
@@ -156,7 +145,7 @@
 </table>
 </div>
 <br><br>{{=HR()}}
-Go to raw {{=A('raw facecount events', _href=URL('monitor','face'))}} or
-{{=A('raw sound events', _href=URL('monitor','sound'))}}
+Go to {{=A('ILP control event timeline', _href=URL('monitor','timeline'))}} or
+{{=A('raw facecount and sound events', _href=URL('monitor','raw'))}}
 </body>
 </html>

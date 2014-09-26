@@ -35,19 +35,16 @@ def call():
     session.forget()
     return service()
 
-@service.run    
 def ilp():
     # Displays tilt, silent and busy events, controlling the ILP's
     return dict()  # No input for view
 
-@service.run
-def face():
-    # Displays raw facecount events
+def raw():
+    # Displays raw facecount and sound events
     return dict()  # No input for view
 
-@service.run
-def sound():
-    # Displays raw sound events
+def timeline():
+    # Displays all events in a timeline
     return dict()  # No input for view
 
 @service.run
@@ -163,7 +160,7 @@ def timeline():
 
 
 @service.run
-def timeline():
+def allevents():
     todaydate = time.strftime("%Y-%m-%dT", time.localtime(time.time()))
     tilt = []
     for row in db().select(db.tilt.eventtime):

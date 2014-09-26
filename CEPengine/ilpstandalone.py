@@ -9,28 +9,37 @@
 # Sept 25, 2014
 
 import time
-from main import MQTT_BROKER_LOCAL
+from main import MQTT_BROKER_LOCAL, MAXBUSY, MINQUIET
 import paho, ilpcontrol
-
-BUSYTIMEOUT = 4
 
 if __name__ == "__main__":
     pahoclient_local = paho.PahoClient(MQTT_BROKER_LOCAL)    
-    ilpclient = ilpcontrol.ILPControl(pahoclient_local, 
-                                      BUSYTIMEOUT, nosilent=True)
+    ilpclient = ilpcontrol.ILPControl(pahoclient_local, MAXBUSY, MINQUIET)
     time.sleep(0.3)
     print "Tilt event"
     ilpclient.tilt()
-    time.sleep(2)
+    time.sleep(3)
     print "Silent event"
-    ilpclient.silent(override=True)
-    time.sleep(2)
+    ilpclient.silent()
+    time.sleep(3)
     print "Five Busy events"
-    ilpclient.busy()
-    ilpclient.busy()
-    ilpclient.busy()
-    ilpclient.busy()
-    ilpclient.busy()
+    ilpclient.busy(True)
+    ilpclient.busy(True)
+    ilpclient.busy(True)
+    ilpclient.busy(True)
+    ilpclient.busy(True)
+    time.sleep(3)
+    print "Ten Silent events"
+    ilpclient.busy(False)
+    ilpclient.busy(False)
+    ilpclient.busy(False)
+    ilpclient.busy(False)
+    ilpclient.busy(False)
+    ilpclient.busy(False)
+    ilpclient.busy(False)
+    ilpclient.busy(False)
+    ilpclient.busy(False)
+    ilpclient.busy(False)
     while True:   # Do nothing until CTRL+C keyboard interrupt
         time.sleep(3000)
     time.sleep(0.5)

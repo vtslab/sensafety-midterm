@@ -6,11 +6,10 @@
 # Query lists are returned by functions that accept configurable parameters.
 
 # Marc de Lignie, Politie IV-organisatie
-# September 24, 2014
+# September 26, 2014
 
 import java.lang
 import urllib, urllib2
-
 
 ANOMALOUS_SOUND = 'Anomalous_Sound'  #ToDo: use in query
 SOUNDGROUP = 'SoundGroup'            #ToDo: use in query
@@ -24,8 +23,7 @@ CONTACT = 'Contact'
 URL_SOUND = 'http://localhost:8555/SenSafety_MidTerm/eventdb/sound'
 URL_FACE = 'http://localhost:8555/SenSafety_MidTerm/eventdb/face'
 URL_TILT = 'http://localhost:8555/SenSafety_MidTerm/eventdb/tilt'
-URL_BUSY = 'http://localhost:8555/SenSafety_MidTerm/eventdb/busy'
-URL_SILENT = 'http://localhost:8555/SenSafety_MidTerm/eventdb/silent'
+URL_ACTIVITY = 'http://localhost:8555/SenSafety_MidTerm/eventdb/activity'
 
 
 class QueryFacecount(object):
@@ -125,8 +123,9 @@ class QueryBusy(object):
     # with "and" + using a different time window control,
     # but I am in a hurry now 
 
-    def __init__(self, level):
-        self.level = level
+    def __init__(self, ilpclient, level):
+        self._level = level
+        self._ilpclient = ilpclient
 
     def getResultEvent(self):
         return (BUSY, {
@@ -150,8 +149,9 @@ class QueryBusy(object):
              'cs2=CountSounds(cs1.mac!=cs2.mac) where timer:within(4 sec))',
              'or (every cs1=CountSounds ->',
              'cs2=CountSounds(cs1.mac!=cs2.mac) where timer:within(4 sec) ->',
-             'a=AvgFacecount where timer:within(4 sec))]',
-           'where (3*a.avgfacecount+1)*(1+cs1.nsg)*(1+cs2.nsg) > %i'%self.level
+             'a=AvgFacecount where timer:within(4 sec))]'
+           # Level comparison moved to listener 
+           #,'where (3*a.avgfacecount+1)*(1+cs1.nsg)*(1+cs2.nsg) > %i'%self.level
            ])
            ]
               
@@ -161,17 +161,29 @@ class QueryBusy(object):
         for item in data_new:
             print 'Busy event passed through CEPengine:\n', \
                   str(item)[:160]
+            if item['busylevel'] > self._level:
+                self._ilpclient.busy(True)
+                eventtype = 'busy'
+            else:
+                self._ilpclient.busy(False)
+                eventtype = 'quiet'
             # Post to Web monitor
             eventdata = {
-                'location': item['location'],
-                'timestamp': item['timestamp'],
-                'facecount': item['facecount'],
-                'soundlevel': item['sound']}
-            eventurl = URL_BUSY + urllib.urlencode(eventdata)
+                'eventtype':  eventtype,
+                'timestamp':  time.strftime("%Y-%m-%dT%H:%M:%S", 
+                                  time.localtime(time.time())),
+                'level':      item['busylevel'],
+                'facecount':  item['avgfacecount'],
+                'soundlevel': (1+item['nsg1'])*(1+item['nsg2'])
+                }
+            eventurl = URL_ACTIVITY + urllib.urlencode(eventdata)
             urllib2.urlopen(eventurl)
 
 
 class QueryTilt(object):
+
+    def __init__(self, ilpclient):
+        self._ilpclient = ilpclient
 
     def getQueries(self):
         return ['select * from %s' % TILT]
@@ -181,6 +193,7 @@ class QueryTilt(object):
             data_new = [data_new]
         for item in data_new:
             print 'Tilt event passed through CEPengine:\n', str(item)[:320]
+            self._ilpclient.Tilt()
             # Post to Web monitor
             eventdata = {
                 'sensor_id': item['sensor_id'],

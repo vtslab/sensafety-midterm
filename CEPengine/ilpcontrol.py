@@ -6,26 +6,24 @@
 # usage scenarios for silent and tilt events.
 
 # Marc de Lignie, Politie IV-organisatie, COMMIT/
-# Sept 25, 2014
+# Sept 26, 2014
 
-import threading, time, urllib, urllib2
-from queries import URL_SILENT
+import threading, time
 
 ILPTOPICS = ['ilp1', 'ilp2']  # A topic for each ILP
 
 
 class ILPControl(object):
 
-    def __init__(self, pahoclient, BUSYTIMEOUT, initintens=50, 
-                 initcolor=0x33AA44, initdirect=50, nosilent = False):
+    def __init__(self, pahoclient, maxbusy, minquiet, initintens=50, 
+                       initcolor=0x33AA44, initdirect=50):
         self._pahoclient = pahoclient
-        self._nosilent = nosilent
         self._locked = False
-        self._stop = False
         self.setILPS(initintens, initcolor, initdirect)
-        self.BUSYTIMEOUT = BUSYTIMEOUT
+        self._MAXBUSY = maxbusy
+        self._MINQUIET = minquiet
+        self._nquiet = 0
         self._busylevel = 0
-        self._busyTimeout()
             
     def setILPS(self, intens, color, direct):
         print "Initial settings ILPS"
@@ -38,9 +36,6 @@ class ILPControl(object):
     def getILPS(self):
         return self._intens, self._color, self._direct
         
-    def stop(self):
-        self._stop = True
-
     def _postEvent(self, intens, color, direct):
         for topic in ILPTOPICS:
             tinit = time.time()
@@ -80,21 +75,10 @@ class ILPControl(object):
         self._postEvent(self._intens, self._color, self._direct)
         self._locked = False
                 
-    def silent(self, override=False):
+    def silent(self):
         # Move blue 0.5s moving, 0.5s static, 10 times
         # Threaded for non-blocking calls
-        if self._nosilent and not override:
-            return False
-        if self._locked:
-            print "ILPs locked; Silent event ignored"
-            return False
         self._locked = True
-        eventdata = {
-            'timestamp': time.strftime("%Y-%m-%dT%H:%M:%S", 
-                                       time.localtime(time.time()))
-            }
-        urllib2.urlopen(URL_SILENT, urllib.urlencode(eventdata))
-        #print 'Silent event sent to WebMonitor'
         t = threading.Thread(target=self._innerSilent)
         t.start()
         return True
@@ -115,28 +99,27 @@ class ILPControl(object):
         self._postEvent(self._intens, self._color, self._direct)
         self._locked = False
 
-    def busy(self):
-        # Increase busy level used by self._busyTimeout
-        MAXLEVEL = 3
-        if self._busylevel < MAXLEVEL:
+    def busy(self, busy):
+        # Adjust busy level
+        if busy:
             self._busylevel += 1
-            if self._busylevel > 0:
-                self._busySetILPS(self._busylevel)
-
-    def _busyTimeout(self):
-        # Decrease busy level automatically every TTIMEOUT seconds
-        print 'BUSYTIMEOUT level: ', self._busylevel
-        MINLEVEL = -5
-        if self._busylevel > MINLEVEL:
+        else:
             self._busylevel -= 1
-            if self._busylevel >= 0:
-                self._busySetILPS(max(0, self._busylevel))
-            elif self._busylevel == MINLEVEL:
+        print "Busy level: ", self._busylevel
+        if self._busylevel == self._MAXBUSY: # Already on maximum
+            self._busylevel -= 1 
+            return
+        elif self._busylevel >= 0:
+            self._busySetILPS(self._busylevel)
+        elif self._busylevel <= self._MINQUIET:
+            if self._locked:
+                print "ILPs locked; Silent event postponed"
+                return False
+            else:
                 self.silent()
                 self._busylevel = 0
-        if self._stop == False:
-            t = threading.Timer(self.BUSYTIMEOUT, self._busyTimeout)
-            t.start()
+        return True  
+
 
     def _busySetILPS(self, busylevel):
         if self._locked:
