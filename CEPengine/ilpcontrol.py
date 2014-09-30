@@ -6,11 +6,13 @@
 # usage scenarios for silent and tilt events.
 
 # Marc de Lignie, Politie IV-organisatie, COMMIT/
-# Sept 26, 2014
+# Sept 30, 2014
 
-import threading, time
+import threading, time, urllib, urllib2
 
-ILPTOPICS = ['ilp1', 'ilp2']  # A topic for each ILP
+ILPTOPICS = ['ilp1', 'ilp2/']  # A topic for each ILP
+ILPURLS = ['http://10.0.4.44:80/rpc/ilp/run',
+           'http://10.0.4.45:80/rpc/ilp/run']
 
 
 class ILPControl(object):
@@ -39,10 +41,11 @@ class ILPControl(object):
     def _postEvent(self, intens, color, direct):
         for topic in ILPTOPICS:
             tinit = time.time()
-            self._pahoclient.publish(topic, 1, 
+            timestamp = time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(time.time()))
+            self._pahoclient.publish(topic, 0, 
                 ''.join(['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
                 '<Payload driver_version="1" request_id="220">',
-                '<Parameter name="timestamp">2014-03-28T07:11:33+00:00</Parameter>',
+                '<Parameter name="timestamp">%s</Parameter>' % timestamp,
                 '<Parameter name="direction">%i</Parameter>' % direct,
                 '<Parameter name="intensity">%i</Parameter>' % intens,
                 '<Parameter name="color">%0X</Parameter>' % color,
@@ -62,6 +65,13 @@ class ILPControl(object):
         return True
         
     def _innerTilt(self):
+        for url in ILPURLS:
+            urltilt = url + '?tilt'
+            try:
+                urllib2.urlopen(urltilt)
+            except:
+                self._locked = False
+                print 'Cannot reach ' + urltilt 
         timehigh = 0.2
         timelow = 0.1
         N = 3
@@ -84,6 +94,13 @@ class ILPControl(object):
         return True
         
     def _innerSilent(self):
+        for url in ILPURLS:
+            urlsilence = url + '?silence%200'
+            try:
+                urllib2.urlopen(urlsilence)
+            except:
+                self._locked = False
+                print 'Cannot reach ' + urlsilence 
         timemoving = 0.5
         timestatic = 0.5
         N = 2
@@ -125,6 +142,12 @@ class ILPControl(object):
         if self._locked:
             print "ILPs locked; Busy event ignored"
             return
+        for url in ILPURLS:
+            urlbusy = url + '?busy%20' + str(busylevel)
+            try:
+                urllib2.urlopen(urlbusy)
+            except:
+                print 'Cannot reach ' + urlbusy
         LEVELSTEP = 20
         rgbcolor = []
         rgbcolor.append(self._color/(256**2))
@@ -135,4 +158,5 @@ class ILPControl(object):
         rgbcolor[2] = max(0, rgbcolor[2] - busylevel * LEVELSTEP)
         hexcolor = rgbcolor[0]*256**2 + rgbcolor[1]*256 + rgbcolor[2]
         self._postEvent(self._intens, hexcolor, self._direct)
+
 

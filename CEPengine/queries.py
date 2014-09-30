@@ -142,7 +142,7 @@ class QueryBusy(object):
         return [' '.join(['insert into Busy',
            'select a.avgfacecount as avgfacecount,', 
              'cs1.nsg as nsg1, cs2.nsg as nsg2,',
-             '(3*a.avgfacecount+1)*(1+cs1.nsg)*(1+cs2.nsg) as busylevel',
+             '(2*a.avgfacecount+1)*(1+cs1.nsg)*(1+cs2.nsg) as busylevel',
            'from pattern[(every a=AvgFacecount ->',
              'cs1=CountSounds where timer:within(4 sec)->',
              'cs2=CountSounds(cs1.mac!=cs2.mac) where timer:within(4 sec))',
@@ -153,7 +153,7 @@ class QueryBusy(object):
              'cs2=CountSounds(cs1.mac!=cs2.mac) where timer:within(4 sec) ->',
              'a=AvgFacecount where timer:within(4 sec))]'
            # Level comparison moved to listener 
-           #,'where (3*a.avgfacecount+1)*(1+cs1.nsg)*(1+cs2.nsg) > %i'%self.level
+           #,'where (2*a.avgfacecount+1)*(1+cs1.nsg)*(1+cs2.nsg) > %i'%self.level
            ])
            ]
               
@@ -194,15 +194,15 @@ class QueryTilt(object):
             data_new = [data_new]
         for item in data_new:
             print 'Tilt event passed through CEPengine:\n', str(item)[:320]
-            self._ilpclient.tilt()
             # Post to Web monitor
             eventdata = { 
                 'sensor_id': item['sensor_id'],
                 'timestamp': item['timestamp'],
                 'event': item['event'],
                 'state': item['state']}
+            urllib2.urlopen(URL_TILT, urllib.urlencode(eventdata))
             if item['event'] == 'MOTIONSTART': 
-                urllib2.urlopen(URL_TILT, urllib.urlencode(eventdata))
+                self._ilpclient.tilt()
   
             
 """ Not for MidTerm event
