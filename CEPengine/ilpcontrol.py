@@ -11,8 +11,8 @@
 import threading, time, urllib, urllib2
 
 ILPTOPICS = ['ilp1', 'ilp2/']  # A topic for each ILP
-ILPURLS = ['http://10.0.4.44:80/rpc/ilp/run',
-           'http://10.0.4.45:80/rpc/ilp/run']
+ILPURLS = ['http://145.136.28.75:80/rpc/ilp/run',
+           'http://145.136.28.64:80/rpc/ilp/run']
 
 
 class ILPControl(object):
@@ -66,7 +66,7 @@ class ILPControl(object):
         
     def _innerTilt(self):
         for url in ILPURLS:
-            urltilt = url + '?tilt'
+            urltilt = url + '?tilt%201'
             try:
                 urllib2.urlopen(urltilt)
             except:
@@ -95,7 +95,7 @@ class ILPControl(object):
         
     def _innerSilent(self):
         for url in ILPURLS:
-            urlsilence = url + '?silence%200'
+            urlsilence = url + '?tilt%203'
             try:
                 urllib2.urlopen(urlsilence)
             except:
@@ -143,7 +143,12 @@ class ILPControl(object):
             print "ILPs locked; Busy event ignored"
             return
         for url in ILPURLS:
-            urlbusy = url + '?busy%20' + str(busylevel)
+            level = busylevel
+            if level > 4:
+                level = 4
+            if level < 1:
+                level = 1            
+            urlbusy = url + '?busy%20' + str(level)
             try:
                 urllib2.urlopen(urlbusy)
             except:

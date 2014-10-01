@@ -48,7 +48,7 @@ NCFVIRTUALHOST = '/'
 NCFSOUND_EXCHANGE = 'sensors_meta_data' #'SenSafety_Sweet'
 
 TBATCH = 60           # Batch window for CountSounds and AvgFacecount
-BUSYTHRESHOLD = 100   # Config QueryBusy
+BUSYTHRESHOLD = 200   # Config QueryBusy
 BUSYTIMEOUT = 60      # Change interval busy level
 MAXBUSY = 4           # Number of busy levels
 MINQUIET = -5         # Number of silent intervals before silent scenario

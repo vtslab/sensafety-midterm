@@ -40,12 +40,11 @@ class QueryFacecount(object):
             })      
 
     def getQueries(self):
-        #return ['select * from %s' % FACECOUNT]
-        return [' '.join(['insert into AvgFacecount',
+        return [' '.join(['insert into AvgFacecount',  # For further analysis
                 'select cam as mac, avg(facecount) as avgfacecount',
                 'from %s.win:time_batch(%i sec)'%(FACECOUNT,self.twindow),
                 'group by cam']
-                )]
+                )] #, 'select * from %s' % FACECOUNT]     # For the terminal
 
     def listener(self, data_new, data_old):
         if not isinstance(data_new, list):
@@ -144,14 +143,14 @@ class QueryBusy(object):
              'cs1.nsg as nsg1, cs2.nsg as nsg2,',
              '(2*a.avgfacecount+1)*(1+cs1.nsg)*(1+cs2.nsg) as busylevel',
            'from pattern[(every a=AvgFacecount ->',
-             'cs1=CountSounds where timer:within(4 sec)->',
+             'cs1=CountSounds where timer:within(20 sec)->',
              'cs2=CountSounds(cs1.mac!=cs2.mac) where timer:within(4 sec))',
              'or (every cs1=CountSounds ->',
-             'a=AvgFacecount where timer:within(4 sec)->',
+             'a=AvgFacecount where timer:within(20 sec)->',
              'cs2=CountSounds(cs1.mac!=cs2.mac) where timer:within(4 sec))',
              'or (every cs1=CountSounds ->',
              'cs2=CountSounds(cs1.mac!=cs2.mac) where timer:within(4 sec) ->',
-             'a=AvgFacecount where timer:within(4 sec))]'
+             'a=AvgFacecount where timer:within(20 sec))]'
            # Level comparison moved to listener 
            #,'where (2*a.avgfacecount+1)*(1+cs1.nsg)*(1+cs2.nsg) > %i'%self.level
            ])
@@ -197,7 +196,9 @@ class QueryTilt(object):
             # Post to Web monitor
             eventdata = { 
                 'sensor_id': item['sensor_id'],
-                'timestamp': item['timestamp'],
+                'timestamp':  time.strftime("%Y-%m-%dT%H:%M:%S", 
+                                  time.localtime(time.time())),
+#                'timestamp': item['timestamp'],
                 'event': item['event'],
                 'state': item['state']}
             urllib2.urlopen(URL_TILT, urllib.urlencode(eventdata))

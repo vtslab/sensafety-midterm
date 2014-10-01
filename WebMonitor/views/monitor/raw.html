@@ -25,7 +25,7 @@
 	            "iDisplayLength": 15,
 	            "sAjaxSource": "{{=URL('monitor','soundevents.json')}}"
             } );
-            f.fnSort( [ [1,'desc'] ] );
+            g.fnSort( [ [1,'desc'] ] );
             setInterval(function() {
                 g.fnReloadAjax();
             }, 5000);         
