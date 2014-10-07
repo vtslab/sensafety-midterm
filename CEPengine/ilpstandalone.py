@@ -29,20 +29,15 @@ if __name__ == "__main__":
     ilpclient.busy(True)
     ilpclient.busy(True)
     time.sleep(5)
-    print "Ten Silent events"
+    print "Five Silent events"
     ilpclient.busy(False)
     ilpclient.busy(False)
+    time.sleep(10)
     ilpclient.busy(False)
     ilpclient.busy(False)
+    time.sleep(10)
     ilpclient.busy(False)
-    ilpclient.busy(False)
-    ilpclient.busy(False)
-    ilpclient.busy(False)
-    ilpclient.busy(False)
-    ilpclient.busy(False)
-    while True:   # Do nothing until CTRL+C keyboard interrupt
-        ilpclient.tilt()
-        time.sleep(10)
+#    while True:   # Do nothing until CTRL+C keyboard interrupt
+#        time.sleep(10)
     time.sleep(0.5)
-    ilpclient.stop
     pahoclient_local.close()

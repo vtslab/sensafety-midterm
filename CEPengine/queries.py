@@ -6,7 +6,7 @@
 # Query lists are returned by functions that accept configurable parameters.
 
 # Marc de Lignie, Politie IV-organisatie
-# September 26, 2014
+# October 7, 2014
 
 import java.lang
 import time, urllib, urllib2

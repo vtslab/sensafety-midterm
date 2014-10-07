@@ -5,8 +5,21 @@
 # The module ilpcontrol interfaces with the Intelligent Lamp Posts and provides
 # usage scenarios for silent and tilt events.
 
+# The ILP http API has the following functions:
+# http://<ip-address>/rpc/ilp/run?busy%20x with 1 <= x<= 4
+# http://<ip-address>/rpc/ilp/run?tilt%20x with x = 0 white
+#                                               x = 1 red
+#                                               x = 2 green
+#                                               x = 3 blue
+#                                               x = 4 white
+#                                               x = 5 yellow
+#                                               x = 6 yellow
+# http://<ip-address>/rpc/ilp/run?silence%20x with x = 0, 1 direction
+# http://<ip-address>/rpc/ilp/run?dim%20x with x percentage 0-100
+# http://<ip-address>/rpc/ilp/run?color%20x with x as for tilt
+
 # Marc de Lignie, Politie IV-organisatie, COMMIT/
-# Sept 30, 2014
+# Okt 07, 2014
 
 import threading, time, urllib, urllib2
 
@@ -50,8 +63,8 @@ class ILPControl(object):
                 '<Parameter name="intensity">%i</Parameter>' % intens,
                 '<Parameter name="color">%0X</Parameter>' % color,
                 '</Payload>']))
-            print "Mqtt message sent on topic " + topic + \
-                  "(%i, %0.6X, %i)"%(intens, color, direct) + ": %f" % (time.time()-tinit)
+#            print "Mqtt message sent on topic " + topic + \
+#                  "(%i, %0.6X, %i)"%(intens, color, direct) + ": %f" % (time.time()-tinit)
             
     def tilt(self):
         # Flash orange 0.1s High, 0.2s Low, three times
@@ -65,13 +78,18 @@ class ILPControl(object):
         return True
         
     def _innerTilt(self):
-        for url in ILPURLS:
-            urltilt = url + '?tilt%201'
-            try:
-                urllib2.urlopen(urltilt)
-            except:
-                self._locked = False
-                print 'Cannot reach ' + urltilt 
+        print "Tilt scenario played on ILPs"
+        t1 = threading.Thread(target=self._postILP1tilt)
+        t1.start()
+        t2 = threading.Thread(target=self._postILP2tilt)
+        t2.start()
+#        for url in ILPURLS:    urllib2 times out which is annoying
+#            urltilt = url + '?tilt%201'
+#            try:
+#                urllib2.urlopen(urltilt)
+#            except:
+#                self._locked = False
+#                print 'Cannot reach ' + urltilt 
         timehigh = 0.2
         timelow = 0.1
         N = 3
@@ -84,6 +102,20 @@ class ILPControl(object):
             time.sleep(timelow)
         self._postEvent(self._intens, self._color, self._direct)
         self._locked = False
+        
+    def _postILP1tilt(self):
+        urltilt = ILPURLS[0] + '?tilt%201'
+        try:
+            urllib2.urlopen(urltilt)
+        except:
+            print 'Cannot reach ' + urltilt 
+                
+    def _postILP2tilt(self):
+        urltilt = ILPURLS[1] + '?tilt%201'
+        try:
+            urllib2.urlopen(urltilt)
+        except:
+            print 'Cannot reach ' + urltilt 
                 
     def silent(self):
         # Move blue 0.5s moving, 0.5s static, 10 times
@@ -94,13 +126,23 @@ class ILPControl(object):
         return True
         
     def _innerSilent(self):
-        for url in ILPURLS:
-            urlsilence = url + '?tilt%203'
-            try:
-                urllib2.urlopen(urlsilence)
-            except:
-                self._locked = False
-                print 'Cannot reach ' + urlsilence 
+        print "Silence scenario played on ILPs"
+        t1 = threading.Thread(target=self._postILP1silence)
+        t1.start()
+        t2 = threading.Thread(target=self._postILP2silence)
+        t2.start()
+        time.sleep(2)
+        t3 = threading.Thread(target=self._postILP1silence)
+        t3.start()
+        t4 = threading.Thread(target=self._postILP2silence)
+        t4.start()
+#        for url in ILPURLS:   #urllib2 times out
+#            urlsilence = url + '?tilt%203'
+#            try:
+#                urllib2.urlopen(urlsilence)
+#            except:
+#                self._locked = False
+#                print 'Cannot reach ' + urlsilence 
         timemoving = 0.5
         timestatic = 0.5
         N = 2
@@ -116,6 +158,20 @@ class ILPControl(object):
         self._postEvent(self._intens, self._color, self._direct)
         self._locked = False
 
+    def _postILP1silence(self):
+        urlsilence = ILPURLS[0] + '?tilt%203'
+        try:
+            urllib2.urlopen(urlsilence)
+        except:
+            print 'Cannot reach ' + urlsilence
+                
+    def _postILP2silence(self):
+        urlsilence = ILPURLS[1] + '?tilt%203'
+        try:
+            urllib2.urlopen(urlsilence)
+        except:
+            print 'Cannot reach ' + urlsilence
+                
     def busy(self, busy):
         # Adjust busy level
         if busy:
@@ -123,12 +179,12 @@ class ILPControl(object):
         else:
             self._busylevel -= 1
         print "Busy level: ", self._busylevel
-        if self._busylevel == self._MAXBUSY: # Already on maximum
+        if self._busylevel > self._MAXBUSY: # Already on maximum
             self._busylevel -= 1 
             return
         elif self._busylevel >= 0:
             self._busySetILPS(self._busylevel)
-        elif self._busylevel <= self._MINQUIET:
+        elif self._busylevel == self._MINQUIET:
             if self._locked:
                 print "ILPs locked; Silent event postponed"
                 return False
@@ -142,17 +198,22 @@ class ILPControl(object):
         if self._locked:
             print "ILPs locked; Busy event ignored"
             return
-        for url in ILPURLS:
-            level = busylevel
-            if level > 4:
-                level = 4
-            if level < 1:
-                level = 1            
-            urlbusy = url + '?busy%20' + str(level)
-            try:
-                urllib2.urlopen(urlbusy)
-            except:
-                print 'Cannot reach ' + urlbusy
+        print "Busy level set on ILPs"
+        t1 = threading.Thread(target=self._postILP1busy)
+        t1.start()
+        t2 = threading.Thread(target=self._postILP2busy)
+        t2.start()
+#        for url in ILPURLS:
+#            level = busylevel
+#            if level > 4:
+#                level = 4
+#            if level < 1:
+#                level = 1            
+#            urlbusy = url + '?busy%20' + str(level)
+#            try:
+#                urllib2.urlopen(urlbusy)
+#            except:
+#                print 'Cannot reach ' + urlbusy
         LEVELSTEP = 20
         rgbcolor = []
         rgbcolor.append(self._color/(256**2))
@@ -164,4 +225,24 @@ class ILPControl(object):
         hexcolor = rgbcolor[0]*256**2 + rgbcolor[1]*256 + rgbcolor[2]
         self._postEvent(self._intens, hexcolor, self._direct)
 
+    def _postILP1busy(self):
+        level = 1
+        if self._busylevel == self._MAXBUSY:
+            level = 4
+        urlbusy = ILPURLS[0] + '?busy%20' + '%i'%(level)
+        try:
+            urllib2.urlopen(urlbusy)
+        except:
+            print 'Cannot reach ' + urlbusy 
+                
+    def _postILP2busy(self):
+        level = 1
+        if self._busylevel == self._MAXBUSY:
+            level = 4
+        urlbusy = ILPURLS[1] + '?busy%20' + '%i'%(level)
+        try:
+            urllib2.urlopen(urlbusy)
+        except:
+            print 'Cannot reach ' + urlbusy 
+                
 
