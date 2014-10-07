@@ -28,7 +28,7 @@ particular way and in a particular format. The following events are foreseen:
 CEPengine and the mqtt broker make themselves known using mDNS/DNS-SD.
 
 Marc de Lignie, Politie IV-organisatie, COMMIT/
-September 26, 2014
+October 07, 2014
 """
 
 import time, sys, threading
@@ -48,10 +48,9 @@ NCFVIRTUALHOST = '/'
 NCFSOUND_EXCHANGE = 'sensors_meta_data' #'SenSafety_Sweet'
 
 TBATCH = 60           # Batch window for CountSounds and AvgFacecount
-BUSYTHRESHOLD = 200   # Config QueryBusy
-BUSYTIMEOUT = 60      # Change interval busy level
-MAXBUSY = 4           # Number of busy levels
-MINQUIET = -5         # Number of silent intervals before silent scenario
+BUSYTHRESHOLD = 120   # Config QueryBusy
+MAXBUSY = 1          # Number of busy levels
+MINQUIET = -2         # Number of silent intervals before silent scenario
 
 # URL where Ambient pushes mqtt events (does not allow publish)
 MQTT_BROKER_AMBIENT = "tcp://vps38114.public.cloudvps.com:1883"
@@ -82,7 +81,7 @@ class CEPengine(object):
         except:
             print "Local mqtt broker not available"
         self.ilpclient = ilpcontrol.ILPControl(self.pahoclient_local, 
-                                               BUSYTIMEOUT, MINQUIET)
+                                               MAXBUSY, MINQUIET)
         qman = QueryManager(self._cep)
         qa = QueryAnomalousSound()
         qman.addQuery(qa.getQueries(), qa.listener)  

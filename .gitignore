@@ -8,3 +8,4 @@
 WebMonitor/databases/*
 WebMonitor/sessions/*
 WebMonitor/errors/*
+WebMonitor/private/*
