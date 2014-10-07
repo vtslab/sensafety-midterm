@@ -7,5 +7,4 @@ SenSafety members can ask to become collaborators and are asked to push to the d
 
 
 Vtslab will merge the develop branch with the master branch when a stable release is required
-=======
 
