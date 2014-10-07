@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pointing>
+    <color>
+        <red> 100 </red>
+        <green> 100</green>
+        <blue> 100 </blue>
+    </color>
+	<azimuth> 360 </azimuth>
+    <interval> 1000 </interval>
+    <duration> 10000 </duration>
+    <startTime>
+        <hour> 0 </hour>
+        <minutes> 0 </minutes>
+        <seconds> 0 </seconds>
+    </startTime>
+</pointing>

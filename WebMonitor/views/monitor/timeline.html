@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>  
+    <link href="{{=URL('static','css/jquery.dataTables.css')}}" 
+          rel="stylesheet" type="text/css">
+    <script src="{{=URL('static','js/jquery.js')}}"></script>
+    <script type="text/javascript">
+            var img = new Image();
+            setInterval(function() {
+                $(img).load(function(){
+                  $('#timeline').append($(this));
+                }).attr({
+                  src: "{{=URL('timeline','allevents')}}" + '#' + new Date()
+                });
+            }, 5000);
+        } );
+    </script>
+    <!--    setInterval(function () {alert("Hello")}, 10000);
+    myVar=setTimeout("javascript function", milliseconds); -->
+</head>
+<body>
+<h1>SenSafety - Intelligent Lamp Post control events
+    <img id="COMMIT" src="{{=URL('static','images/COMMIT_logo_RGB.png')}}"
+         style="margin-left:100px;width:10%;vertical-align: -20px">
+</h1>
+<div id="timeline">
+    <!--img src="{{=URL('monitor','allevents')}}"-->
+</div>
+
+<br><br>{{=HR()}}
+Go to raw {{=A('ILP control event tables', _href=URL('monitor','ilp'))}} or
+{{=A('raw facecounts and sound anomalies', _href=URL('monitor','raw'))}}
+</body>
+</html>

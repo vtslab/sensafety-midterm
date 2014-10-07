@@ -1,0 +1,15 @@
+13:33:44 **** Build of configuration Debug for project MQTT_Async ****
+make all 
+Building file: ../src/MQTT_Async.c
+Invoking: Cross GCC Compiler
+arm-linux-gnueabihf-gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/MQTT_Async.d" -MT"src/MQTT_Async.d" -o "src/MQTT_Async.o" "../src/MQTT_Async.c"
+Finished building: ../src/MQTT_Async.c
+ 
+Building target: MQTT_Async
+Invoking: Cross GCC Linker
+arm-linux-gnueabihf-gcc -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_glibc -o "MQTT_Async"  ./src/MQTT_Async.o   -lpthread -lmqttv3c
+Finished building target: MQTT_Async
+ 
+
+13:33:44 Build Finished (took 163ms)
+

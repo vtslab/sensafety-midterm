@@ -1,0 +1,61 @@
+
+/**	Standard header files	**/
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+
+/** Special header files	**/
+#include "MQTTClient.h"
+#include "Config/Configuration.h"
+
+/** Type definitions **/
+typedef unsigned char BOOLEAN;
+typedef unsigned char INT8U;
+typedef signed char INT8S;
+typedef unsigned int INT16U;
+typedef signed int INT16S;
+typedef unsigned long INT32U;
+typedef signed long INT32S;
+typedef float FP32;
+typedef double FP64;
+
+/** Constants	**/
+#define SUCCESS 0
+#define TRUE 1
+#define FALSE 0
+
+/* Global variables */
+#define TOPIC "ilp_1/driver_1"
+#define PAYLOAD "2045"
+#define QOS 1
+#define TIMEOUT 10000L
+volatile MQTTClient_deliveryToken deliveredtoken;
+
+typedef struct
+{
+	INT8U id;
+	BOOLEAN newValue;
+	INT16U value;
+	pthread_mutex_t threadLock;
+} ST_MQTTDriverQueue;
+
+ST_MQTTDriverQueue G_stMQTTDriverQueue[LEDDRIVERS];
+
+ST_queue MQTT_msgQueue;
+
+// Struct declaration and init for thread attributes
+struct MQTT_threadData
+{
+	INT8U threadID;
+	INT8U address[100];
+	INT8U clientID;
+};
+
+/** Function prototypes **/
+void MQTT_thread(void *P_stMQTT_threadPar);
+static INT8U MQTT_setupConnection( MQTTClient *P_client , MQTTClient_connectOptions *P_conn_opts , const INT8U *P_threadID);
+void MQTT_threadDelivered(void *context, MQTTClient_deliveryToken dt);
+int MQTT_threadMsgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message);
+void MQTT_threadConnlost(void *context, char *cause);
+static void MQTT_init;
+

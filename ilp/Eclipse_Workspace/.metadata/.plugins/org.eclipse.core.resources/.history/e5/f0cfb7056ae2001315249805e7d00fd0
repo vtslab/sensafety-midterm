@@ -1,0 +1,276 @@
+/*
+================================================================================
+  (c) 2014 Strukton Embedded Solutions
+
+  Project/Module: Sensafety Gateway
+
+  Description: Situation Awareness Portal driver
+
+  Reference:
+
+  Version Control
+  	  $workfile: SapDriver.c
+  	  $Revision:
+  	  $Date: 02-05-2014
+  	  Modtime:
+
+================================================================================
+ */
+
+#include "App/Source/MqttBroker/MqttBroker.h"
+
+void MQTT_thread(void *P_stMQTT_threadPar)
+{
+	/* Cast pointer to the right type */
+	struct MQTT_threadData *L_pMQTTsettings = (struct MQTT_threadData*) P_stMQTT_threadPar;
+
+	/* Set MQTT Client ID */
+	INT8U L_clientID[12] = "ilpClient_";
+	strcat( ( (char *) &L_clientID) , (char *) &L_pMQTTsettings->clientID );
+
+	/* Get MQTT Broker Address */
+	INT8U L_address[100];
+	strcpy( ( (char *) &L_address) , (char *) &L_pMQTTsettings->address );
+
+	/* Get Thread ID */
+	INT8U L_threadID;
+	strcat( ( (char *) L_threadID) , (char *) &L_pMQTTsettings->threadID );
+
+	INT8U L_rc = SUCCESS;
+	int ch;
+	BOOLEAN L_fisCommunication = FALSE;
+	BOOLEAN L_fNewValue = FALSE;
+
+	/* MQTT initialization values */
+	MQTTClient client;
+	MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
+	MQTTClient_message pubmsg = MQTTClient_message_initializer;
+	MQTTClient_deliveryToken token;
+
+	MQTT_init();
+
+	MQTTClient_create(&client, (char * ) &L_address, (char *) &L_clientID,
+			MQTTCLIENT_PERSISTENCE_NONE, NULL);
+	conn_opts.keepAliveInterval = 20;
+	conn_opts.cleansession = 1;
+
+	/* Set MQTT Callback functions = threads */
+	MQTTClient_setCallbacks(client, NULL, MQTT_threadConnlost, MQTT_threadMsgarrvd, MQTT_threadDelivered);
+
+	/* Try to connect with MQTT broker */
+	while(TRUE)
+	{
+		L_rc = MQTT_setupConnection(&client , &conn_opts , &L_threadID);
+
+		if (!L_rc) // Not succes..
+		{
+			printf("Thread[%d]:MQTT: Not alive\n", L_threadID );
+
+		} else // If success..
+		{
+			L_fisCommunication = TRUE;
+			printf("Thread[%d]:MQTT: Alive\n", L_threadID );
+			MQTT_subscribeTopics( &client , &L_threadID );
+
+		}
+
+		while(L_fisCommunication)
+		{
+
+			do
+			{
+
+			}
+		}
+	}
+}
+
+static INT8U MQTT_setupConnection( MQTTClient *P_client , MQTTClient_connectOptions *P_conn_opts , const INT8U *P_threadID)
+{
+	BOOLEAN L_fIsConnection = FALSE;
+	BOOLEAN L_fError = FALSE;
+	INT8U L_failingCount = 0;
+	INT8U L_rc = MQTTCLIENT_SUCCESS;
+
+	while( (FALSE == L_fIsConnection) && !L_fError)
+	{
+		/* Set up connection with Led Driver */
+		L_rc = MQTTClient_connect(*P_client, P_conn_opts);
+
+		if (L_rc != MQTTCLIENT_SUCCESS) // if failed then..
+		{
+			L_failingCount++;
+
+			if (ERROR_RETRYCOUNT <= L_failingCount) // if failed to many times..
+			{
+				printf("Thread[%d]: MQTT: Failed to connect with MQTT broker. Right IP?\n", *P_threadID);
+				L_fError = TRUE;
+				/* Close connection */
+				MQTTClient_disconnect(P_client, 10000);
+				MQTTClient_destroy(P_client);
+			}else
+			{
+				printf("Thread[%d]: MQTT: Failed to connect with MQTT broker, retrying %d/%d..\n\r", *P_threadID , L_failingCount, ERROR_RETRYCOUNT);
+				usleep(500 * 1000);
+			}
+
+		} else // else success
+		{
+			L_fIsConnection = TRUE;
+		}
+	}
+	return(L_fIsConnection);
+}
+
+void MQTT_threadDelivered(void *context, MQTTClient_deliveryToken dt)
+{
+	printf("Message with token value %d delivery confirmed\n", dt);
+	deliveredtoken = dt;
+}
+int MQTT_threadMsgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
+{
+	INT8U i;
+	INT8U L_receivedMsg[20];
+	INT8U L_receivedTopic[topicLen];
+	INT8U *L_pTopic;
+	INT8U *L_pChar;
+	INT8U L_topicLevelChar = '/';
+	INT8U L_charBuf[20];
+	INT8U L_topic[5][20]; // 5 levels and max 20 char topic name
+	size_t L_size = 0;
+	INT8U *L_pReceivedMsg;
+
+	L_pReceivedMsg = message->payload;
+	L_pTopic = (INT8U *) topicName;
+
+	/* copy received message */
+	for( i = 0 ; i < message->payloadlen ; i++ )
+	{
+		L_receivedMsg[i] = *L_pReceivedMsg++;
+		L_pReceivedMsg++;
+	}
+	/* Add '\0' to make a c string */
+	L_receivedMsg[message->payloadlen] = '\0';
+
+	/* Copy topic name */
+	for( i = 0 ; i < topicLen ; i++ )
+	{
+		L_receivedTopic[i] = *L_pTopic;
+		L_pTopic++;
+	}
+	/* Add '\0' to make a c string */
+	L_receivedMsg[topicLen] = '\0';
+
+
+	/* Decomposing the topic in levels */
+	/* Expectation: {ilp,  */
+	L_size = (sizeof(L_receivedMsg) / sizeof(L_receivedMsg[0]));
+	i = 0;
+	while( 0 < strlen( (char *) L_receivedTopic))
+	{
+		/* Copy most left topic name in to array */
+		L_size = strcspn ( (char *) &L_receivedTopic, (char *) &L_topicLevelChar );			// Get number of char until
+		strncpy ( (char *) L_topic[i][0] , (char *) &L_receivedTopic , L_size); 				// Copy most left topic in to array
+
+		/* Delete the  most left topic name */
+		L_pChar = (INT8U *) strchr ( (char *) &L_receivedTopic, L_topicLevelChar); 			// Pointer to first '/' char
+		if (NULL != L_pChar) 																// If char is found..
+		{
+			L_pChar++; 																		// Move pointer to position next to '/'
+			strcpy ( (char *) &L_charBuf , (char *) L_pChar );								// Copy after '/' into buffer
+			strcpy ( (char *) &L_receivedTopic, (char *) L_charBuf);						// Copy buffer back in to message
+		}else 																				// Last message
+		{
+			strncpy ( (char *) L_topic[i][0] , (char *) &topicName , L_size); 				// Copy last topic in to array
+			L_receivedMsg[0] = '\0';														// Clear string
+		}
+		i++;
+	}
+
+
+	//	// Check every value of a struct if there is a new value. If so, return this number
+	//	L_size = (sizeof(G_stMQTTmsgQueue) / sizeof(G_stMQTTmsgQueue[0]));
+	//	for(i = 0; i < L_size; i++)
+	//	{
+	//		if (EBUSY != pthread_mutex_trylock(&G_stLedDriver[i].threadLock)) // check if another thread  blocking this driver. If not then lock
+	//		{
+	//			if (G_stLedDriver[i].newValue == TRUE)
+	//			{
+	//				*P_driverNr = ( i + 1 ); // + 1 for change driver number from 0..n to 1..n so that 0 is no new value
+	//				rc = TRUE;
+	//				break;
+	//			} else // if no new value for driver..
+	//			{
+	//				pthread_mutex_unlock(&G_stLedDriver[i].threadLock); // unlock locked driver
+	//			}
+	//		} else // Driver is locked and used by another thread
+	//		{
+	//			printf("Thread[%d]:Led Driver: Driver [%d] is locked\n", *P_threadID, (i + 1));
+	//		}
+	//	}
+	//	return (rc); // return driver number. 0 = no new value
+
+
+
+} else
+{
+	printf("MQTT: Received message from MQTT broker is to large [%d]. Message ignored\n", message->payloadlen);
+}
+
+/* Clear message */
+MQTTClient_freeMessage(&message);
+MQTTClient_free(topicName);
+
+return 1;
+}
+void MQTT_threadConnlost(void *context, char *cause)
+{
+	printf("\nConnection lost\n");
+	printf(" cause: %s\n", cause);
+}
+
+/*******************************************************************************
+ * Function:		initLedDrivers
+ * Parameters(s):
+ * Returns:
+ * Description:		This function initialize the led drivers structures with
+ * 					some initial values
+ * Reference:
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	--
+ *******************************************************************************/
+static void MQTT_init()
+{
+	INT8U i = 0;
+	size_t L_size = 0;
+
+	/* Initializing the MQTT message queue with init values */
+	L_size = (sizeof(G_stMQTTmsgQueue) / sizeof(G_stMQTTmsgQueue[0]));
+	for(i = 0; i < L_size; i++)
+	{
+		G_stMQTTmsgQueue[i].id = i;
+		G_stMQTTmsgQueue[i].newValue = TRUE;
+		G_stMQTTmsgQueue[i].value = ((i * 1000) + 1);
+		pthread_mutex_init(&G_stMQTTmsgQueue[i].threadLock, NULL); // Initialize mutexen
+	}
+}
+
+static INT8U MQTT_subscribeTopics(MQTTClient *P_client ,const INT8U *P_threadID)
+{
+	INT8U L_rc = MQTTCLIENT_SUCCESS;
+	char L_topic[100] = 0;
+	/* Setting op topic: "ilp/1/driver/+/value/" */
+	strcpy(L_topic, "ilp");
+	strcat(L_topic, MQTT_ILP_ID);
+	strcat(L_topic, "/");
+	strcpy(L_topic, "driver");
+	strcat(L_topic, "/");
+	strcpy(L_topic, "value");
+
+	printf( "Subscribing to topic %s\n using QoS%d\n" , L_topic , QOS );
+	L_rc = MQTTClient_subscribeMany( *P_client , LEDDRIVERS , L_topic , QOS);
+
+	return L_rc;
+}

@@ -1,0 +1,25 @@
+Module: Intelligent Lamp Post
+
+Environment:
+
+	-- OS: Ubuntu 14.14 LTS 64bit
+	-- Developmentboard: Raspberry PI Model B
+	-- Toolchain: arm-bcm2708-linux-gnueabi from [1]
+	-- IDE: Eclipse IDE for C/C++ Developers 64bit
+	-- External libraries:  MQTT Client C Library from [2]
+				libxml2 XML C Parser from [4]
+
+Build and use MQTT:
+
+	-- Follow instructions on [3]
+
+Build and use libxml2
+	-- On linux just make install
+	-- on pi configure before compiling to use the right toolchain
+		./configure --host=arm-linux-gnu --target=arm-linux CC=/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/arm-linux-gnueabihf-gcc AR=/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/arm-linux-gnueabihf-ar LD=/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/arm-linux-gnueabihf-ld RANLIB=/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/arm-linux-gnueabihf-ranlib --prefix=/home/jeffrey/projects/MidTerm/ilp/Libxml2_Library/ --without-python
+
+[1] https://github.com/raspberrypi/tools
+[2] http://git.eclipse.org/c/paho/org.eclipse.paho.mqtt.c.git/
+[3] http://andypiper.co.uk/2012/03/10/paho-gets-started/
+
+

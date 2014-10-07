@@ -1,0 +1,7 @@
+13:30:37 **** Clean-only build of configuration Debug for project Threads ****
+make clean 
+rm -rf  ./main.o  ./main.d  binary.a
+ 
+
+13:30:37 Build Finished (took 65ms)
+

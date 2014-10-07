@@ -1,0 +1,11 @@
+# ignore all files ending with ~ (editor backup files)
+*~
+
+# ignore all files ending with class (java/jython compiler)
+*class
+
+# ignore local web2py files
+WebMonitor/databases/*
+WebMonitor/sessions/*
+WebMonitor/errors/*
+WebMonitor/private/*

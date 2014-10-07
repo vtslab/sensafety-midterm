@@ -1,0 +1,206 @@
+13:29:38 **** Clean-only build of configuration Debug for project SensafetyGateway ****
+make clean 
+rm -rf  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o  ./Extern/Source/RS232/rs232.d  ./App/Source/MqttBroker/MqttBroker.d  ./App/Source/main.d  sensafetyGateway
+ 
+13:29:42 **** Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../Extern/Source/RS232/rs232.c
+Invoking: Cross GCC Compiler
+arm-linux-gnueabihf-gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/usr/include/libxml2 -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"Extern/Source/RS232/rs232.d" -MT"Extern/Source/RS232/rs232.d" -o "Extern/Source/RS232/rs232.o" "../Extern/Source/RS232/rs232.c"
+Finished building: ../Extern/Source/RS232/rs232.c
+ 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: Cross GCC Compiler
+arm-linux-gnueabihf-gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/usr/include/libxml2 -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:8:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Include/GlobalDefs_E.h:11:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/stdio.h:28:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:6,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/features.h:183:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_init’:
+../App/Source/MqttBroker/MqttBroker.c:341:9: warning: unused variable ‘L_size’ [-Wunused-variable]
+  size_t L_size = 0;
+         ^
+../App/Source/MqttBroker/MqttBroker.c:340:8: warning: unused variable ‘i’ [-Wunused-variable]
+  INT8U i = 0;
+        ^
+../App/Source/MqttBroker/MqttBroker.c: At top level:
+../App/Source/MqttBroker/MqttBroker.c:306:13: warning: ‘print_element_names’ defined but not used [-Wunused-function]
+ static void print_element_names(xmlNode * a_node)
+             ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building file: ../App/Source/main.c
+Invoking: Cross GCC Compiler
+arm-linux-gnueabihf-gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/usr/include/libxml2 -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/main.d" -MT"App/Source/main.d" -o "App/Source/main.o" "../App/Source/main.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:8:0,
+                 from ../App/Source/main.c:42:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Include/GlobalDefs_E.h:11:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/stdio.h:28:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:6,
+                 from ../App/Source/main.c:42:
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/features.h:183:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/main.c: In function ‘ledDriver_thread’:
+../App/Source/main.c:115:8: warning: unused variable ‘L_breakChar’ [-Wunused-variable]
+  INT8U L_breakChar= '/';
+        ^
+In file included from ../App/Source/main.c:42:0:
+../App/Source/main.c: At top level:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:47:13: warning: ‘print_element_names’ declared ‘static’ but never defined [-Wunused-function]
+ static void print_element_names(xmlNode * a_node);
+             ^
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:48:14: warning: ‘MQTT_setupConnection’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_setupConnection( MQTTClient *P_client , MQTTClient_connectOptions *P_conn_opts , const INT8U *P_threadID);
+              ^
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:53:14: warning: ‘MQTT_subscribeTopics’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_subscribeTopics(MQTTClient *P_client ,const INT8U *P_threadID);
+              ^
+../App/Source/main.c:411:13: warning: ‘ledDriver_convertValueToMsg’ defined but not used [-Wunused-function]
+ static void ledDriver_convertValueToMsg( const INT16U *P_value, INT8U *P_msg)
+             ^
+../App/Source/main.c:437:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
+ static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value)
+             ^
+Finished building: ../App/Source/main.c
+ 
+Building target: sensafetyGateway
+Invoking: Cross GCC Linker
+arm-linux-gnueabihf-gcc -L/home/jeffrey/projects/MidTerm/ilp/Libxml2_Library/lib -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -L/usr/local/lib -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lxml2 -lmqttv3c -lpthread
+Finished building target: sensafetyGateway
+ 
+13:29:44 **** Incremental Build of configuration Debug for project charren ****
+make all 
+make: Nothing to be done for `all'.
+13:30:53 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/main.c
+Invoking: Cross GCC Compiler
+arm-linux-gnueabihf-gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/usr/include/libxml2 -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/main.d" -MT"App/Source/main.d" -o "App/Source/main.o" "../App/Source/main.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:8:0,
+                 from ../App/Source/main.c:42:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Include/GlobalDefs_E.h:11:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/stdio.h:28:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:6,
+                 from ../App/Source/main.c:42:
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/features.h:183:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/main.c: In function ‘ledDriver_thread’:
+../App/Source/main.c:115:8: warning: unused variable ‘L_breakChar’ [-Wunused-variable]
+  INT8U L_breakChar= '/';
+        ^
+In file included from ../App/Source/main.c:42:0:
+../App/Source/main.c: At top level:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:47:13: warning: ‘print_element_names’ declared ‘static’ but never defined [-Wunused-function]
+ static void print_element_names(xmlNode * a_node);
+             ^
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:48:14: warning: ‘MQTT_setupConnection’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_setupConnection( MQTTClient *P_client , MQTTClient_connectOptions *P_conn_opts , const INT8U *P_threadID);
+              ^
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:53:14: warning: ‘MQTT_subscribeTopics’ declared ‘static’ but never defined [-Wunused-function]
+ static INT8U MQTT_subscribeTopics(MQTTClient *P_client ,const INT8U *P_threadID);
+              ^
+../App/Source/main.c:411:13: warning: ‘ledDriver_convertValueToMsg’ defined but not used [-Wunused-function]
+ static void ledDriver_convertValueToMsg( const INT16U *P_value, INT8U *P_msg)
+             ^
+../App/Source/main.c:437:13: warning: ‘ledDriver_convertMsgToValue’ defined but not used [-Wunused-function]
+ static void ledDriver_convertMsgToValue( const INT8U *P_msg, INT16U *P_value)
+             ^
+Finished building: ../App/Source/main.c
+ 
+Building target: sensafetyGateway
+Invoking: Cross GCC Linker
+arm-linux-gnueabihf-gcc -L/home/jeffrey/projects/MidTerm/ilp/Libxml2_Library/lib -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -L/usr/local/lib -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lxml2 -lmqttv3c -lpthread
+Finished building target: sensafetyGateway
+ 
+13:30:54 **** Incremental Build of configuration Debug for project charren ****
+make all 
+make: Nothing to be done for `all'.
+14:08:08 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: Cross GCC Compiler
+arm-linux-gnueabihf-gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/usr/include/libxml2 -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:8:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Include/GlobalDefs_E.h:11:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/stdio.h:28:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:6,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/features.h:183:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_init’:
+../App/Source/MqttBroker/MqttBroker.c:341:9: warning: unused variable ‘L_size’ [-Wunused-variable]
+  size_t L_size = 0;
+         ^
+../App/Source/MqttBroker/MqttBroker.c:340:8: warning: unused variable ‘i’ [-Wunused-variable]
+  INT8U i = 0;
+        ^
+../App/Source/MqttBroker/MqttBroker.c: At top level:
+../App/Source/MqttBroker/MqttBroker.c:306:13: warning: ‘print_element_names’ defined but not used [-Wunused-function]
+ static void print_element_names(xmlNode * a_node)
+             ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: Cross GCC Linker
+arm-linux-gnueabihf-gcc -L/home/jeffrey/projects/MidTerm/ilp/Libxml2_Library/lib -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -L/usr/local/lib -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lxml2 -lmqttv3c -lpthread
+Finished building target: sensafetyGateway
+ 
+14:08:09 **** Incremental Build of configuration Debug for project charren ****
+make all 
+make: Nothing to be done for `all'.
+14:10:57 **** Incremental Build of configuration Debug for project SensafetyGateway ****
+make all 
+Building file: ../App/Source/MqttBroker/MqttBroker.c
+Invoking: Cross GCC Compiler
+arm-linux-gnueabihf-gcc -I/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src -I/usr/include/libxml2 -I/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"App/Source/MqttBroker/MqttBroker.d" -MT"App/Source/MqttBroker/MqttBroker.d" -o "App/Source/MqttBroker/MqttBroker.o" "../App/Source/MqttBroker/MqttBroker.c"
+In file included from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:8:0,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Include/GlobalDefs_E.h:11:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE         //Define necessary for the function usleep.
+ ^
+In file included from /home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/stdio.h:28:0,
+                 from /home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/MQTTClient.h:110,
+                 from /home/jeffrey/projects/MidTerm/ilp/SensafetyGateway/App/Source/MqttBroker/MqttBroker.h:6,
+                 from ../App/Source/MqttBroker/MqttBroker.c:20:
+/home/jeffrey/projects/MidTerm/ilp/Raspberry_Pi_Toolchain/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/include/features.h:183:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+../App/Source/MqttBroker/MqttBroker.c: In function ‘MQTT_init’:
+../App/Source/MqttBroker/MqttBroker.c:341:9: warning: unused variable ‘L_size’ [-Wunused-variable]
+  size_t L_size = 0;
+         ^
+../App/Source/MqttBroker/MqttBroker.c:340:8: warning: unused variable ‘i’ [-Wunused-variable]
+  INT8U i = 0;
+        ^
+../App/Source/MqttBroker/MqttBroker.c: At top level:
+../App/Source/MqttBroker/MqttBroker.c:306:13: warning: ‘print_element_names’ defined but not used [-Wunused-function]
+ static void print_element_names(xmlNode * a_node)
+             ^
+Finished building: ../App/Source/MqttBroker/MqttBroker.c
+ 
+Building target: sensafetyGateway
+Invoking: Cross GCC Linker
+arm-linux-gnueabihf-gcc -L/home/jeffrey/projects/MidTerm/ilp/Libxml2_Library/lib -L/home/jeffrey/projects/MidTerm/ilp/MQTT_Library/org.eclipse.paho.mqtt.c/src/linux_ARM_uclibc -L/usr/local/lib -o "sensafetyGateway"  ./Extern/Source/RS232/rs232.o  ./App/Source/MqttBroker/MqttBroker.o  ./App/Source/main.o   -lxml2 -lmqttv3c -lpthread
+Finished building target: sensafetyGateway
+ 

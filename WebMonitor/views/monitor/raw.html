@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>   
+    <link href="{{=URL('static','css/jquery.dataTables.css')}}" rel="stylesheet" type="text/css">
+    <script src="{{=URL('static','js/jquery.js')}}"></script>
+    <script src="{{=URL('static','js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{=URL('static','js/dataTables.fnReloadAjax.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            f = $('#face').dataTable( {
+	            "bProcessing": true,
+	            "iDisplayLength": 15,
+	            "sAjaxSource": "{{=URL('monitor','faceevents.json')}}"
+            } );
+            f.fnSort( [ [1,'desc'] ] );
+            setInterval(function() {
+                f.fnReloadAjax();
+            }, 5000);         
+        } );
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            g = $('#sound').dataTable( {
+	            "bProcessing": true,
+	            "iDisplayLength": 15,
+	            "sAjaxSource": "{{=URL('monitor','soundevents.json')}}"
+            } );
+            g.fnSort( [ [1,'desc'] ] );
+            setInterval(function() {
+                g.fnReloadAjax();
+            }, 5000);         
+        } );
+    </script>
+</head>
+<body>
+<h1>SenSafety - Intelligent Lamp Post control events
+    <img id="COMMIT" src="{{=URL('static','images/COMMIT_logo_RGB.png')}}"
+         style="margin-left:100px;width:10%;vertical-align: -20px">
+</h1>
+<div style='width:1240px;height:640px'>
+    <div style='width:600px;float:left'>
+    <h3>Raw facecount events</h3>
+    <table id="face">
+        <thead>
+            <tr>
+                <th width="28%">Sensor</th>
+                <th width="16%">Timestamp</th>
+                <th width="28%">Facecount</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Sensor</th>
+                <th>Timestamp</th>
+                <th>Facecount</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+                <td>etc</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+                <td>etc</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <div style='width:600px;float:right'>
+    <h3>Raw sound anomaly probabilities</h3>
+    <table id="sound">
+        <thead>
+            <tr>
+                <th width="28%">Sensor</th>
+                <th width="16%">Timestamp</th>
+                <th width="28%">Probability</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Sensor</th>
+                <th>Timestamp</th>
+                <th>Probability</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+                <td>etc</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+                <td>etc</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+{{=HR()}}
+Go to {{=A('ILP control event tables', _href=URL('monitor','ilp'))}} or
+{{=A('ILP control event timeline', _href=URL('monitor','timeline'))}}
+</body>
+</html>

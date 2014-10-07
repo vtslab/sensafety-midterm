@@ -1,0 +1,24 @@
+17:51:03 **** Build of configuration Debug for project HelloWorld ****
+make all 
+Building file: ../HelloWorld.cpp
+Invoking: Cross G++ Compiler
+arm-linux-gnueabihf-g++ -I/home/jeffrey/software/mqtt-lib/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"HelloWorld.d" -MT"HelloWorld.d" -o "HelloWorld.o" "../HelloWorld.cpp"
+../HelloWorld.cpp: In function ‘int msgarrvd(void*, char*, int, MQTTClient_message*)’:
+../HelloWorld.cpp:25:12: error: invalid conversion from ‘void*’ to ‘char*’ [-fpermissive]
+ payloadptr = message->payload;
+            ^
+../HelloWorld.cpp: In function ‘int main(int, char**)’:
+../HelloWorld.cpp:48:34: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+ MQTTCLIENT_PERSISTENCE_NONE, NULL);
+                                  ^
+../HelloWorld.cpp:48:34: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+../HelloWorld.cpp:57:16: error: invalid conversion from ‘const void*’ to ‘void*’ [-fpermissive]
+ pubmsg.payload = PAYLOAD;
+                ^
+../HelloWorld.cpp:62:57: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+ MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
+                                                         ^
+make: *** [HelloWorld.o] Error 1
+
+17:51:04 Build Finished (took 115ms)
+

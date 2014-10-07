@@ -1,0 +1,10 @@
+17:44:42 **** Incremental Build of configuration Debug for project toggle_led_threads ****
+make all 
+Building file: ../Bsp/Source/Bsp_GPIO/gpio_e.c
+Invoking: Cross GCC Compiler
+arm-unknown-linux-gnueabi-gcc -std=c99 -I"c:\cygwin\opt\cross\x-tools\arm-unknown-linux-gnueabi\arm-unknown-linux-gnueabi\sysroot\usr\include" -I"/home/jeffrey/projects/MidTerm/ilp/Eclipse_Workspace/toggle_led_threads" -O0 -g3 -Wall -c -fmessage-length=0 -pthread -MMD -MP -MF"Bsp/Source/Bsp_GPIO/gpio_e.d" -MT"Bsp/Source/Bsp_GPIO/gpio_e.d" -o "Bsp/Source/Bsp_GPIO/gpio_e.o" "../Bsp/Source/Bsp_GPIO/gpio_e.c"
+/bin/sh: 1: arm-unknown-linux-gnueabi-gcc: not found
+make: *** [Bsp/Source/Bsp_GPIO/gpio_e.o] Error 127
+
+17:44:42 Build Finished (took 76ms)
+

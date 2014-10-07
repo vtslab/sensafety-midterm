@@ -1,0 +1,15 @@
+20:33:32 **** Incremental Build of configuration Debug for project XML-Test ****
+make all 
+Building file: ../src/XML-Test.c
+Invoking: GCC C Compiler
+gcc -I/usr/include/libxml2 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/XML-Test.d" -MT"src/XML-Test.d" -o "src/XML-Test.o" "../src/XML-Test.c"
+Finished building: ../src/XML-Test.c
+ 
+Building target: XML-Test
+Invoking: GCC C Linker
+gcc  -o "XML-Test"  ./src/XML-Test.o   -lxml2
+Finished building target: XML-Test
+ 
+
+20:33:32 Build Finished (took 325ms)
+

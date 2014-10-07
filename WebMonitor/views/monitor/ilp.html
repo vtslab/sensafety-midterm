@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>  
+    <link href="{{=URL('static','css/jquery.dataTables.css')}}" 
+          rel="stylesheet" type="text/css">
+    <script src="{{=URL('static','js/jquery.js')}}"></script>
+    <script src="{{=URL('static','js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{=URL('static','js/dataTables.fnReloadAjax.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            s = $('#activity').dataTable( {
+	            "bProcessing": true,
+	            "iDisplayLength": 15,
+	            "sAjaxSource": "{{=URL('monitor','busyevents.json')}}"
+            } );
+            s.fnSort( [ [1,'desc'] ] );
+            setInterval(function() {
+                s.fnReloadAjax();
+            }, 5000);
+	        t = $('#tilt').dataTable( {
+		        "bProcessing": true,
+	            "iDisplayLength": 15,
+		        "sAjaxSource": "{{=URL('monitor','tiltevents.json')}}"
+	        } );
+	        t.fnSort( [ [1,'desc'] ] );
+            setInterval(function() {
+                t.fnReloadAjax();
+            }, 5000);
+        } );
+    </script>
+    <!--    setInterval(function () {alert("Hello")}, 10000);
+    myVar=setTimeout("javascript function", milliseconds); -->
+</head>
+<body>
+<h1>SenSafety - Intelligent Lamp Post control events
+    <img id="COMMIT" src="{{=URL('static','images/COMMIT_logo_RGB.png')}}"
+         style="margin-left:100px;width:10%;vertical-align: -20px">
+</h1>
+<div style='width:1240px;height:660px'>
+    <div style='width:600px;float:left'>
+    <h3>Busy -> warm/reddisch lighting conditions</h3>
+    <h3>Quiet -> flashing blue lights</h3>
+    <table id="activity">
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Timestamp</th>
+                <th>Level</th>
+                <th>Faces</th>
+                <th>Sound</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Event</th>
+                <th>Timestamp</th>
+                <th>Level</th>
+                <th>Faces</th>
+                <th>Sound</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+                <td>etc</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+                <td>etc</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+    <div style='width:600px;float:right'>
+    <h3>Tilt -> flashing red lights</h3>
+    <h3>&zwnj;</h3>
+    <table class="display" id="tilt">
+        <thead>
+            <tr>
+                <th width="28%">Event</th>
+                <th width="16%">Timestamp</th>
+                <th width="28%">Sensor</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Event</th>
+                <th>Timestamp</th>
+                <th>Sensor</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+                <td>etc</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+                <td>etc</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+{{=HR()}}
+Go to {{=A('ILP control event timeline', _href=URL('monitor','timeline'))}} or
+{{=A('raw facecounts and sound anomalies', _href=URL('monitor','raw'))}}
+</body>
+</html>

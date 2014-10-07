@@ -1,0 +1,15 @@
+13:47:58 **** Build of configuration Debug for project MQTT_Async_Laptop ****
+make all 
+Building file: ../src/MQTT_Async_Laptop.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/software/org.eclipse.paho.mqtt.c/src -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/MQTT_Async_Laptop.d" -MT"src/MQTT_Async_Laptop.d" -o "src/MQTT_Async_Laptop.o" "../src/MQTT_Async_Laptop.c"
+Finished building: ../src/MQTT_Async_Laptop.c
+ 
+Building target: MQTT_Async_Laptop
+Invoking: GCC C Linker
+gcc  -o "MQTT_Async_Laptop"  ./src/MQTT_Async_Laptop.o   -lpthread -lpaho-mqtt3c
+Finished building target: MQTT_Async_Laptop
+ 
+
+13:47:59 Build Finished (took 116ms)
+

@@ -1,0 +1,223 @@
+/*
+================================================================================
+  (c) 2014 Strukton Embedded Solutions
+
+  Project/Module: Serial driver for embedded Linux
+
+  Description: Functions for controlling serial in- and outputs
+
+  Reference:
+
+  Version Control
+  	  $workfile: serial.c
+  	  $Revision:
+  	  $Date: 08-04-2014
+  	  Modtime:
+
+================================================================================
+ */
+
+#include "App/Source/LedDriver/LedDriver.h"
+#include "App/Source/MqttBroker/MqttBroker.h"
+
+
+/*******************************************************************************
+ * Function:		initializeSerial
+ * Parameters(s):
+ * Returns:			Returns '-1' on failure or '0' when OK
+ * Description:		Function to initialize serial communication
+ * Reference:		http://www.raspberry-projects.com/pi/programming-in-c/uart-serial-port/using-the-uart
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	--
+ *
+ *******************************************************************************/
+INT8U setupLedDriverComm()
+{
+	/* Struct for port settings */
+	struct termios options;
+
+
+	/* Open modem device for reading and writing */
+	uart0_fd = open(SERIALDEVICE, O_RDWR | O_NOCTTY | O_NONBLOCK);
+	if (0 > uart0_fd)
+	{
+		return (uart0_fd);
+	}
+
+	/* input mode flags
+		IGNPAR 	: 	ignore bytes with parity errors
+		ICRNL 	: 	map CR to NL (otherwise a CR input on the other computer
+					will not terminate input)
+					otherwise make device raw (no other input processing)
+	 */
+	options.c_iflag = IGNPAR | ICRNL;
+
+	/* output mode flags
+	 		RAW output
+	 */
+	options.c_oflag = 0;
+
+	/* control mode flags
+	 	BAUDRATE: 	Set bps rate. You could also use cfsetispeed and cfsetospeed.
+		CS8 	: 	8n1 (8bit,no parity,1 stopbit)
+		CLOCAL 	: 	local connection, no modem contol
+		CREAD 	: 	enable receiving characters
+	 */
+	options.c_cflag = SERIALBAUDRATE | CS8 | CLOCAL | CREAD;
+
+	/* local mode flags
+	    ICANON : 	enable canonical input
+					disable all echo functionality, and don't send signals to calling program
+		ECHO :      Echo functionality (off when communicating with serial device)
+	 */
+	options.c_lflag = ICANON;
+
+	/* Clean input stream of UART0 */
+	tcflush(uart0_fd, TCIFLUSH);
+	/* Set port settings */
+	tcsetattr(uart0_fd, TCSANOW, &options);
+
+	return(SUCCESS);
+}
+
+void CloseUart()
+{
+	close(uart0_fd);
+}
+
+/*******************************************************************************
+ * Function:		sendMsgtoLampDriver
+ * Parameters(s):	Pointer to string
+ * Returns:			Returns '-1' on failure or '0' when OK
+ * Description:		Send msg to Lamp Driver
+ * Reference:
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	--
+ *
+ *******************************************************************************/
+INT8U sendMsgtoLedDriver(char *P_pChar , size_t P_sLength)
+{
+	if (uart0_fd != -1)
+	{
+		size_t length = strlen(P_pChar);
+		int count = write(uart0_fd, P_pChar, length);		//File descriptor, bytes to write, number of bytes to write
+		if (count < 0) // if nothing is written
+		{
+			return (count);
+		}
+	}
+	return (SUCCESS);
+}
+
+/*******************************************************************************
+ * Function:		receiveMsgFromLampDriver
+ * Parameters(s):	Pointer to string
+ * Returns:			Returns '-1' on failure or '0' when OK
+ * Description:		Receive msg from Lamp Driver
+ * Reference:
+ * Global/static variables
+ * 		modified:	--
+ * 		used:		--
+ * Error handling:	--
+ *
+ *******************************************************************************/
+INT8U receiveMsgFromLedDriver(char *P_sStr , size_t P_sLength)
+{
+	struct timeval timeout;
+	BOOLEAN readyForReading = FALSE;
+	int read_bytes = 0;
+
+	char *temp = (char *)malloc((P_sLength +1) * sizeof(char));
+
+	strcpy(temp, P_sStr);
+	printf("Temp variable = %s\n", temp);
+
+	read(uart0_fd, temp, P_sLength);
+
+	if (uart0_fd != -1)
+	{
+		/* Waiting for some seconds */
+		timeout.tv_sec = 5;    // seconds
+		timeout.tv_usec = 0;    // milliseconds
+
+		readyForReading = select(1, uart0_fd, NULL, NULL, &timeout);
+
+		if ( -1 == readyForReading)
+		{
+			printf("receiveMsgFromLedDriver: Error receiving message\n");
+		} else
+		{
+			if (readyForReading)
+			{
+				read_bytes = read(uart0_fd, P_sStr, P_sLength);
+				printf("Read, %d bytes from input : %s \n", read_bytes, P_sStr);
+			} else
+			{
+				printf("receiveMsgFromLedDriver: timeout on receiving message\n");
+				strncpy(P_sStr, " ", P_sLength);
+				return (-1);
+			}
+		}
+	}
+	return (SUCCESS);
+}
+
+
+
+/*
+ * TERMINAL FUNCTIONS.NOT USED FOR SERIAL CONNECTION
+void clearScreen()
+{
+	sendStringOverUart("\33[2J\33[H");
+}
+
+void blinkScreen()
+{
+	sendStringOverUart("\33[?5h");
+	usleep (50 * 1000);
+	sendStringOverUart("\33[?5l");
+}
+
+void clearLine()
+{
+	sendStringOverUart("\33[2K");
+}
+
+void cursorToLine (INT8U P_line)
+{
+	char buffer[20];
+	sprintf(buffer, "\33[%d;0f", P_line);
+	sendStringOverUart(buffer);
+}
+
+void cursorToColumn (INT8U P_column)
+{
+	char buffer[20];
+	//First move to the first column.
+	sendStringOverUart("\r");
+	if (P_column > 0) {
+		sprintf(buffer, "\33[%dC", P_column);
+		sendStringOverUart(buffer);
+	}
+}
+
+void terminalReset()
+{
+	blinkScreen();
+	clearScreen();
+	cursorToColumn(0);
+	cursorToLine(0);
+}
+
+void readLine(char * buffer)
+{
+		if (uart0_fd != -1)
+		{
+			read(uart0_fd, (void*)buffer, 255);		// Filestream, buffer to store in, number of bytes to read (max)
+		}
+}
+ */

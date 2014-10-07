@@ -1,0 +1,15 @@
+12:38:41 **** Build of configuration Debug for project helloworld-mqtt ****
+make all 
+Building file: ../src/helloworld-mqtt.c
+Invoking: GCC C Compiler
+gcc -I/home/jeffrey/software/mqtt-lib/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/helloworld-mqtt.d" -MT"src/helloworld-mqtt.d" -o "src/helloworld-mqtt.o" "../src/helloworld-mqtt.c"
+Finished building: ../src/helloworld-mqtt.c
+ 
+Building target: helloworld-mqtt
+Invoking: GCC C Linker
+gcc -L/home/jeffrey/projects/MidTerm/ilp/org.eclipse.paho.mqtt.c/src/linux_ia64 -L/home/jeffrey/software/mqtt-lib/lib -o "helloworld-mqtt"  ./src/helloworld-mqtt.o   -lmqttv3c -lpthread
+Finished building target: helloworld-mqtt
+ 
+
+12:38:41 Build Finished (took 111ms)
+
